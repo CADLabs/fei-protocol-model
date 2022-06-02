@@ -15,7 +15,7 @@ start-lab:
 test:
 	# execute-notebooks
 	# Check formatting
-	# python -m black --check --diff model
+	python -m black --check --diff model
 	# Check docstrings
 	pylint --disable=all --enable=missing-docstring model
 	# Run Pytest tests

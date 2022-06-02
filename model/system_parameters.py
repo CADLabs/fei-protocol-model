@@ -19,6 +19,7 @@ from model.types import (
     List,
 )
 
+
 @dataclass
 class Parameters:
     """System Parameters

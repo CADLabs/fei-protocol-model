@@ -1,4 +1,4 @@
-# CADLabs Project Template
+# [Fei Protocol Model](https://fei.money)
 
 [![Python package](https://github.com/CADLabs/fei-protocol-model/actions/workflows/python.yml/badge.svg)](https://github.com/CADLabs/fei-protocol-model/actions/workflows/python.yml)
 

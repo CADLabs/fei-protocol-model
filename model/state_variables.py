@@ -88,6 +88,9 @@ class StateVariables:
 
     # Assorted System Metrics
     fei_demand: float = Uninitialized
+        
+    # DEBUG: Test variables
+    test_variable: float = Uninitialized
 
 
 # Initialize State Variables instance with default values

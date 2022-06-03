@@ -1,0 +1,3 @@
+[submodule "packages/checkthechain"]
+	path = packages/checkthechain
+	url = git@github.com:fei-protocol/checkthechain.git

@@ -2,9 +2,10 @@ setup: install kernel plotly
 
 install:
 	pip install -r requirements.txt
+	python -m pip install -e ./packages/checkthechain
 
 kernel:
-	python3 -m ipykernel install --user --name python-cadlabs --display-name "Python (CADLabs)"
+	python3 -m ipykernel install --user --name python-cadlabs-fei --display-name "Python (CADLabs Fei Model)"
 
 plotly:
 	jupyter labextension install jupyterlab-plotly@4.14.3

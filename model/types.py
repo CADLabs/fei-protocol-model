@@ -18,6 +18,17 @@ else:
     from typing_extensions import TypedDict, Callable
 
 
+# Generic types
+Uninitialized = np.nan
+Percentage = float
+APY = float
+
 # Simulation types
 Timestep = int
 Run = int
+
+# Assets
+USD = float
+FEI = float
+VolatileAssetUnits = float
+StableAssetUnits = float

@@ -14,10 +14,16 @@ from dataclasses import dataclass
 from datetime import datetime
 from model.utils import default
 from model.types import (
+    Callable,
     Timestep,
     Run,
     List,
+    USD,
 )
+
+
+stable_asset_price_mean = 100.0
+volatile_asset_price_mean = 100.0
 
 
 @dataclass
@@ -40,6 +46,13 @@ class Parameters:
 
     date_start: List[datetime] = default([datetime.now()])
     """Start date for simulation as Python datetime"""
+
+    stable_asset_price_process: List[Callable[[Run, Timestep], USD]] = default(
+        [lambda _run, _timestep: stable_asset_price_mean]
+    )
+    volatile_asset_price_process: List[Callable[[Run, Timestep], USD]] = default(
+        [lambda _run, _timestep: volatile_asset_price_mean]
+    )
 
 
 # Initialize Parameters instance with default values

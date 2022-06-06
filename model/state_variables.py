@@ -70,18 +70,25 @@ class StateVariables:
     idle_protocol_owned_fei: FEI = Uninitialized
     # See Money Markets for FEI PCV deposit
 
-    idle_stable_asset_pcv: StableAssetUnits = Uninitialized
+    idle_stable_asset_pcv_amount: StableAssetUnits = Uninitialized
+    idle_stable_asset_pcv_value: USD = Uninitialized
     stable_asset_yield_bearing_pcv_deposit: StableAssetUnits = Uninitialized
     stable_asset_yield_rate: APY = Uninitialized
 
-    idle_volatile_asset_pcv: VolatileAssetUnits = Uninitialized
+    idle_volatile_asset_pcv_amount: VolatileAssetUnits = Uninitialized
+    idle_volatile_asset_pcv_value: USD = Uninitialized
     volatile_asset_yield_bearing_pcv_deposit: VolatileAssetUnits = Uninitialized
     volatile_asset_yield_rate: APY = Uninitialized
 
     # PCV Management
-    total_pcv: USD = Uninitialized
-    total_stable_asset_pcv: USD = Uninitialized
-    total_volatile_asset_pcv: USD = Uninitialized
+    total_pcv_value: USD = Uninitialized
+    total_stable_asset_pcv_amount: StableAssetUnits = 1e8 #DEBUG: magic number #Uninitialized
+    total_volatile_asset_pcv_amount: VolatileAssetUnits = 100000 #DEBUG: magic number #Uninitialized
+    total_stable_asset_pcv_value: USD = Uninitialized
+    total_volatile_asset_pcv_value: USD = Uninitialized
+
+    stable_backing_ratio: Percentage = Uninitialized
+    #volatile_backing_ratio: Percentage = Uninitialized
 
     collateralization_ratio: Percentage = Uninitialized
     protocol_equity: USD = Uninitialized

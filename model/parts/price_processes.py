@@ -1,16 +1,30 @@
-
 import typing
 
 from model.types import (
     USD,
 )
 
-def s_fei_price(params, substep, state_history, previous_state, policy_input):
+def update_fei_price(
+    params, substep, state_history, previous_state, policy_input
+) -> typing.Tuple[str, USD]:
     """
-    Stores test variable.
+    ## Stable Asset Price State Update Function
+    Update the stable asset price from the `stable_asset_price_process`.
     """
-    fei_price = 1
-    return "fei_price", fei_price
+
+    # Parameters
+    dt = params["dt"]
+    fei_price_process = params["fei_price_process"]
+
+    # State Variables
+    run = previous_state["run"]
+    timestep = previous_state["timestep"]
+
+    # Get the price sample for the current run and timestep
+    fei_price_sample = fei_price_process(run, timestep * dt)
+
+    return "fei_price", fei_price_sample
+
 
 def update_stable_asset_price(
     params, substep, state_history, previous_state, policy_input

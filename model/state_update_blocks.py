@@ -55,22 +55,16 @@ state_update_blocks = [
         "variables": {
             "total_stable_asset_pcv_amount": pcv_management.update_total_stable_asset_pcv_amount,
             "total_volatile_asset_pcv_amount": pcv_management.update_total_volatile_asset_pcv_amount,
-        },
-    },
-    {
-        "description": """
-            PCV rebalancing pt2
-        """,
-        "policies": {},
-        "variables": {
             "total_stable_asset_pcv_value": pcv_management.update_total_stable_asset_pcv_value,
             "total_volatile_asset_pcv_value": pcv_management.update_total_volatile_asset_pcv_value,
-            "total_pcv_value": pcv_management.update_total_pcv_value,
+#             "total_pcv_value": pcv_management.update_total_pcv_value,
+#             "stable_backing_ratio": pcv_management.update_stable_backing_ratio,
+#             "collateralization_ratio": pcv_management.update_collateralization_ratio,
         },
     },
         {
         "description": """
-            PCV rebalancing pt3
+            PCV rebalancing pt2
         """,
         "policies": {},
         "variables": {

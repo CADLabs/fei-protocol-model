@@ -27,10 +27,12 @@ def policy_pcv_rebalancing(params, substep, state_history, previous_state):
     # max per-period target since shifts that are too big would cause jumps / instability - need to DCA
     # out of and into assets
     
+    # volatility + asset allocation deviation - based asset value rebalancing
+    
     # NB: these are NOT weights
     return {
-        "stable_asset_pcv_target_change": 0.001,
-        "volatile_asset_pcv_target_change": -0.001,
+        "stable_asset_pcv_target_change": 0.000,
+        "volatile_asset_pcv_target_change": -0.000,
     }
 
 

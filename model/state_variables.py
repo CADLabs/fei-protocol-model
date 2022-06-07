@@ -38,7 +38,7 @@ class StateVariables:
     # FEI Supply
     total_fei_supply: FEI = Uninitialized
     total_protocol_owned_fei: FEI = Uninitialized
-    total_user_circulating_fei: FEI = Uninitialized
+    total_user_circulating_fei: FEI = 10_000_000  # DEBUG: magic number
 
     idle_user_circulating_fei: FEI = 0.0
     fei_minted_redeemed: FEI = 0.0
@@ -70,26 +70,24 @@ class StateVariables:
     idle_protocol_owned_fei: FEI = Uninitialized
     # See Money Markets for FEI PCV deposit
 
-    idle_stable_asset_pcv_amount: StableAssetUnits = Uninitialized
-    idle_stable_asset_pcv_value: USD = Uninitialized
+    idle_stable_asset_pcv_balance: StableAssetUnits = Uninitialized
+    idle_stable_asset_pcv: USD = Uninitialized
     stable_asset_yield_bearing_pcv_deposit: StableAssetUnits = Uninitialized
     stable_asset_yield_rate: APY = Uninitialized
 
-    idle_volatile_asset_pcv_amount: VolatileAssetUnits = Uninitialized
-    idle_volatile_asset_pcv_value: USD = Uninitialized
+    idle_volatile_asset_pcv_balance: VolatileAssetUnits = Uninitialized
+    idle_volatile_asset_pcv: USD = Uninitialized
     volatile_asset_yield_bearing_pcv_deposit: VolatileAssetUnits = Uninitialized
     volatile_asset_yield_rate: APY = Uninitialized
 
     # PCV Management
-    total_pcv_value: USD = Uninitialized
-    total_stable_asset_pcv_amount: StableAssetUnits = (
-        1e8  # DEBUG: magic number #Uninitialized
+    total_pcv: USD = Uninitialized
+    total_stable_asset_pcv_balance: StableAssetUnits = 1e8  # DEBUG: magic number
+    total_volatile_asset_pcv_balance: VolatileAssetUnits = (
+        100_000  # DEBUG: magic number
     )
-    total_volatile_asset_pcv_amount: VolatileAssetUnits = (
-        100000  # DEBUG: magic number #Uninitialized
-    )
-    total_stable_asset_pcv_value: USD = Uninitialized
-    total_volatile_asset_pcv_value: USD = Uninitialized
+    total_stable_asset_pcv: USD = Uninitialized
+    total_volatile_asset_pcv: USD = Uninitialized
 
     stable_backing_ratio: Percentage = Uninitialized
     # volatile_backing_ratio: Percentage = Uninitialized
@@ -99,9 +97,6 @@ class StateVariables:
 
     # Assorted System Metrics
     fei_demand: float = Uninitialized
-
-    # DEBUG: Test variables
-    test_variable: float = Uninitialized
 
 
 # Initialize State Variables instance with default values

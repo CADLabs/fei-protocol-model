@@ -30,6 +30,7 @@ def create_volatile_price_process(
     )
     price_samples = process.sample(timesteps * dt + 1)
     price_samples = [initial_price + z for z in price_samples]
+
     return price_samples
 
 
@@ -50,16 +51,13 @@ def create_stable_price_process(
     mu = kwargs.get("mu")
     sigma = kwargs.get("sigma")
 
-    # runtime checking since this function is called regardless of setting
-    if mu is not None and sigma is not None:
-
+    if mu and sigma:
         process = processes.noise.GaussianNoise(t=(timesteps * dt), rng=rng)
         price_samples = process.sample(timesteps * dt + 1)
         price_samples = [mu + sigma * z for z in price_samples]
         return price_samples
-
     else:
-        return [np.nan for x in range(timesteps * dt)]
+        raise Exception("Price process parameters not set")
 
 
 def create_stochastic_process_realizations(
@@ -76,7 +74,7 @@ def create_stochastic_process_realizations(
     """
 
     switcher = {
-        "volatile_price_samples": [
+        "volatile_asset_price_samples": [
             create_volatile_price_process(
                 timesteps=timesteps,
                 dt=dt,
@@ -87,7 +85,7 @@ def create_stochastic_process_realizations(
             )
             for _ in range(runs)
         ],
-        "stable_price_samples": [
+        "stable_asset_price_samples": [
             create_stable_price_process(
                 timesteps=timesteps,
                 dt=dt,

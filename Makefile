@@ -1,7 +1,10 @@
 setup: install kernel plotly
 
-install:
+install: install-packages
 	pip install -r requirements.txt
+
+install-packages:
+	git submodule update --init --recursive
 	python -m pip install -e ./packages/checkthechain
 
 kernel:

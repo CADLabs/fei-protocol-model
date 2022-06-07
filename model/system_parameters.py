@@ -20,10 +20,27 @@ from model.types import (
     List,
     USD,
 )
+from model.stochastic_processes import create_stochastic_process_realizations
 
 
-stable_asset_price_mean = 100.0
-volatile_asset_price_mean = 100.0
+volatile_asset_price_samples = create_stochastic_process_realizations(
+    "volatile_asset_price_samples",
+    timesteps=simulation.TIMESTEPS,
+    dt=simulation.DELTA_TIME,
+    mu=-50,
+    sigma=20,
+    initial_price=2000,
+)
+
+stable_asset_price_samples = create_stochastic_process_realizations(
+    "stable_asset_price_samples",
+    timesteps=simulation.TIMESTEPS,
+    dt=simulation.DELTA_TIME,
+    mu=1,
+    sigma=0.005,
+)
+
+fei_price_mean = 1.0
 
 
 @dataclass
@@ -47,11 +64,15 @@ class Parameters:
     date_start: List[datetime] = default([datetime.now()])
     """Start date for simulation as Python datetime"""
 
+    # Price Processes
+    fei_price_process: List[Callable[[Run, Timestep], USD]] = default(
+        [lambda _run, _timestep: fei_price_mean]
+    )
     stable_asset_price_process: List[Callable[[Run, Timestep], USD]] = default(
-        [lambda _run, _timestep: stable_asset_price_mean]
+        [lambda run, timestep: stable_asset_price_samples[run - 1][timestep]]
     )
     volatile_asset_price_process: List[Callable[[Run, Timestep], USD]] = default(
-        [lambda _run, _timestep: volatile_asset_price_mean]
+        [lambda run, timestep: volatile_asset_price_samples[run - 1][timestep]]
     )
 
 

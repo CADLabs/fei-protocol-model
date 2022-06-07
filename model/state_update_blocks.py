@@ -18,9 +18,7 @@ state_update_blocks = [
             a test block
         """,
         "policies": {},
-        "variables": {
-            "test_variable": s_test_variable
-        },
+        "variables": {"test_variable": s_test_variable},
     },
     # placeholder block, just sets total user fei to a constant
     {
@@ -57,12 +55,12 @@ state_update_blocks = [
             "total_volatile_asset_pcv_amount": pcv_management.update_total_volatile_asset_pcv_amount,
             "total_stable_asset_pcv_value": pcv_management.update_total_stable_asset_pcv_value,
             "total_volatile_asset_pcv_value": pcv_management.update_total_volatile_asset_pcv_value,
-#             "total_pcv_value": pcv_management.update_total_pcv_value,
-#             "stable_backing_ratio": pcv_management.update_stable_backing_ratio,
-#             "collateralization_ratio": pcv_management.update_collateralization_ratio,
+            #             "total_pcv_value": pcv_management.update_total_pcv_value,
+            #             "stable_backing_ratio": pcv_management.update_stable_backing_ratio,
+            #             "collateralization_ratio": pcv_management.update_collateralization_ratio,
         },
     },
-        {
+    {
         "description": """
             PCV rebalancing pt2
         """,

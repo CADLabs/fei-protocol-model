@@ -82,20 +82,24 @@ class StateVariables:
 
     # PCV Management
     total_pcv_value: USD = Uninitialized
-    total_stable_asset_pcv_amount: StableAssetUnits = 1e8 #DEBUG: magic number #Uninitialized
-    total_volatile_asset_pcv_amount: VolatileAssetUnits = 100000 #DEBUG: magic number #Uninitialized
+    total_stable_asset_pcv_amount: StableAssetUnits = (
+        1e8  # DEBUG: magic number #Uninitialized
+    )
+    total_volatile_asset_pcv_amount: VolatileAssetUnits = (
+        100000  # DEBUG: magic number #Uninitialized
+    )
     total_stable_asset_pcv_value: USD = Uninitialized
     total_volatile_asset_pcv_value: USD = Uninitialized
 
     stable_backing_ratio: Percentage = Uninitialized
-    #volatile_backing_ratio: Percentage = Uninitialized
+    # volatile_backing_ratio: Percentage = Uninitialized
 
     collateralization_ratio: Percentage = Uninitialized
     protocol_equity: USD = Uninitialized
 
     # Assorted System Metrics
     fei_demand: float = Uninitialized
-        
+
     # DEBUG: Test variables
     test_variable: float = Uninitialized
 

@@ -4,6 +4,7 @@ from model.types import (
     USD,
 )
 
+
 def update_fei_price(
     params, substep, state_history, previous_state, policy_input
 ) -> typing.Tuple[str, USD]:

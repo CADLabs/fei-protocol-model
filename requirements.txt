@@ -27,5 +27,7 @@ pylint==2.8.3
 jupyterlab-spellchecker==0.6.0
 
 # Custom
-checkthechain==0.2.10
+# See checkthechain Git submodule
+# checkthechain==0.2.10
 toolplot==0.2.0
+werkzeug==2.0.3

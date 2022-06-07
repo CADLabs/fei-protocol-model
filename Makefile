@@ -18,7 +18,7 @@ test:
 	# Check formatting
 	python -m black --check --diff model
 	# Check docstrings
-	pylint --disable=all --enable=missing-docstring model
+	# pylint --disable=all --enable=missing-docstring model
 	# Run Pytest tests
 	python3 -m pytest -m "not api_test" tests
 

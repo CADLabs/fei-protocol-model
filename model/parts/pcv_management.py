@@ -95,7 +95,7 @@ def policy_pcv_accounting(params, substep, state_history, previous_state):
     volatile_asset_price = previous_state["volatile_asset_price"]
 
     # Accounting
-    total_stable_asset_pcv = total_stable_asset_pcv_balance + stable_asset_price
+    total_stable_asset_pcv = total_stable_asset_pcv_balance * stable_asset_price
     total_volatile_asset_pcv = total_volatile_asset_pcv_balance * volatile_asset_price
     total_pcv = total_volatile_asset_pcv + total_stable_asset_pcv
 

@@ -66,26 +66,43 @@ class StateVariables:
     fei_savings_deposit_balance: FEI = Uninitialized
     fei_savings_rate: APY = Uninitialized
 
-    # PCV Yield
-    idle_protocol_owned_fei: FEI = Uninitialized
-    # See Money Markets for FEI PCV deposit
-
-    idle_stable_asset_pcv_balance: StableAssetUnits = Uninitialized
-    idle_stable_asset_pcv: USD = Uninitialized
-    stable_asset_yield_bearing_pcv_deposit: StableAssetUnits = Uninitialized
+    # 3rd party yield rates
     stable_asset_yield_rate: APY = Uninitialized
-
-    idle_volatile_asset_pcv_balance: VolatileAssetUnits = Uninitialized
-    idle_volatile_asset_pcv: USD = Uninitialized
-    volatile_asset_yield_bearing_pcv_deposit: VolatileAssetUnits = Uninitialized
     volatile_asset_yield_rate: APY = Uninitialized
 
-    # PCV Management
+    # Protocol Owned FEI PCV
+    idle_protocol_owned_fei_pcv_balance: FEI = Uninitialized
+    idle_protocol_owned_fei_pcv: USD = Uninitialized
+
+    # PCV Deposits
+    # FEI
+    fei_pcv_deposit_liquidity_pool_balance: FEI = Uninitialized
+    fei_pcv_deposit_liquidity_pool: USD = Uninitialized
+
+    fei_pcv_deposit_money_market_balance: FEI = Uninitialized
+    fei_pcv_deposit_money_market: USD = Uninitialized
+
+    # Stable Asset
+    stable_asset_pcv_idle_balance: StableAssetUnits = 1e8  # DEBUG: magic number
+    stable_asset_pcv_idle: USD = Uninitialized
+
+    stable_asset_pcv_deposit_yield_bearing_balance: StableAssetUnits = 0
+    stable_asset_pcv_deposit_yield_bearing: USD = Uninitialized
+
+    # Volatile Asset
+    volatile_asset_pcv_idle_balance: VolatileAssetUnits = 100_000  # DEBUG: magic number
+    volatile_asset_pcv_idle: USD = Uninitialized
+
+    volatile_asset_pcv_deposit_yield_bearing_balance: VolatileAssetUnits = 0
+    volatile_asset_pcv_deposit_yield_bearing: USD = Uninitialized
+
+    volatile_asset_pcv_deposit_liquidity_pool_balance: VolatileAssetUnits = 0
+    volatile_asset_pcv_deposit_liquidity_pool: USD = Uninitialized
+
+    # PCV Aggregates
     total_pcv: USD = Uninitialized
-    total_stable_asset_pcv_balance: StableAssetUnits = 1e8  # DEBUG: magic number
-    total_volatile_asset_pcv_balance: VolatileAssetUnits = (
-        100_000  # DEBUG: magic number
-    )
+    total_stable_asset_pcv_balance: StableAssetUnits = Uninitialized
+    total_volatile_asset_pcv_balance: VolatileAssetUnits = Uninitialized
     total_stable_asset_pcv: USD = Uninitialized
     total_volatile_asset_pcv: USD = Uninitialized
 

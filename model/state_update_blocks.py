@@ -33,6 +33,10 @@ state_update_blocks = [
             "pcv_rebalancing": pcv_management.policy_pcv_rebalancing,
         },
         "variables": {
+            "stable_asset_pcv_idle_balance": pcv_management.update_stable_asset_idle_pcv_from_rebalance,
+            "stable_asset_pcv_deposit_yield_bearing_balance": pcv_management.update_stable_asset_yield_bearing_pcv_from_rebalance,
+            "volatile_asset_pcv_idle_balance": pcv_management.update_volatile_asset_idle_pcv_from_rebalance,
+            "volatile_asset_pcv_deposit_yield_bearing_balance": pcv_management.update_volatile_asset_yield_bearing_pcv_from_rebalance,
             "total_stable_asset_pcv_balance": pcv_management.update_total_stable_asset_pcv_balance,
             "total_volatile_asset_pcv_balance": pcv_management.update_total_volatile_asset_pcv_balance,
         },

@@ -9,6 +9,8 @@ By using a dataclass to represent the State Variables:
 from numpy import NaN
 import model.constants as constants
 import model.system_parameters as system_parameters
+import radcad as radcad
+import logging
 
 from dataclasses import dataclass
 from datetime import datetime
@@ -30,6 +32,7 @@ class StateVariables:
     state variable key: state variable type = default state variable value
     """
 
+    # Simulation
     timestamp: datetime = None
     """
     The timestamp for each timestep as a Python `datetime` object, starting from `date_start` Parameter.
@@ -50,11 +53,9 @@ class StateVariables:
     stable_asset_price: USD = Uninitialized
 
     # Liquidity Pools
-    liquidity_pool_fei_balance: FEI = Uninitialized
-    liquidity_pool_volatile_asset_balance: VolatileAssetUnits = Uninitialized
-    # liquidity_pool_stable_asset_balance: StableAssetUnits = Uninitialized
+    liquidity_pool_invariant: float = Uninitialized
     liquidity_pool_tvl: USD = Uninitialized
-    liquidity_pool_fei_imbalance: FEI = 0.0
+    liquidity_pool_fei_source_sink: FEI = 0.0
 
     # Money Markets
     fei_money_market_pcv_deposit: FEI = Uninitialized
@@ -118,3 +119,46 @@ class StateVariables:
 
 # Initialize State Variables instance with default values
 initial_state = StateVariables().__dict__
+
+
+def setup_initial_state(context: radcad.Context):
+    logging.info("Setting up initial state")
+
+    params = context.parameters
+    run = context.run
+    subset = context.subset
+    timestep = 0
+
+    # Parameters
+    dt = params["dt"][subset]
+    liquidity_pool_tvl = params["liquidity_pool_tvl"][subset]
+    fei_price_process = params["fei_price_process"][subset]
+    volatile_asset_price_process = params["volatile_asset_price_process"][subset]
+
+    # Liquidity Pool Setup
+    fei_price = fei_price_process(run, timestep * dt)
+    volatile_asset_price = volatile_asset_price_process(run, timestep * dt)
+
+    fei_pcv_deposit_liquidity_pool = liquidity_pool_tvl / 2
+    fei_pcv_deposit_liquidity_pool_balance = fei_pcv_deposit_liquidity_pool / fei_price
+
+    volatile_asset_pcv_deposit_liquidity_pool = liquidity_pool_tvl / 2
+    volatile_asset_pcv_deposit_liquidity_pool_balance = (
+        volatile_asset_pcv_deposit_liquidity_pool / volatile_asset_price
+    )
+
+    liquidity_pool_invariant = (
+        fei_pcv_deposit_liquidity_pool_balance
+        * volatile_asset_pcv_deposit_liquidity_pool_balance
+    )
+
+    context.initial_state.update(
+        {
+            "liquidity_pool_tvl": liquidity_pool_tvl,
+            "liquidity_pool_invariant": liquidity_pool_invariant,
+            "fei_pcv_deposit_liquidity_pool_balance": fei_pcv_deposit_liquidity_pool_balance,
+            "fei_pcv_deposit_liquidity_pool": fei_pcv_deposit_liquidity_pool,
+            "volatile_asset_pcv_deposit_liquidity_pool_balance": volatile_asset_pcv_deposit_liquidity_pool_balance,
+            "volatile_asset_pcv_deposit_liquidity_pool": volatile_asset_pcv_deposit_liquidity_pool,
+        }
+    )

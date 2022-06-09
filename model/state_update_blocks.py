@@ -2,15 +2,11 @@
 cadCAD model State Update Block structure, composed of Policy and State Update Functions
 """
 
-
-from turtle import update
 import model.parts.price_processes as price_processes
 import model.parts.pcv_management as pcv_management
-import model.parts.user_circulating_fei as user_circulating_fei
+import model.parts.liquidity_pools as liquidity_pools
 
-from model.system_parameters import parameters
 from model.utils import update_from_signal
-from model.parts.assorted_system_metrics import *
 
 
 state_update_blocks = [
@@ -23,6 +19,26 @@ state_update_blocks = [
             "fei_price": price_processes.update_fei_price,
             "stable_asset_price": price_processes.update_stable_asset_price,
             "volatile_asset_price": price_processes.update_volatile_asset_price,
+        },
+    },
+    {
+        "description": """
+            FEI-X Liquidity Pool
+        """,
+        "policies": {
+            "cfmm": liquidity_pools.policy_constant_function_market_maker,
+        },
+        "variables": {
+            "fei_pcv_deposit_liquidity_pool_balance": update_from_signal(
+                "fei_pcv_deposit_liquidity_pool_balance"
+            ),
+            "volatile_asset_pcv_deposit_liquidity_pool_balance": update_from_signal(
+                "volatile_asset_pcv_deposit_liquidity_pool_balance"
+            ),
+            "liquidity_pool_fei_source_sink": update_from_signal(
+                "liquidity_pool_fei_source_sink"
+            ),
+            "fei_minted_redeemed": update_from_signal("fei_minted_redeemed"),
         },
     },
     {

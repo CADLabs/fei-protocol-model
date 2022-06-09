@@ -75,6 +75,9 @@ class Parameters:
         [lambda run, timestep: volatile_asset_price_samples[run - 1][timestep]]
     )
 
+    # Liquidity Pools
+    liquidity_pool_tvl: List[USD] = default([200_000_000])
+
 
 # Initialize Parameters instance with default values
 parameters = Parameters().__dict__

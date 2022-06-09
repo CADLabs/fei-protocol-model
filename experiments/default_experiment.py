@@ -10,6 +10,7 @@ from radcad import Simulation, Experiment, Backend
 
 from model import model
 from experiments.simulation_configuration import TIMESTEPS, DELTA_TIME, MONTE_CARLO_RUNS
+from model.state_variables import setup_initial_state
 
 
 # Create Model Simulation
@@ -25,3 +26,6 @@ simulation.engine = experiment.engine
 experiment.engine.backend = Backend.SINGLE_PROCESS
 experiment.engine.deepcopy = False
 experiment.engine.drop_substeps = True
+
+simulation.before_subset = setup_initial_state
+experiment.before_subset = setup_initial_state

@@ -22,7 +22,9 @@ from model.types import (
     FEI,
     VolatileAssetUnits,
     StableAssetUnits,
+    PCVDeposit,
 )
+
 
 
 @dataclass
@@ -51,6 +53,27 @@ class StateVariables:
     fei_price: USD = 1.0
     volatile_asset_price: USD = Uninitialized
     stable_asset_price: USD = Uninitialized
+        
+    fei_deposit_idle: PCVDeposit = PCVDeposit(
+                        asset = "fei",
+                        deposit_type = "idle",
+                        balance = Uninitialized,
+                        asset_value = Uninitialized,
+                        yield_balance = Uninitialized,
+                        yield_value = Uninitialized,
+                        yield_rate = Uninitialized,
+    )
+        
+    fei_deposit_liquidity_pool: PCVDeposit = PCVDeposit(
+                        asset = "fei",
+                        deposit_type = "liquidity_pool",
+                        balance = 0,
+                        asset_value = Uninitialized,
+                        yield_balance = Uninitialized,
+                        yield_value = Uninitialized,
+                        yield_rate = Uninitialized,
+    )
+        
 
     # Liquidity Pools
     liquidity_pool_invariant: float = Uninitialized
@@ -83,23 +106,61 @@ class StateVariables:
     fei_pcv_deposit_money_market_balance: FEI = Uninitialized
     fei_pcv_deposit_money_market: USD = Uninitialized
 
-    # Stable Asset
-    stable_asset_pcv_idle_balance: StableAssetUnits = 1e8  # DEBUG: magic number
-    stable_asset_pcv_idle: USD = Uninitialized
+    # Stable Asset --------------------------------------------------------------------------
+        
+    stable_deposit_idle: PCVDeposit = PCVDeposit(
+                        asset = "stable",
+                        deposit_type = "idle",
+                        balance = 1e8,
+                        asset_value = Uninitialized,
+                        yield_balance = Uninitialized,
+                        yield_value = Uninitialized,
+                        yield_rate = Uninitialized,
+    )
+        
+    stable_deposit_yield_bearing: PCVDeposit = PCVDeposit(
+                        asset = "stable",
+                        deposit_type = "yield_bearing",
+                        balance = 0,
+                        asset_value = Uninitialized,
+                        yield_balance = Uninitialized,
+                        yield_value = Uninitialized,
+                        yield_rate = Uninitialized,
+    )
+        
 
-    stable_asset_pcv_deposit_yield_bearing_balance: StableAssetUnits = 0
-    stable_asset_pcv_deposit_yield_bearing: USD = Uninitialized
+    # Volatile Asset --------------------------------------------------------------------------
 
-    # Volatile Asset
-    volatile_asset_pcv_idle_balance: VolatileAssetUnits = 100_000  # DEBUG: magic number
-    volatile_asset_pcv_idle: USD = Uninitialized
-
-    volatile_asset_pcv_deposit_yield_bearing_balance: VolatileAssetUnits = 0
-    volatile_asset_pcv_deposit_yield_bearing: USD = Uninitialized
-
-    volatile_asset_pcv_deposit_liquidity_pool_balance: VolatileAssetUnits = 0
-    volatile_asset_pcv_deposit_liquidity_pool: USD = Uninitialized
-
+    volatile_deposit_idle: PCVDeposit = PCVDeposit(
+                        asset = "volatile",
+                        deposit_type = "idle",
+                        balance = 100_000,
+                        asset_value = Uninitialized,
+                        yield_balance = Uninitialized,
+                        yield_value = Uninitialized,
+                        yield_rate = Uninitialized,
+    )
+    
+    volatile_deposit_yield_bearing: PCVDeposit = PCVDeposit(
+                        asset = "volatile",
+                        deposit_type = "yield_bearing",
+                        balance = 0,
+                        asset_value = Uninitialized,
+                        yield_balance = Uninitialized,
+                        yield_value = Uninitialized,
+                        yield_rate = Uninitialized,
+    )
+        
+    volatile_deposit_liquidity_pool: PCVDeposit = PCVDeposit(
+                        asset = "volatile",
+                        deposit_type = "liquidity_pool",
+                        balance = 0,
+                        asset_value = Uninitialized,
+                        yield_balance = Uninitialized,
+                        yield_value = Uninitialized,
+                        yield_rate = Uninitialized,
+    )
+    
     # PCV Aggregates
     total_pcv: USD = Uninitialized
     total_stable_asset_pcv_balance: StableAssetUnits = Uninitialized
@@ -115,7 +176,6 @@ class StateVariables:
 
     # Assorted System Metrics
     fei_demand: float = Uninitialized
-
 
 # Initialize State Variables instance with default values
 initial_state = StateVariables().__dict__
@@ -156,9 +216,5 @@ def setup_initial_state(context: radcad.Context):
         {
             "liquidity_pool_tvl": liquidity_pool_tvl,
             "liquidity_pool_invariant": liquidity_pool_invariant,
-            "fei_pcv_deposit_liquidity_pool_balance": fei_pcv_deposit_liquidity_pool_balance,
-            "fei_pcv_deposit_liquidity_pool": fei_pcv_deposit_liquidity_pool,
-            "volatile_asset_pcv_deposit_liquidity_pool_balance": volatile_asset_pcv_deposit_liquidity_pool_balance,
-            "volatile_asset_pcv_deposit_liquidity_pool": volatile_asset_pcv_deposit_liquidity_pool,
         }
     )

@@ -29,16 +29,13 @@ state_update_blocks = [
             "cfmm": liquidity_pools.policy_constant_function_market_maker,
         },
         "variables": {
-            "fei_pcv_deposit_liquidity_pool_balance": update_from_signal(
-                "fei_pcv_deposit_liquidity_pool_balance"
-            ),
-            "volatile_asset_pcv_deposit_liquidity_pool_balance": update_from_signal(
-                "volatile_asset_pcv_deposit_liquidity_pool_balance"
-            ),
             "liquidity_pool_fei_source_sink": update_from_signal(
                 "liquidity_pool_fei_source_sink"
             ),
             "fei_minted_redeemed": update_from_signal("fei_minted_redeemed"),
+            "liquidity_pool_tvl": update_from_signal("liquidity_pool_tvl"),
+            "volatile_deposit_liquidity_pool": liquidity_pools.update_volatile_deposit_liquidity_pool,
+            "fei_deposit_liquidity_pool": liquidity_pools.update_fei_deposit_liquidity_pool,
         },
     },
     {
@@ -49,12 +46,13 @@ state_update_blocks = [
             "pcv_rebalancing": pcv_management.policy_pcv_rebalancing,
         },
         "variables": {
-            "stable_asset_pcv_idle_balance": pcv_management.update_stable_asset_idle_pcv_from_rebalance,
-            "stable_asset_pcv_deposit_yield_bearing_balance": pcv_management.update_stable_asset_yield_bearing_pcv_from_rebalance,
-            "volatile_asset_pcv_idle_balance": pcv_management.update_volatile_asset_idle_pcv_from_rebalance,
-            "volatile_asset_pcv_deposit_yield_bearing_balance": pcv_management.update_volatile_asset_yield_bearing_pcv_from_rebalance,
+            "stable_deposit_idle": pcv_management.update_stable_deposit_idle,
+            "stable_deposit_yield_bearing": pcv_management.update_stable_deposit_yield_bearing,
+            "volatile_deposit_idle": pcv_management.update_volatile_deposit_idle,
+            "volatile_deposit_yield_bearing": pcv_management.update_volatile_deposit_yield_bearing,
             "total_stable_asset_pcv_balance": pcv_management.update_total_stable_asset_pcv_balance,
             "total_volatile_asset_pcv_balance": pcv_management.update_total_volatile_asset_pcv_balance,
+            "total_protocol_owned_fei": pcv_management.update_total_protocol_owned_fei,
         },
     },
     {

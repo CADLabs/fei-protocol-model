@@ -2,6 +2,7 @@
 cadCAD model State Update Block structure, composed of Policy and State Update Functions
 """
 
+import model.parts.accounting as accounting
 import model.parts.price_processes as price_processes
 import model.parts.pcv_management as pcv_management
 import model.parts.liquidity_pools as liquidity_pools
@@ -10,6 +11,19 @@ from model.utils import update_from_signal
 
 
 state_update_blocks = [
+    {
+        "description": """
+            Assorted accounting
+        """,
+        "policies": {
+            "accounting": accounting.policy_accounting,
+        },
+        "variables": {
+            "total_protocol_owned_fei": update_from_signal("total_protocol_owned_fei"),
+            "total_user_circulating_fei": update_from_signal("total_user_circulating_fei"),
+            "total_fei_supply": update_from_signal("total_fei_supply"),
+        },
+    },
     {
         "description": """
             Price Processes
@@ -29,9 +43,7 @@ state_update_blocks = [
             "cfmm": liquidity_pools.policy_constant_function_market_maker,
         },
         "variables": {
-            "liquidity_pool_fei_source_sink": update_from_signal(
-                "liquidity_pool_fei_source_sink"
-            ),
+            "liquidity_pool_fei_source_sink": update_from_signal("liquidity_pool_fei_source_sink"),
             "fei_minted_redeemed": update_from_signal("fei_minted_redeemed"),
             "liquidity_pool_tvl": update_from_signal("liquidity_pool_tvl"),
             "volatile_deposit_liquidity_pool": liquidity_pools.update_volatile_deposit_liquidity_pool,

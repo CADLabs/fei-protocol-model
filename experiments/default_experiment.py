@@ -24,7 +24,7 @@ experiment = Experiment([simulation])
 # Configure Simulation & Experiment engine
 simulation.engine = experiment.engine
 experiment.engine.backend = Backend.SINGLE_PROCESS
-experiment.engine.deepcopy = True # DEBUG: deepcopy is enabled!
+experiment.engine.deepcopy = True
 experiment.engine.drop_substeps = True
 
 simulation.before_subset = setup_initial_state

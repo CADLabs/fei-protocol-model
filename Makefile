@@ -16,10 +16,13 @@ plotly:
 start-lab:
 	jupyter lab
 
+format:
+	black --line-length 100 model
+
 test:
 	# execute-notebooks
 	# Check formatting
-	python -m black --check --diff model
+	python -m black --check --diff --line-length 100 model
 	# Check docstrings
 	# pylint --disable=all --enable=missing-docstring model
 	# Run Pytest tests

@@ -33,8 +33,8 @@ def policy_pcv_rebalancing(params, substep, state_history, previous_state):
     dt = params["dt"]
     timestep = previous_state["timestep"]
 
-    # Arbitrarily rebalance every X periods
-    rebalancing_period = 50 * dt
+    # Arbitrarily rebalance every X days
+    rebalancing_period = params["rebalancing_period"] / dt
 
     # The stable backing ratio is what % of PCV value is backed by stable assets
     # in this two-asset model this is the same thing as the % weight of stables for PCV
@@ -94,9 +94,7 @@ def policy_pcv_rebalancing(params, substep, state_history, previous_state):
         )
 
         stable_asset_target_value_change = stable_allocation_pct_change * total_pcv
-        total_required_stable_asset_change = (
-            stable_asset_target_value_change / stable_asset_price
-        )
+        total_required_stable_asset_change = stable_asset_target_value_change / stable_asset_price
 
         volatile_allocation_pct_change = (
             target_allocation["volatile_asset"] - current_allocation["volatile_asset"]
@@ -112,18 +110,15 @@ def policy_pcv_rebalancing(params, substep, state_history, previous_state):
             total_required_stable_asset_change * stable_asset_internal_weights["idle"]
         )
         stable_asset_target_amount_change["yield_bearing"] = (
-            total_required_stable_asset_change
-            * stable_asset_internal_weights["yield_bearing"]
+            total_required_stable_asset_change * stable_asset_internal_weights["yield_bearing"]
         )
 
         volatile_asset_target_amount_change["idle"] = (
-            total_required_volatile_asset_change
-            * volatile_asset_internal_weights["idle"]
+            total_required_volatile_asset_change * volatile_asset_internal_weights["idle"]
         )
 
         volatile_asset_target_amount_change["yield_bearing"] = (
-            total_required_volatile_asset_change
-            * volatile_asset_internal_weights["yield_bearing"]
+            total_required_volatile_asset_change * volatile_asset_internal_weights["yield_bearing"]
         )
 
     """
@@ -148,18 +143,16 @@ def policy_pcv_accounting(params, substep, state_history, previous_state):
     # State Variables
     total_user_circulating_fei = previous_state["total_user_circulating_fei"]
     total_stable_asset_pcv_balance = previous_state["total_stable_asset_pcv_balance"]
-    total_volatile_asset_pcv_balance = previous_state[
-        "total_volatile_asset_pcv_balance"
-    ]
+    total_volatile_asset_pcv_balance = previous_state["total_volatile_asset_pcv_balance"]
 
     fei_price = previous_state["fei_price"]
     stable_asset_price = previous_state["stable_asset_price"]
     volatile_asset_price = previous_state["volatile_asset_price"]
 
-    # Accounting
+    # State Update
     total_stable_asset_pcv = total_stable_asset_pcv_balance * stable_asset_price
     total_volatile_asset_pcv = total_volatile_asset_pcv_balance * volatile_asset_price
-    total_pcv = total_volatile_asset_pcv + total_stable_asset_pcv
+    total_pcv = total_stable_asset_pcv + total_volatile_asset_pcv
 
     return {
         "total_pcv": total_pcv,
@@ -171,21 +164,18 @@ def policy_pcv_accounting(params, substep, state_history, previous_state):
     }
 
 
-def update_total_protocol_owned_fei(
-    params, substep, state_history, previous_state, policy_input
-):
-    """
-    Update total stable asset PCV balance
-    """
-    
-    #deposit_state_idle: PCVDeposit = previous_state['stable_deposit_state_idle']
-    deposit_state_liquidity_pool: PCVDeposit = previous_state['fei_deposit_liquidity_pool']
-        
-    protocol_owned_fei_balance = (
-        deposit_state_liquidity_pool.balance
-    )
+def update_total_protocol_owned_fei(params, substep, state_history, previous_state, policy_input):
+    # State Variables
+    fei_deposit_idle: PCVDeposit = previous_state["fei_deposit_idle"]
+    fei_deposit_liquidity_pool: PCVDeposit = previous_state["fei_deposit_liquidity_pool"]
 
-    return "total_protocol_owned_fei", protocol_owned_fei_balance  # + target_amount_change
+    # State Update
+    protocol_owned_fei_balance = fei_deposit_idle.balance + fei_deposit_liquidity_pool.balance
+
+    return (
+        "total_protocol_owned_fei",
+        protocol_owned_fei_balance,
+    )
 
 
 def update_total_stable_asset_pcv_balance(
@@ -194,15 +184,14 @@ def update_total_stable_asset_pcv_balance(
     """
     Update total stable asset PCV balance
     """
-    
-    deposit_state_idle: PCVDeposit = previous_state['stable_deposit_idle']
-    deposit_state_yield_bearing: PCVDeposit = previous_state['stable_deposit_yield_bearing']
-        
-    pcv_balance = (
-        deposit_state_idle.balance + deposit_state_yield_bearing.balance
-    )
+    # State Variables
+    stable_deposit_idle: PCVDeposit = previous_state["stable_deposit_idle"]
+    stable_deposit_yield_bearing: PCVDeposit = previous_state["stable_deposit_yield_bearing"]
 
-    return "total_stable_asset_pcv_balance", pcv_balance  # + target_amount_change
+    # State Update
+    pcv_balance = stable_deposit_idle.balance + stable_deposit_yield_bearing.balance
+
+    return "total_stable_asset_pcv_balance", pcv_balance
 
 
 def update_total_volatile_asset_pcv_balance(
@@ -211,35 +200,30 @@ def update_total_volatile_asset_pcv_balance(
     """
     Update total volatile asset PCV balance
     """
-    
-    deposit_state_idle: PCVDeposit = previous_state['volatile_deposit_idle']
-    deposit_state_yield_bearing: PCVDeposit = previous_state['volatile_deposit_yield_bearing']
-    deposit_state_liquidity_pool: PCVDeposit = previous_state['volatile_deposit_liquidity_pool']
+    # State Variables
+    volatile_deposit_idle: PCVDeposit = previous_state["volatile_deposit_idle"]
+    volatile_deposit_yield_bearing: PCVDeposit = previous_state["volatile_deposit_yield_bearing"]
+    volatile_deposit_liquidity_pool: PCVDeposit = previous_state["volatile_deposit_liquidity_pool"]
 
+    # State Update
     pcv_balance = (
-        deposit_state_idle.balance + 
-        deposit_state_yield_bearing.balance +
-        deposit_state_liquidity_pool.balance
+        volatile_deposit_idle.balance
+        + volatile_deposit_yield_bearing.balance
+        + volatile_deposit_liquidity_pool.balance
     )
 
-    return "total_volatile_asset_pcv_balance", pcv_balance  # + target_amount_change
+    return "total_volatile_asset_pcv_balance", pcv_balance
 
 
-def update_stable_deposit_idle(
-    params, substep, state_history, previous_state, policy_input
-):
-    """
-    Update yield bearing stable asset PCV balance
-    """
-    # DEBUG: placeholder dynamics
-    stable_deposit_idle: PCVDeposit = previous_state['stable_deposit_idle']
+def update_stable_deposit_idle(params, substep, state_history, previous_state, policy_input):
+    # Policy Inputs
+    target_amount_change = policy_input["stable_asset_target_amount_change"]["idle"]
+
+    # State Variables
+    stable_deposit_idle: PCVDeposit = previous_state["stable_deposit_idle"]
     stable_asset_price = previous_state["stable_asset_price"]
-    
-    target_amount_change = policy_input["stable_asset_target_amount_change"][
-        "idle"
-    ]
-    
-    # NOTE: this update to the field is done immediately and can be used in subsequent calculations
+
+    # State Update
     stable_deposit_idle.balance = stable_deposit_idle.balance + target_amount_change
     stable_deposit_idle.asset_value = stable_deposit_idle.balance * stable_asset_price
 
@@ -252,20 +236,20 @@ def update_stable_deposit_idle(
 def update_stable_deposit_yield_bearing(
     params, substep, state_history, previous_state, policy_input
 ):
-    """
-    Update yield bearing stable asset PCV balance
-    """
-    # DEBUG: placeholder dynamics
-    stable_deposit_yield_bearing: PCVDeposit = previous_state['stable_deposit_yield_bearing'] 
+    # Policy Inputs
+    target_amount_change = policy_input["stable_asset_target_amount_change"]["yield_bearing"]
+
+    # State Variables
+    stable_deposit_yield_bearing: PCVDeposit = previous_state["stable_deposit_yield_bearing"]
     stable_asset_price = previous_state["stable_asset_price"]
 
-    target_amount_change = policy_input["stable_asset_target_amount_change"][
-        "yield_bearing"
-    ]
-    
-    # NOTE: this update to the field is done immediately and can be used in subsequent calculations
-    stable_deposit_yield_bearing.balance = stable_deposit_yield_bearing.balance + target_amount_change
-    stable_deposit_yield_bearing.asset_value = stable_deposit_yield_bearing.balance * stable_asset_price
+    # State Update
+    stable_deposit_yield_bearing.balance = (
+        stable_deposit_yield_bearing.balance + target_amount_change
+    )
+    stable_deposit_yield_bearing.asset_value = (
+        stable_deposit_yield_bearing.balance * stable_asset_price
+    )
 
     return (
         "stable_deposit_yield_bearing",
@@ -273,21 +257,15 @@ def update_stable_deposit_yield_bearing(
     )
 
 
-def update_volatile_deposit_idle(
-    params, substep, state_history, previous_state, policy_input
-):
-    """
-    Update yield bearing volatile asset PCV balance
-    """
-    # DEBUG: placeholder dynamics
-    volatile_deposit_idle: PCVDeposit = previous_state['volatile_deposit_idle'] 
+def update_volatile_deposit_idle(params, substep, state_history, previous_state, policy_input):
+    # Policy Inputs
+    target_amount_change = policy_input["volatile_asset_target_amount_change"]["idle"]
+
+    # State Variables
+    volatile_deposit_idle: PCVDeposit = previous_state["volatile_deposit_idle"]
     volatile_asset_price = previous_state["volatile_asset_price"]
 
-    target_amount_change = policy_input["volatile_asset_target_amount_change"][
-        "idle"
-    ]
-    
-    # NOTE: this update to the field is done immediately and can be used in subsequent calculations
+    # State Update
     volatile_deposit_idle.balance = volatile_deposit_idle.balance + target_amount_change
     volatile_deposit_idle.asset_value = volatile_deposit_idle.balance * volatile_asset_price
 
@@ -300,25 +278,22 @@ def update_volatile_deposit_idle(
 def update_volatile_deposit_yield_bearing(
     params, substep, state_history, previous_state, policy_input
 ):
-    """
-    Update yield bearing volatile asset PCV balance
-    """
-    # DEBUG: placeholder dynamics
-    volatile_deposit_yield_bearing: PCVDeposit = previous_state['volatile_deposit_yield_bearing'] 
+    # Policy Inputs
+    target_amount_change = policy_input["volatile_asset_target_amount_change"]["yield_bearing"]
+
+    # State Variables
+    volatile_deposit_yield_bearing: PCVDeposit = previous_state["volatile_deposit_yield_bearing"]
     volatile_asset_price = previous_state["volatile_asset_price"]
 
-    target_amount_change = policy_input["volatile_asset_target_amount_change"][
-        "yield_bearing"
-    ]
-    
-    # NOTE: this update to the field is done immediately and can be used in subsequent calculations
-    volatile_deposit_yield_bearing.balance = volatile_deposit_yield_bearing.balance + target_amount_change
-    volatile_deposit_yield_bearing.asset_value = volatile_deposit_yield_bearing.balance * volatile_asset_price
+    # State Update
+    volatile_deposit_yield_bearing.balance = (
+        volatile_deposit_yield_bearing.balance + target_amount_change
+    )
+    volatile_deposit_yield_bearing.asset_value = (
+        volatile_deposit_yield_bearing.balance * volatile_asset_price
+    )
 
     return (
         "volatile_deposit_yield_bearing",
         volatile_deposit_yield_bearing,
     )
-
-# +
-## DEPRECATED ##

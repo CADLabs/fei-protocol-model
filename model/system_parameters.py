@@ -30,6 +30,7 @@ volatile_asset_price_samples = create_stochastic_process_realizations(
     mu=-50,
     sigma=20,
     initial_price=2000,
+    runs=10,
 )
 
 stable_asset_price_samples = create_stochastic_process_realizations(
@@ -38,6 +39,7 @@ stable_asset_price_samples = create_stochastic_process_realizations(
     dt=simulation.DELTA_TIME,
     mu=1,
     sigma=0.005,
+    runs=10,
 )
 
 fei_price_mean = 1.0
@@ -76,7 +78,10 @@ class Parameters:
     )
 
     # Liquidity Pools
-    liquidity_pool_tvl: List[USD] = default([200_000_000])
+    liquidity_pool_tvl: List[USD] = default([260_000_000])
+
+    # PCV Management Strategy
+    rebalancing_period: List[Timestep] = default([90])  # days
 
 
 # Initialize Parameters instance with default values

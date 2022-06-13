@@ -6,7 +6,7 @@ from model.constants import days_per_month
 
 
 DELTA_TIME = 1  # days per timestep
-SIMULATION_TIMESTEPS = 400
+SIMULATION_TIMESTEPS = 365
 # SIMULATION_TIME_MONTHS = 12  # number of months
 # TIMESTEPS = (
 #     days_per_month * SIMULATION_TIME_MONTHS // DELTA_TIME

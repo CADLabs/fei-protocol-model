@@ -8,6 +8,7 @@ from radcad import Simulation
 import experiments.templates.example_analysis as example_analysis
 
 
+@pytest.mark.skip(reason="deepcopy must be enabled while using PCVDeposit class")
 def test_deepcopy():
     simulation_1: Simulation = deepcopy(example_analysis.experiment.simulations[0])
     simulation_2: Simulation = deepcopy(example_analysis.experiment.simulations[0])

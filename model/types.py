@@ -48,9 +48,3 @@ class PCVDeposit:
     ] = Uninitialized  # accrued balance of yield in asset units
     yield_value: USD = Uninitialized  # accrued value of yield in USD
     yield_rate: APY = Uninitialized  # accrued value of yield in USD
-
-
-class PCVDepositState:
-    fei_idle: PCVDeposit
-    stable_asset_idle: PCVDeposit
-    volatile_asset_idle: PCVDeposit

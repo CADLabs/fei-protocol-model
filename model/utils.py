@@ -5,6 +5,7 @@ Misc. utility and helper functions
 import copy
 import math
 import logging
+import datetime
 from dataclasses import field
 from functools import partial
 
@@ -32,6 +33,20 @@ def update_from_signal(state_variable, signal_key=None):
     if not signal_key:
         signal_key = state_variable
     return partial(_update_from_signal, state_variable, signal_key)
+
+
+def update_timestamp(params, substep, state_history, previous_state, policy_input):
+    # Parameters
+    dt = params["dt"]
+    date_start = params["date_start"]
+
+    # State Variables
+    timestep = previous_state["timestep"]
+
+    # Calculate current timestamp from timestep
+    timestamp = date_start + datetime.timedelta(days=timestep * dt)
+
+    return "timestamp", timestamp
 
 
 def local_variables(_locals):

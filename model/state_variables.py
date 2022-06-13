@@ -31,6 +31,9 @@ class StateVariables:
     """State Variables
     Each State Variable is defined as:
     state variable key: state variable type = default state variable value
+
+    See https://docs.google.com/spreadsheets/d/1LgqKEGRWaooWR6uD5X-vsOx2HBunfcGKJ58mX5rp7Z8/edit for derivation of
+    FEI protocol model initial state / base case.
     """
 
     # Simulation
@@ -81,14 +84,21 @@ class StateVariables:
     fei_deposit_idle: PCVDeposit = PCVDeposit(
         asset="fei",
         deposit_type="idle",
-        balance=95_000_000,
-        asset_value=95_000_000,
+        balance=170_000_000,
+        asset_value=170_000_000,
     )
 
     fei_deposit_liquidity_pool: PCVDeposit = PCVDeposit(
         asset="fei",
         deposit_type="liquidity_pool",
         # Initialized in setup_initial_state()
+    )
+
+    fei_deposit_money_market: PCVDeposit = PCVDeposit(
+        asset="fei",
+        deposit_type="money_market",
+        balance=30_000_000,
+        asset_value=0.0,  # Accounted as asset value of zero for PCV
     )
 
     # Stable Asset PCV
@@ -111,8 +121,8 @@ class StateVariables:
         asset="volatile",
         deposit_type="idle",
         # Assumes initial volatile asset price of 2000 USD
-        balance=100_000_000 / 2_000,
-        asset_value=100_000_000,
+        balance=205_000_000 / 2_000,
+        asset_value=205_000_000,
     )
 
     volatile_deposit_yield_bearing: PCVDeposit = PCVDeposit(

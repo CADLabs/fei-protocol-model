@@ -23,6 +23,9 @@ def post_process(df: pd.DataFrame, drop_timestep_zero=True, parameters=parameter
         'dt'
     ])
 
+    # Set DataFrame index
+    df = df.set_index("timestamp", drop=False)
+
     # Drop the initial state for plotting
     if drop_timestep_zero:
         df = df.drop(df.query('timestep == 0').index)

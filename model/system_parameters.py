@@ -13,13 +13,7 @@ import experiments.simulation_configuration as simulation
 from dataclasses import dataclass
 from datetime import datetime
 from model.utils import default
-from model.types import (
-    Callable,
-    Timestep,
-    Run,
-    List,
-    USD,
-)
+from model.types import Callable, Timestep, Run, List, USD, APY
 from model.stochastic_processes import create_stochastic_process_realizations
 
 
@@ -78,7 +72,28 @@ class Parameters:
     )
 
     # Liquidity Pools
-    liquidity_pool_tvl: List[USD] = default([260_000_000])
+    liquidity_pool_tvl: List[USD] = default([50_000_000])
+    """Volatile Asset Liquidity Pool TVL
+    The majority of FEI<>WETH liquidity is currently held in a Balancer pool at a 30/70 FEI/ETH ratio.
+    
+    See https://defi.watch/pools/Ethereum/0x90291319f1d4ea3ad4db0dd8fe9e12baf749e84500020000000000000000013c
+
+    Other resources:
+    * https://v2.info.uniswap.org/pair/0x94b0a3d511b6ecdb17ebf877278ab030acb0a878
+    * https://tribe.fei.money/t/fip-70-lets-get-balsy/3752
+    * https://forum.balancer.fi/t/fei-weth-liquidity-and-strenghtening-ties-with-fei/2381
+    """
+
+    # Yield Rates
+    money_market_yield_rate: List[APY] = default([0.03])
+    """Money Market Yield Rate
+    Current yield rates for lending of FEI is quite low, historically 3% may be a good base case.
+    
+    See:
+    * https://dune.com/queries/394975/753736
+    * https://app.aave.com/
+    * https://app.compound.finance/
+    """
 
     # PCV Management Strategy
     rebalancing_period: List[Timestep] = default([90])  # days

@@ -2,9 +2,14 @@ def policy_accounting(params, substep, state_history, previous_state):
     # State Variables
     fei_deposit_idle = previous_state["fei_deposit_idle"]
     fei_deposit_liquidity_pool = previous_state["fei_deposit_liquidity_pool"]
+    fei_deposit_money_market = previous_state["fei_deposit_money_market"]
 
     # State Update
-    total_protocol_owned_fei = fei_deposit_idle.balance + fei_deposit_liquidity_pool.balance
+    total_protocol_owned_fei = (
+        fei_deposit_idle.balance
+        + fei_deposit_liquidity_pool.balance
+        + fei_deposit_money_market.balance
+    )
 
     # TODO: configure user-circulating FEI states
     # idle_user_circulating_fei = previous_state["idle_user_circulating_fei"]

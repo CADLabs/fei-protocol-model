@@ -7,7 +7,7 @@ import model.parts.price_processes as price_processes
 import model.parts.pcv_management as pcv_management
 import model.parts.liquidity_pools as liquidity_pools
 
-from model.utils import update_from_signal
+from model.utils import update_from_signal, update_timestamp
 
 
 state_update_blocks = [
@@ -19,6 +19,7 @@ state_update_blocks = [
             "accounting": accounting.policy_accounting,
         },
         "variables": {
+            "timestamp": update_timestamp,
             "total_protocol_owned_fei": update_from_signal("total_protocol_owned_fei"),
             "total_user_circulating_fei": update_from_signal("total_user_circulating_fei"),
             "total_fei_supply": update_from_signal("total_fei_supply"),

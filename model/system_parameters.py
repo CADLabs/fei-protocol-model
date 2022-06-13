@@ -83,6 +83,7 @@ class Parameters:
     * https://tribe.fei.money/t/fip-70-lets-get-balsy/3752
     * https://forum.balancer.fi/t/fei-weth-liquidity-and-strenghtening-ties-with-fei/2381
     """
+    liquidity_pool_trading_fee: List[float] = default([0.003])
 
     # Yield Rates
     money_market_yield_rate: List[APY] = default([0.03])

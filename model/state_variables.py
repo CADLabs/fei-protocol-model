@@ -61,6 +61,8 @@ class StateVariables:
     liquidity_pool_invariant: float = Uninitialized
     liquidity_pool_tvl: USD = Uninitialized
     liquidity_pool_fei_source_sink: FEI = 0.0
+    liquidity_pool_impermanent_loss: USD = 0.0
+    liquidity_pool_trading_fees: USD = 0.0
 
     # Money Markets
     # TODO: convert to PCVDeposit class

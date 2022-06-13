@@ -7,7 +7,7 @@ import model.parts.price_processes as price_processes
 import model.parts.pcv_management as pcv_management
 import model.parts.liquidity_pools as liquidity_pools
 
-from model.utils import update_from_signal, update_timestamp
+from model.utils import update_from_signal, accumulate_from_signal, update_timestamp
 
 
 state_update_blocks = [
@@ -49,6 +49,11 @@ state_update_blocks = [
             "liquidity_pool_tvl": update_from_signal("liquidity_pool_tvl"),
             "volatile_deposit_liquidity_pool": liquidity_pools.update_volatile_deposit_liquidity_pool,
             "fei_deposit_liquidity_pool": liquidity_pools.update_fei_deposit_liquidity_pool,
+            "liquidity_pool_invariant": update_from_signal("liquidity_pool_invariant"),
+            "liquidity_pool_impermanent_loss": update_from_signal(
+                "liquidity_pool_impermanent_loss"
+            ),
+            "liquidity_pool_trading_fees": accumulate_from_signal("liquidity_pool_trading_fees"),
         },
     },
     {

@@ -70,7 +70,7 @@ state_update_blocks = [
             "fei_money_market_utilization": update_from_signal("fei_money_market_utilization"),
             "fei_money_market_borrow_rate": update_from_signal("fei_money_market_borrow_rate"),
             "fei_money_market_supply_rate": update_from_signal("fei_money_market_supply_rate"),
-        }
+        },
     },
     {
         "description": """

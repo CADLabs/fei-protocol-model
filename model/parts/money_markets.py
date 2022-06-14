@@ -1,8 +1,5 @@
 from model.types import FEI, PCVDeposit
-from model.constants import (
-    wei,
-    blocks_per_year
-)
+from model.constants import wei, blocks_per_year
 
 
 def policy_money_market(params, substep, state_history, previous_state):
@@ -16,7 +13,7 @@ def policy_money_market(params, substep, state_history, previous_state):
 
     # TODO Placeholder dynamics: increase borrowed amount until 95% utilization (above kink of 80%)
     borrowed = min(balance * 0.95, borrowed + balance * 0.005)
-    
+
     """Compound Jump Rate Model
     See parameters here:
     * https://etherscan.io/token/0x7713dd9ca933848f6819f38b8352d9a15ea73f67#readContract
@@ -46,10 +43,14 @@ def policy_money_market(params, substep, state_history, previous_state):
     kink = 800000000000000000 / wei
 
     borrowing_interest_rate = (
-        multiplier_per_block * min(utilization_rate, kink)
-        + jump_multiplier_per_block * max(0, utilization_rate - kink)
-        + base_rate_per_block
-    ) * blocks_per_year * dt
+        (
+            multiplier_per_block * min(utilization_rate, kink)
+            + jump_multiplier_per_block * max(0, utilization_rate - kink)
+            + base_rate_per_block
+        )
+        * blocks_per_year
+        * dt
+    )
 
     # Calculate supply interest rate
     reserve_factor = 250000000000000000 / wei

@@ -2,6 +2,8 @@ import pandas as pd
 from radcad.core import generate_parameter_sweep
 
 from model.system_parameters import parameters, Parameters
+from model.state_variables import pcv_deposit_keys
+from model.types import PCVDeposit
 
 
 def assign_parameters(df: pd.DataFrame, parameters: Parameters, set_params=[]):
@@ -25,6 +27,11 @@ def post_process(df: pd.DataFrame, drop_timestep_zero=True, parameters=parameter
 
     # Set DataFrame index
     df = df.set_index("timestamp", drop=False)
+
+    # Disaggregate PCV Deposit variables
+    for key in pcv_deposit_keys:
+        for variable in PCVDeposit(asset="", deposit_type="").__dict__.keys():
+            df[key + '_' + variable] = df.apply(lambda row: getattr(row[key], variable), axis=1)
 
     # Drop the initial state for plotting
     if drop_timestep_zero:

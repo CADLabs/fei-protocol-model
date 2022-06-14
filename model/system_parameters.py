@@ -85,17 +85,6 @@ class Parameters:
     """
     liquidity_pool_trading_fee: List[float] = default([0.003])
 
-    # Yield Rates
-    money_market_yield_rate: List[APY] = default([0.03])
-    """Money Market Yield Rate
-    Current yield rates for lending of FEI is quite low, historically 3% may be a good base case.
-    
-    See:
-    * https://dune.com/queries/394975/753736
-    * https://app.aave.com/
-    * https://app.compound.finance/
-    """
-
     # PCV Management Strategy
     rebalancing_period: List[Timestep] = default([90])  # days
 

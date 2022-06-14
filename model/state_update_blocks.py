@@ -6,6 +6,7 @@ import model.parts.accounting as accounting
 import model.parts.price_processes as price_processes
 import model.parts.pcv_management as pcv_management
 import model.parts.liquidity_pools as liquidity_pools
+import model.parts.money_markets as money_markets
 
 from model.utils import update_from_signal, accumulate_from_signal, update_timestamp
 
@@ -55,6 +56,21 @@ state_update_blocks = [
             ),
             "liquidity_pool_trading_fees": accumulate_from_signal("liquidity_pool_trading_fees"),
         },
+    },
+    {
+        "description": """"
+            FEI-X Money Market
+        """,
+        "policies": {
+            "money_market": money_markets.policy_money_market,
+        },
+        "variables": {
+            "fei_deposit_money_market": update_from_signal("fei_deposit_money_market"),
+            "fei_money_market_borrowed": update_from_signal("fei_money_market_borrowed"),
+            "fei_money_market_utilization": update_from_signal("fei_money_market_utilization"),
+            "fei_money_market_borrow_rate": update_from_signal("fei_money_market_borrow_rate"),
+            "fei_money_market_supply_rate": update_from_signal("fei_money_market_supply_rate"),
+        }
     },
     {
         "description": """

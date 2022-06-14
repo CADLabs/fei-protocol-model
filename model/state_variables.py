@@ -167,15 +167,14 @@ def setup_initial_state(context: radcad.Context):
     params = context.parameters
     initial_state = context.initial_state
     run = context.run
-    subset = context.subset
     timestep = 0
 
     # Parameters
     # TODO: fix subset indexing from radCAD context
-    dt = params["dt"][-1]
-    liquidity_pool_tvl = params["liquidity_pool_tvl"][-1]
-    fei_price_process = params["fei_price_process"][-1]
-    volatile_asset_price_process = params["volatile_asset_price_process"][-1]
+    dt = params["dt"]
+    liquidity_pool_tvl = params["liquidity_pool_tvl"]
+    fei_price_process = params["fei_price_process"]
+    volatile_asset_price_process = params["volatile_asset_price_process"]
 
     # State Variables
     fei_deposit_liquidity_pool = initial_state["fei_deposit_liquidity_pool"]

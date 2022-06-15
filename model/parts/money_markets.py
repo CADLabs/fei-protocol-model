@@ -12,6 +12,7 @@ def policy_money_market(params, substep, state_history, previous_state):
     borrowed: FEI = previous_state["fei_money_market_borrowed"]
 
     # TODO Placeholder dynamics: increase borrowed amount until 95% utilization (above kink of 80%)
+    # borrowed amount is added to itself every period - linearly increasing up until the ceiling
     borrowed = min(balance * 0.95, borrowed + balance * 0.005)
 
     """Compound Jump Rate Model
@@ -33,7 +34,7 @@ def policy_money_market(params, substep, state_history, previous_state):
     # Assume Compound "reserves" or protocolSeizeShare of zero i.e. no profit taken
     cash = balance - borrowed
     reserves = 0
-    utilization_rate = borrowed / (cash + borrowed - reserves)
+    utilization_rate = borrowed / (cash + borrowed - reserves) # == borrowed / balance
 
     # Calculate borrowing interest rate
     # TODO Move to parameters

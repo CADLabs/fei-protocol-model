@@ -7,14 +7,16 @@ By using a dataclass to represent the System Parameters:
 """
 
 
-import model.constants as constants
 import experiments.simulation_configuration as simulation
 
 from dataclasses import dataclass
 from datetime import datetime
 from model.utils import default
-from model.types import Callable, Timestep, Run, List, USD, APY
+from model.types import Callable, Percentage, Timestep, Run, List, USD, APY
 from model.stochastic_processes import create_stochastic_process_realizations
+from model.constants import (
+    wei,
+)
 
 
 volatile_asset_price_samples = create_stochastic_process_realizations(
@@ -71,7 +73,7 @@ class Parameters:
         [lambda run, timestep: volatile_asset_price_samples[run - 1][timestep]]
     )
 
-    # Liquidity Pools
+    # Liquidity Pool
     liquidity_pool_tvl: List[USD] = default([50_000_000])
     """Volatile Asset Liquidity Pool TVL
     The majority of FEI<>WETH liquidity is currently held in a Balancer pool at a 30/70 FEI/ETH ratio.
@@ -85,16 +87,12 @@ class Parameters:
     """
     liquidity_pool_trading_fee: List[float] = default([0.003])
 
-    # Yield Rates
-    money_market_yield_rate: List[APY] = default([0.03])
-    """Money Market Yield Rate
-    Current yield rates for lending of FEI is quite low, historically 3% may be a good base case.
-    
-    See:
-    * https://dune.com/queries/394975/753736
-    * https://app.aave.com/
-    * https://app.compound.finance/
-    """
+    # Money Market
+    base_rate_per_block: List[float] = default([0])
+    multiplier_per_block: List[float] = default([23782343987 / wei])
+    jump_multiplier_per_block: List[float] = default([518455098934 / wei])
+    money_market_kink: List[float] = default([0.8])
+    money_market_reserve_factor: List[float] = default([0.25])
 
     # PCV Management Strategy
     rebalancing_period: List[Timestep] = default([90])  # days

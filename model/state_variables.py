@@ -6,9 +6,7 @@ By using a dataclass to represent the State Variables:
 * Ensure that all State Variables are initialized
 """
 
-from numpy import NaN
-import model.constants as constants
-import model.system_parameters as system_parameters
+from typing import Dict
 import radcad as radcad
 import logging
 
@@ -65,20 +63,27 @@ class StateVariables:
     liquidity_pool_trading_fees: USD = 0.0
 
     # Money Markets
-    # TODO: convert to PCVDeposit class
-    fei_money_market_pcv_deposit_balance: FEI = Uninitialized
-    fei_money_market_pcv_deposit: USD = Uninitialized
-    fei_money_market_borrowed: FEI = Uninitialized
-    fei_money_market_lending_rate: APY = Uninitialized
-    fei_money_market_utilization: Percentage = Uninitialized
+    fei_money_market_borrowed: FEI = 0.0
+    fei_money_market_utilization: Percentage = 0.0
+    fei_money_market_borrow_rate: APY = 0.0
+    fei_money_market_supply_rate: APY = 0.0
+    """FEI Money Market Supply Rate
+    Current yield for supply of FEI is quite low,
+    historically 3% may be a good base case to parameterise borrow / utilization.
+    
+    See:
+    * https://dune.com/queries/394975/753736
+    * https://app.aave.com/
+    * https://app.compound.finance/
+    """
 
     # FEI Savings Deposit
-    # TODO: account for wrapped yield-bearing FEI supply
+    # TODO Account for wrapped yield-bearing FEI supply
     fei_savings_deposit_balance: FEI = Uninitialized
     fei_savings_rate: APY = Uninitialized
 
     # 3rd party yield rates
-    # TODO: convert to parameters used to initialize PCV deposits in setup_initial_state()
+    # TODO Convert to parameters used to initialize PCV deposits in setup_initial_state()
     # stable_asset_yield_rate: APY = Uninitialized
     # volatile_asset_yield_rate: APY = Uninitialized
 
@@ -161,6 +166,24 @@ class StateVariables:
 initial_state = StateVariables().__dict__
 
 
+# TODO There might be a more elegant automated way to do this
+pcv_deposit_keys = [
+    # FEI PCV
+    "fei_deposit_idle",
+    "fei_deposit_liquidity_pool",
+    "fei_deposit_money_market",
+    # Stable Asset PCV
+    "stable_deposit_idle",
+    "stable_deposit_yield_bearing",
+    # Volatile Asset PCV
+    "volatile_deposit_idle",
+    "volatile_deposit_yield_bearing",
+    "volatile_deposit_liquidity_pool",
+]
+# A dictionary of all PCV Deposits used for post-processing
+pcv_deposits: Dict[str, PCVDeposit] = {key: initial_state[key] for key in pcv_deposit_keys}
+
+
 def setup_initial_state(context: radcad.Context):
     logging.info("Setting up initial state")
 
@@ -170,7 +193,6 @@ def setup_initial_state(context: radcad.Context):
     timestep = 0
 
     # Parameters
-    # TODO: fix subset indexing from radCAD context
     dt = params["dt"]
     liquidity_pool_tvl = params["liquidity_pool_tvl"]
     fei_price_process = params["fei_price_process"]

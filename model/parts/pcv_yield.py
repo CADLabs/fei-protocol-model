@@ -6,11 +6,10 @@ from model.types import (
 
 def policy_yield_accrual(params, substep, state_history, previous_state):
     """Yield Accrual Policy
-    Accrue simple (or compounded with compounded_yield parameter enabled) interest on yield-bearing PCV Deposits.
+    Accrue simple interest on yield-bearing PCV Deposits.
     """
     # Parameters
     dt = params["dt"]
-    compounded_yield = params["compounded_yield"]
 
     # State Variables
     stable_deposit_yield_bearing: PCVDeposit = previous_state["stable_deposit_yield_bearing"]
@@ -19,12 +18,8 @@ def policy_yield_accrual(params, substep, state_history, previous_state):
     volatile_asset_price = previous_state["volatile_asset_price"]
 
     # State Update
-    if compounded_yield:
-        stable_deposit_yield_bearing.accrue_yield_compounded(dt, stable_asset_price)
-        volatile_deposit_yield_bearing.accrue_yield_compounded(dt, volatile_asset_price)
-    else:
-        stable_deposit_yield_bearing.accrue_yield(dt, stable_asset_price)
-        volatile_deposit_yield_bearing.accrue_yield(dt, volatile_asset_price)
+    stable_deposit_yield_bearing.accrue_yield(dt, stable_asset_price)
+    volatile_deposit_yield_bearing.accrue_yield(dt, volatile_asset_price)
 
     return {
         "stable_deposit_yield_bearing": stable_deposit_yield_bearing,

@@ -107,7 +107,6 @@ class Parameters:
 
     # PCV Management Strategy
     rebalancing_period: List[Timestep] = default([int(365 / 4)])  # days
-    compounded_yield: List[bool] = default([False])
     yield_withdrawal_period: List[Timestep] = default([int(365 / 4)])  # days
     yield_reinvest_period: List[Timestep] = default([int(365 / 4)])  # days
     target_stable_backing_ratio: List[float] = default([0.5])

@@ -1,9 +1,8 @@
 # See https://github.com/marketplace/actions/comment-with-pytest-benchmark-result
-
-name: Simulation Benchmarking
+name: Simulation Benchmark Test
 
 on:
-  push:
+  pull_request:
     branches: [ main ]
 
 jobs:
@@ -12,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.8, 3.9]
+        python-version: [3.9]
 
     steps:
     - uses: actions/checkout@v2
@@ -20,19 +19,23 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
-    
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         python -m pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    
-    - name: Execute benchmark
-      run: |
-        PYTHONPATH=. make benchmark-default
 
-    - name: Upload the file
-      uses: actions/upload-artifact@v2
-      with:
-        name: benchmark_results
-        path: benchmark.json
+    - name: Download artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          github_token: ${{ github.token }}
+          workflow: benchmark_main.yml
+          name: benchmark_results
+          # path: old_benchmark
+          commit: ${{github.event.pull_request.base.sha}}
+        continue-on-error: true
+      - name: Upload benchmark
+        uses: nils-braun/pytest-benchmark-commenter@v2
+        with:
+          comparison-benchmark-file: "benchmark.json"

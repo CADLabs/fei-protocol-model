@@ -27,6 +27,8 @@ test:
 	# pylint --disable=all --enable=missing-docstring model
 	# Run Pytest tests
 	python3 -m pytest -m "not api_test" tests
+	# Run benchmark test against specific benchmark
+	benchmark-test
 
 build-docs: docs-pdoc docs-jupyter-book
 
@@ -53,3 +55,9 @@ update-notebooks:
 
 clear-notebook-outputs:
 	jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace experiments/notebooks/*.ipynb
+
+benchmark-test:
+	python -m pytest benchmarks/benchmark_default_experiment.py --benchmark-compare-fail=min:5% --benchmark-compare=benchmark.json
+
+benchmark-default:
+	python -m pytest benchmarks/benchmark_default_experiment.py --benchmark-save=benchmark.json

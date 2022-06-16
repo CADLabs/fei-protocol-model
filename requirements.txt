@@ -31,3 +31,4 @@ jupyterlab-spellchecker==0.6.0
 # checkthechain==0.2.10
 toolplot==0.2.0
 werkzeug==2.0.3
+pytest-benchmark==3.4.1

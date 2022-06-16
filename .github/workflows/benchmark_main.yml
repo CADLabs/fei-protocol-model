@@ -1,3 +1,5 @@
+# See https://github.com/marketplace/actions/comment-with-pytest-benchmark-result
+
 name: Simulation Benchmarking
 
 on:

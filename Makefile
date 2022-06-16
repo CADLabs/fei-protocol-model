@@ -58,4 +58,4 @@ benchmark-test:
 	python -m pytest benchmarks/benchmark_default_experiment.py --benchmark-compare-fail=min:5% --benchmark-compare=benchmark.json
 
 benchmark-default:
-	python -m pytest benchmarks/benchmark_default_experiment.py --benchmark-only --benchmark-json benchmark.json
+	python -m pytest benchmarks/benchmark_default_experiment.py --benchmark-only --benchmark-json output.json

@@ -27,15 +27,15 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
     - name: Download artifact
-        uses: dawidd6/action-download-artifact@v2
-        with:
-          github_token: ${{ github.token }}
-          workflow: benchmark_main.yml
-          name: benchmark_results
-          # path: old_benchmark
-          commit: ${{github.event.pull_request.base.sha}}
-        continue-on-error: true
-      - name: Upload benchmark
-        uses: nils-braun/pytest-benchmark-commenter@v2
-        with:
-          comparison-benchmark-file: "benchmark.json"
+      uses: dawidd6/action-download-artifact@v2
+      with:
+        github_token: ${{ github.token }}
+        workflow: benchmark_main.yml
+        name: benchmark_results
+        # path: old_benchmark
+        commit: ${{github.event.pull_request.base.sha}}
+      continue-on-error: true
+    - name: Upload benchmark
+      uses: nils-braun/pytest-benchmark-commenter@v2
+      with:
+        comparison-benchmark-file: "benchmark.json"

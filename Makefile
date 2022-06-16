@@ -27,8 +27,6 @@ test:
 	# pylint --disable=all --enable=missing-docstring model
 	# Run Pytest tests
 	python3 -m pytest -m "not api_test" tests
-	# Run benchmark test against specific benchmark
-	benchmark-test
 
 build-docs: docs-pdoc docs-jupyter-book
 

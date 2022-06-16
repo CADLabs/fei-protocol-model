@@ -1,7 +1,7 @@
 from model.types import (
     Uninitialized,
     Percentage,
-    APY,
+    APR,
     USD,
     FEI,
     VolatileAssetUnits,
@@ -33,8 +33,10 @@ def policy_pcv_rebalancing(params, substep, state_history, previous_state):
     dt = params["dt"]
     timestep = previous_state["timestep"]
 
+    target_stable_backing_ratio = params["target_stable_backing_ratio"]
+
     # Arbitrarily rebalance every X days
-    rebalancing_period = params["rebalancing_period"] / dt
+    rebalancing_period = params["rebalancing_period"]
 
     # The stable backing ratio is what % of PCV value is backed by stable assets
     # in this two-asset model this is the same thing as the % weight of stables for PCV
@@ -57,8 +59,8 @@ def policy_pcv_rebalancing(params, substep, state_history, previous_state):
     """
 
     target_allocation = {
-        "stable_asset": 0.5,
-        "volatile_asset": 0.5,
+        "stable_asset": target_stable_backing_ratio,
+        "volatile_asset": (1 - target_stable_backing_ratio),
     }
 
     # ASSUMPTION: arbitrarily make all rebalancing changes to idle PCV deposits only
@@ -86,7 +88,7 @@ def policy_pcv_rebalancing(params, substep, state_history, previous_state):
         current_allocation["stable_asset"] < target_allocation["stable_asset"]
         # and VOLATILITY_CONDITION
         # and/or WHATEVER_ELSE
-        and timestep % rebalancing_period == 0
+        and timestep % rebalancing_period / dt == 0
     ):
         # calculate total amount of stable and volatile asset to rebalance
         stable_allocation_pct_change = (
@@ -224,8 +226,10 @@ def update_stable_deposit_idle(params, substep, state_history, previous_state, p
     stable_asset_price = previous_state["stable_asset_price"]
 
     # State Update
-    stable_deposit_idle.balance = stable_deposit_idle.balance + target_amount_change
-    stable_deposit_idle.asset_value = stable_deposit_idle.balance * stable_asset_price
+    if target_amount_change >= 0:
+        stable_deposit_idle.deposit(target_amount_change, stable_asset_price)
+    else:
+        stable_deposit_idle.withdraw(target_amount_change, stable_asset_price)
 
     return (
         "stable_deposit_idle",
@@ -244,12 +248,10 @@ def update_stable_deposit_yield_bearing(
     stable_asset_price = previous_state["stable_asset_price"]
 
     # State Update
-    stable_deposit_yield_bearing.balance = (
-        stable_deposit_yield_bearing.balance + target_amount_change
-    )
-    stable_deposit_yield_bearing.asset_value = (
-        stable_deposit_yield_bearing.balance * stable_asset_price
-    )
+    if target_amount_change >= 0:
+        stable_deposit_yield_bearing.deposit(target_amount_change, stable_asset_price)
+    else:
+        stable_deposit_yield_bearing.withdraw(target_amount_change, stable_asset_price)
 
     return (
         "stable_deposit_yield_bearing",
@@ -266,8 +268,10 @@ def update_volatile_deposit_idle(params, substep, state_history, previous_state,
     volatile_asset_price = previous_state["volatile_asset_price"]
 
     # State Update
-    volatile_deposit_idle.balance = volatile_deposit_idle.balance + target_amount_change
-    volatile_deposit_idle.asset_value = volatile_deposit_idle.balance * volatile_asset_price
+    if target_amount_change >= 0:
+        volatile_deposit_idle.deposit(target_amount_change, volatile_asset_price)
+    else:
+        volatile_deposit_idle.withdraw(abs(target_amount_change), volatile_asset_price)
 
     return (
         "volatile_deposit_idle",
@@ -286,12 +290,10 @@ def update_volatile_deposit_yield_bearing(
     volatile_asset_price = previous_state["volatile_asset_price"]
 
     # State Update
-    volatile_deposit_yield_bearing.balance = (
-        volatile_deposit_yield_bearing.balance + target_amount_change
-    )
-    volatile_deposit_yield_bearing.asset_value = (
-        volatile_deposit_yield_bearing.balance * volatile_asset_price
-    )
+    if target_amount_change >= 0:
+        volatile_deposit_yield_bearing.deposit(target_amount_change, volatile_asset_price)
+    else:
+        volatile_deposit_yield_bearing.withdraw(abs(target_amount_change), volatile_asset_price)
 
     return (
         "volatile_deposit_yield_bearing",

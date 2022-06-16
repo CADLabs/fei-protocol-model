@@ -12,7 +12,14 @@ import experiments.simulation_configuration as simulation
 from dataclasses import dataclass
 from datetime import datetime
 from model.utils import default
-from model.types import Callable, Percentage, Timestep, Run, List, USD, APY
+from model.types import (
+    Callable,
+    Timestep,
+    Run,
+    List,
+    USD,
+    APR,
+)
 from model.stochastic_processes import create_stochastic_process_realizations
 from model.constants import (
     wei,
@@ -94,8 +101,16 @@ class Parameters:
     money_market_kink: List[float] = default([0.8])
     money_market_reserve_factor: List[float] = default([0.25])
 
+    # Asset Yield Rates
+    stable_asset_yield_rate: List[APR] = default([0.10])
+    volatile_asset_yield_rate: List[APR] = default([0.10])
+
     # PCV Management Strategy
-    rebalancing_period: List[Timestep] = default([90])  # days
+    rebalancing_period: List[Timestep] = default([int(365 / 4)])  # days
+    compounded_yield: List[bool] = default([False])
+    yield_withdrawal_period: List[Timestep] = default([int(365 / 4)])  # days
+    yield_reinvest_period: List[Timestep] = default([int(365 / 4)])  # days
+    target_stable_backing_ratio: List[float] = default([0.5])
 
 
 # Initialize Parameters instance with default values

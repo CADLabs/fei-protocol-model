@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from model.state_variables import StateVariables
 from model.utils import approx_eq
 import math
@@ -32,7 +33,7 @@ def policy_constant_function_market_maker(params, substep, state_history, previo
     Collect Uniswap V2 style trading fees
     Fees collected on incoming asset
     See https://docs.uniswap.org/whitepaper.pdf:
-    (x1 − 0.003 · xin)) · y1 >= x0 · y0
+    (x1 - 0.003 · xin)) · y1 >= x0 · y0
     """
     trading_fees = 0
     if fei_source_sink:
@@ -75,8 +76,7 @@ def update_volatile_deposit_liquidity_pool(
     volatile_asset_price = previous_state["volatile_asset_price"]
 
     # State Update
-    volatile_deposit_liquidity_pool.balance = volatile_asset_balance
-    volatile_deposit_liquidity_pool.asset_value = volatile_asset_balance * volatile_asset_price
+    volatile_deposit_liquidity_pool.set_balance(volatile_asset_balance, volatile_asset_price)
 
     return "volatile_deposit_liquidity_pool", volatile_deposit_liquidity_pool
 
@@ -90,7 +90,6 @@ def update_fei_deposit_liquidity_pool(params, substep, state_history, previous_s
     fei_price = previous_state["fei_price"]
 
     # State Update
-    fei_deposit_liquidity_pool.balance = fei_balance
-    fei_deposit_liquidity_pool.asset_value = fei_balance * fei_price
+    fei_deposit_liquidity_pool.set_balance(fei_balance, fei_price)
 
     return "fei_deposit_liquidity_pool", fei_deposit_liquidity_pool

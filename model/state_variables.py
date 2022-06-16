@@ -7,15 +7,13 @@ By using a dataclass to represent the State Variables:
 """
 
 from typing import Dict
-import radcad as radcad
-import logging
 
 from dataclasses import dataclass
 from datetime import datetime
 from model.types import (
     Uninitialized,
     Percentage,
-    APY,
+    APR,
     USD,
     FEI,
     VolatileAssetUnits,
@@ -65,8 +63,8 @@ class StateVariables:
     # Money Markets
     fei_money_market_borrowed: FEI = 0.0
     fei_money_market_utilization: Percentage = 0.0
-    fei_money_market_borrow_rate: APY = 0.0
-    fei_money_market_supply_rate: APY = 0.0
+    fei_money_market_borrow_rate: APR = 0.0
+    fei_money_market_supply_rate: APR = 0.0
     """FEI Money Market Supply Rate
     Current yield for supply of FEI is quite low,
     historically 3% may be a good base case to parameterise borrow / utilization.
@@ -80,19 +78,14 @@ class StateVariables:
     # FEI Savings Deposit
     # TODO Account for wrapped yield-bearing FEI supply
     fei_savings_deposit_balance: FEI = Uninitialized
-    fei_savings_rate: APY = Uninitialized
-
-    # 3rd party yield rates
-    # TODO Convert to parameters used to initialize PCV deposits in setup_initial_state()
-    # stable_asset_yield_rate: APY = Uninitialized
-    # volatile_asset_yield_rate: APY = Uninitialized
+    fei_savings_rate: APR = Uninitialized
 
     # FEI PCV
     fei_deposit_idle: PCVDeposit = PCVDeposit(
         asset="fei",
         deposit_type="idle",
-        balance=170_000_000,
-        asset_value=170_000_000,
+        _balance=170_000_000,
+        _asset_value=170_000_000,
     )
 
     fei_deposit_liquidity_pool: PCVDeposit = PCVDeposit(
@@ -104,23 +97,23 @@ class StateVariables:
     fei_deposit_money_market: PCVDeposit = PCVDeposit(
         asset="fei",
         deposit_type="money_market",
-        balance=30_000_000,
-        asset_value=0.0,  # Accounted as asset value of zero for PCV
+        _balance=30_000_000,
+        _asset_value=0.0,  # Accounted as asset value of zero for PCV
     )
 
     # Stable Asset PCV
     stable_deposit_idle: PCVDeposit = PCVDeposit(
         asset="stable",
         deposit_type="idle",
-        balance=140_000_000,
-        asset_value=140_000_000,
+        _balance=70_000_000,
+        _asset_value=70_000_000,
     )
 
     stable_deposit_yield_bearing: PCVDeposit = PCVDeposit(
         asset="stable",
         deposit_type="yield_bearing",
-        balance=0,
-        asset_value=0,
+        _balance=70_000_000,
+        _asset_value=70_000_000,
     )
 
     # Volatile Asset PCV
@@ -128,15 +121,15 @@ class StateVariables:
         asset="volatile",
         deposit_type="idle",
         # Assumes initial volatile asset price of 2000 USD
-        balance=205_000_000 / 2_000,
-        asset_value=205_000_000,
+        _balance=102_500_000 / 2_000,
+        _asset_value=102_500_000,
     )
 
     volatile_deposit_yield_bearing: PCVDeposit = PCVDeposit(
         asset="volatile",
         deposit_type="yield_bearing",
-        balance=0,
-        asset_value=0,
+        _balance=102_500_000 / 2_000,
+        _asset_value=102_500_000,
     )
 
     volatile_deposit_liquidity_pool: PCVDeposit = PCVDeposit(
@@ -182,53 +175,3 @@ pcv_deposit_keys = [
 ]
 # A dictionary of all PCV Deposits used for post-processing
 pcv_deposits: Dict[str, PCVDeposit] = {key: initial_state[key] for key in pcv_deposit_keys}
-
-
-def setup_initial_state(context: radcad.Context):
-    logging.info("Setting up initial state")
-
-    params = context.parameters
-    initial_state = context.initial_state
-    run = context.run
-    timestep = 0
-
-    # Parameters
-    dt = params["dt"]
-    liquidity_pool_tvl = params["liquidity_pool_tvl"]
-    fei_price_process = params["fei_price_process"]
-    volatile_asset_price_process = params["volatile_asset_price_process"]
-
-    # State Variables
-    fei_deposit_liquidity_pool = initial_state["fei_deposit_liquidity_pool"]
-    volatile_deposit_liquidity_pool = initial_state["volatile_deposit_liquidity_pool"]
-
-    # Liquidity Pool Setup
-    fei_price = fei_price_process(run, timestep * dt)
-    volatile_asset_price = volatile_asset_price_process(run, timestep * dt)
-
-    liquidity_pool_fei_asset_value = liquidity_pool_tvl / 2
-    liquidity_pool_fei_balance = liquidity_pool_fei_asset_value / fei_price
-
-    volatile_asset_pcv_deposit_liquidity_pool = liquidity_pool_tvl / 2
-    liquidity_pool_volatile_asset_balance = (
-        volatile_asset_pcv_deposit_liquidity_pool / volatile_asset_price
-    )
-
-    liquidity_pool_invariant = liquidity_pool_fei_balance * liquidity_pool_volatile_asset_balance
-
-    # State Updates
-    fei_deposit_liquidity_pool.balance = liquidity_pool_fei_balance
-    fei_deposit_liquidity_pool.asset_value = liquidity_pool_fei_balance * fei_price
-    volatile_deposit_liquidity_pool.balance = liquidity_pool_volatile_asset_balance
-    volatile_deposit_liquidity_pool.asset_value = (
-        liquidity_pool_volatile_asset_balance * volatile_asset_price
-    )
-
-    context.initial_state.update(
-        {
-            "liquidity_pool_tvl": liquidity_pool_tvl,
-            "liquidity_pool_invariant": liquidity_pool_invariant,
-            "fei_deposit_liquidity_pool": fei_deposit_liquidity_pool,
-            "volatile_deposit_liquidity_pool": volatile_deposit_liquidity_pool,
-        }
-    )

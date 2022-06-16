@@ -6,6 +6,7 @@ import model.parts.accounting as accounting
 import model.parts.price_processes as price_processes
 import model.parts.pcv_management as pcv_management
 import model.parts.liquidity_pools as liquidity_pools
+import model.parts.pcv_yield as pcv_yield
 import model.parts.money_markets as money_markets
 
 from model.utils import update_from_signal, accumulate_from_signal, update_timestamp
@@ -74,12 +75,55 @@ state_update_blocks = [
     },
     {
         "description": """
+            PCV Yield Accrual
+        """,
+        "policies": {
+            "policy_accrue_yield": pcv_yield.policy_yield_accrual,
+        },
+        "variables": {
+            "stable_deposit_yield_bearing": update_from_signal("stable_deposit_yield_bearing"),
+            "volatile_deposit_yield_bearing": update_from_signal("volatile_deposit_yield_bearing"),
+        },
+    },
+    {
+        "description": """
+            PCV Yield Management - Withdraw Yield Policy
+        """,
+        "policies": {
+            "policy_withdraw_yield": pcv_yield.policy_withdraw_yield,
+        },
+        "variables": {
+            "stable_deposit_idle": update_from_signal("stable_deposit_idle"),
+            "volatile_deposit_idle": update_from_signal("volatile_deposit_idle"),
+            "stable_deposit_yield_bearing": update_from_signal("stable_deposit_yield_bearing"),
+            "volatile_deposit_yield_bearing": update_from_signal("volatile_deposit_yield_bearing"),
+        },
+    },
+    # TODO Set up state update block initialization
+    # {
+    #     "description": """
+    #         PCV Yield Management - Reinvest Yield Policy
+    #         Toggle between Withdraw Yield Policy and Reinvest Yield Policy
+    #         using yield_withdrawal_period and yield_reinvest_period parameters.
+    #     """,
+    #     "include_if": ["yield_reinvest_period"],
+    #     "policies": {
+    #         "policy_reinvest_yield": pcv_yield.policy_reinvest_yield,
+    #     },
+    #     "variables": {
+    #         "stable_deposit_yield_bearing": update_from_signal("stable_deposit_yield_bearing"),
+    #         "volatile_deposit_yield_bearing": update_from_signal("volatile_deposit_yield_bearing"),
+    #     },
+    # },
+    {
+        "description": """
             PCV Rebalancing
         """,
         "policies": {
             "pcv_rebalancing": pcv_management.policy_pcv_rebalancing,
         },
         "variables": {
+            # NOTE PCV asset value implicitly updated every period even if no rebalancing performed
             "stable_deposit_idle": pcv_management.update_stable_deposit_idle,
             "stable_deposit_yield_bearing": pcv_management.update_stable_deposit_yield_bearing,
             "volatile_deposit_idle": pcv_management.update_volatile_deposit_idle,

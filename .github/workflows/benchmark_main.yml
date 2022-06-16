@@ -1,9 +1,8 @@
 # See https://github.com/marketplace/actions/comment-with-pytest-benchmark-result
-
 name: Simulation Benchmarking
 
 on:
-  push:
+  pull_request:
     branches: [ main ]
 
 jobs:
@@ -12,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.8, 3.9]
+        python-version: [3.9]
 
     steps:
     - uses: actions/checkout@v2
@@ -29,10 +28,18 @@ jobs:
     
     - name: Execute benchmark
       run: |
-        PYTHONPATH=. make benchmark-default
+        PYTHONPATH=. make benchmark-test
 
-    - name: Upload the file
-      uses: actions/upload-artifact@v2
+    - name: Download artifact
+      uses: dawidd6/action-download-artifact@v2
       with:
+        github_token: ${{ github.token }}
+        workflow: upload.yml
         name: benchmark_results
-        path: benchmark.json
+        path: old_benchmark
+        commit: ${{github.event.pull_request.base.sha}}
+      continue-on-error: true
+    - name: Run the action
+      uses: nils-braun/pytest-benchmark-commenter@v2
+      with:
+        comparison-benchmark-file: "old_benchmark/output.json"

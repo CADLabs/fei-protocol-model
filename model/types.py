@@ -7,6 +7,7 @@ import sys
 
 # See https://docs.python.org/3/library/dataclasses.html
 from dataclasses import dataclass, field
+from enforce_typing import enforce_types
 from enum import Enum
 from typing import Union
 
@@ -29,12 +30,13 @@ Timestep = int
 Run = int
 
 # Assets
-USD = float
-FEI = float
-VolatileAssetUnits = float
-StableAssetUnits = float
+USD = Union[int, float]
+FEI = Union[int, float]
+VolatileAssetUnits = Union[int, float]
+StableAssetUnits = Union[int, float]
 
 
+@enforce_types
 @dataclass(frozen=False)
 class PCVDeposit:
     """

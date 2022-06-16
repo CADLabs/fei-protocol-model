@@ -26,17 +26,21 @@ jobs:
         python -m pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
+    - name: Execute benchmark
+      run: |
+        PYTHONPATH=. make benchmark-default
+
     - name: Download artifact
       uses: dawidd6/action-download-artifact@v2
       with:
         github_token: ${{ github.token }}
         workflow: benchmark_upload.yml
         name: benchmark_results
-        # path: old_benchmark
+        path: old_benchmark
         commit: ${{github.event.pull_request.base.sha}}
       continue-on-error: true
 
     - name: Add benchmark to PR
       uses: nils-braun/pytest-benchmark-commenter@v2
       with:
-        comparison-benchmark-file: "output.json"
+        comparison-benchmark-file: "old_benchmark/output.json"

@@ -84,12 +84,16 @@ class PCVDeposit:
 
         return self
 
-    def transfer(self, to, amount, asset_price):
+    def transfer(self, to, amount, from_asset_price, to_asset_price=None):
         """
         Transfer an amount from the balance of one PCV Deposit to the balance of another.
+
+        If to_asset_price is not set, it is assumed that no conversion is needed from one balance to another.
         """
-        self.withdraw(amount, asset_price)
-        to.deposit(amount, asset_price)
+        if not to_asset_price:
+            to_asset_price = from_asset_price
+        self.withdraw(amount, from_asset_price)
+        to.deposit(amount * from_asset_price / to_asset_price, to_asset_price)
 
         return self, to
 

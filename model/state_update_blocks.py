@@ -120,14 +120,14 @@ state_update_blocks = [
             PCV Rebalancing
         """,
         "policies": {
-            "pcv_rebalancing": pcv_management.policy_pcv_rebalancing,
+            "pcv_rebalancing": pcv_management.policy_pcv_rebalancing_target_stable_backing,
         },
         "variables": {
             # NOTE PCV asset value implicitly updated every period even if no rebalancing performed
-            "stable_deposit_idle": pcv_management.update_stable_deposit_idle,
-            "stable_deposit_yield_bearing": pcv_management.update_stable_deposit_yield_bearing,
-            "volatile_deposit_idle": pcv_management.update_volatile_deposit_idle,
-            "volatile_deposit_yield_bearing": pcv_management.update_volatile_deposit_yield_bearing,
+            "stable_deposit_idle": update_from_signal("stable_deposit_idle"),
+            "volatile_deposit_idle": update_from_signal("volatile_deposit_idle"),
+            "stable_deposit_yield_bearing": update_from_signal("stable_deposit_yield_bearing"),
+            "volatile_deposit_yield_bearing": update_from_signal("volatile_deposit_yield_bearing"),
             "total_stable_asset_pcv_balance": pcv_management.update_total_stable_asset_pcv_balance,
             "total_volatile_asset_pcv_balance": pcv_management.update_total_volatile_asset_pcv_balance,
             "total_protocol_owned_fei": pcv_management.update_total_protocol_owned_fei,

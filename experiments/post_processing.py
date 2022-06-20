@@ -1,8 +1,7 @@
 import pandas as pd
 from radcad.core import generate_parameter_sweep
 
-from model.system_parameters import parameters, Parameters
-from model.state_variables import pcv_deposit_keys
+from model.system_parameters import parameters, Parameters, pcv_deposit_keys
 from model.types import PCVDeposit
 
 
@@ -22,7 +21,7 @@ def post_process(df: pd.DataFrame, drop_timestep_zero=True, parameters=parameter
     # Assign parameters to DataFrame
     assign_parameters(df, parameters, [
         # Parameters to assign to DataFrame
-        'dt'
+        'dt',
     ])
 
     # Set DataFrame index

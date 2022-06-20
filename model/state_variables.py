@@ -6,8 +6,6 @@ By using a dataclass to represent the State Variables:
 * Ensure that all State Variables are initialized
 """
 
-from typing import Dict
-
 from dataclasses import dataclass
 from datetime import datetime
 from model.types import (
@@ -18,7 +16,6 @@ from model.types import (
     FEI,
     VolatileAssetUnits,
     StableAssetUnits,
-    PCVDeposit,
 )
 
 
@@ -80,64 +77,6 @@ class StateVariables:
     fei_savings_deposit_balance: FEI = Uninitialized
     fei_savings_rate: APR = Uninitialized
 
-    # FEI PCV
-    fei_deposit_idle: PCVDeposit = PCVDeposit(
-        asset="fei",
-        deposit_type="idle",
-        _balance=170_000_000,
-        _asset_value=170_000_000,
-    )
-
-    fei_deposit_liquidity_pool: PCVDeposit = PCVDeposit(
-        asset="fei",
-        deposit_type="liquidity_pool",
-        # Initialized in setup_initial_state()
-    )
-
-    fei_deposit_money_market: PCVDeposit = PCVDeposit(
-        asset="fei",
-        deposit_type="money_market",
-        _balance=30_000_000,
-        _asset_value=0.0,  # Accounted as asset value of zero for PCV
-    )
-
-    # Stable Asset PCV
-    stable_deposit_idle: PCVDeposit = PCVDeposit(
-        asset="stable",
-        deposit_type="idle",
-        _balance=70_000_000,
-        _asset_value=70_000_000,
-    )
-
-    stable_deposit_yield_bearing: PCVDeposit = PCVDeposit(
-        asset="stable",
-        deposit_type="yield_bearing",
-        _balance=70_000_000,
-        _asset_value=70_000_000,
-    )
-
-    # Volatile Asset PCV
-    volatile_deposit_idle: PCVDeposit = PCVDeposit(
-        asset="volatile",
-        deposit_type="idle",
-        # Assumes initial volatile asset price of 2000 USD
-        _balance=102_500_000 / 2_000,
-        _asset_value=102_500_000,
-    )
-
-    volatile_deposit_yield_bearing: PCVDeposit = PCVDeposit(
-        asset="volatile",
-        deposit_type="yield_bearing",
-        _balance=102_500_000 / 2_000,
-        _asset_value=102_500_000,
-    )
-
-    volatile_deposit_liquidity_pool: PCVDeposit = PCVDeposit(
-        asset="volatile",
-        deposit_type="liquidity_pool",
-        # Initialized in setup_initial_state()
-    )
-
     # PCV Aggregates
     total_pcv: USD = Uninitialized
     total_stable_asset_pcv_balance: StableAssetUnits = Uninitialized
@@ -155,23 +94,4 @@ class StateVariables:
     fei_demand: float = Uninitialized
 
 
-# Initialize State Variables instance with default values
 initial_state = StateVariables().__dict__
-
-
-# TODO There might be a more elegant automated way to do this
-pcv_deposit_keys = [
-    # FEI PCV
-    "fei_deposit_idle",
-    "fei_deposit_liquidity_pool",
-    "fei_deposit_money_market",
-    # Stable Asset PCV
-    "stable_deposit_idle",
-    "stable_deposit_yield_bearing",
-    # Volatile Asset PCV
-    "volatile_deposit_idle",
-    "volatile_deposit_yield_bearing",
-    "volatile_deposit_liquidity_pool",
-]
-# A dictionary of all PCV Deposits used for post-processing
-pcv_deposits: Dict[str, PCVDeposit] = {key: initial_state[key] for key in pcv_deposit_keys}

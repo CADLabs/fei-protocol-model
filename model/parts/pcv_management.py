@@ -1,144 +1,276 @@
+import logging
 from model.types import (
-    Uninitialized,
     Percentage,
-    APR,
-    USD,
-    FEI,
-    VolatileAssetUnits,
-    StableAssetUnits,
     PCVDeposit,
 )
+from operator import lt, gt
 
 
-def policy_pcv_rebalancing(params, substep, state_history, previous_state):
+def policy_pcv_rebalancing_target_stable_backing(params, substep, state_history, previous_state):
+    """PCV Rebalancing: Target Stable Backing Policy
+    The following PCV rebalancing policy targets a specific stable backing ratio,
+    i.e. the % of PCV value that is backed by stable assets.
+
+    To meet the target allocation between stable and volatile assets,
+    PCV rebalancing is first attempted from idle PCV deposits.
+
+    If there is insufficient capital in idle PCV deposits to allocate to meet the stable backing target,
+    movements are made in tranches/priority first from yield-bearing PCV,
+    followed by any other PCV included in the rebalancing strategy.
+
+    Rebalancing is performed periodically according to the rebalancing_period parameter,
+    when the target_stable_backing_ratio parameter is below OR above the target,
+    according to the target_rebalancing_condition parameter.
+
+    # Rebalancing Parameters
+    rebalancing_period: the duration in days between rebalancing
+
+    target_stable_backing_ratio: the target % of PCV value that is backed by stable assets
+
+    target_rebalancing_condition: rebalance towards target stable backing ratio if less than (lt, <) or greater than (gt, >) target,
+    if market conditions are good the strategy can increase volatile asset exposure,
+    and if market conditions are bad the strategy can reduce volatile asset exposure.
     """
-    DEBUG: placeholder dynamics - buy/sell x% based on stable/volatile asset amount at previous
-    timestep. Based on a period rebalance target. Does not calculate monetary expenditure.
+    # Params
+    dt = params["dt"]
+    rebalancing_period = params["rebalancing_period"]
+    target_stable_backing_ratio = params["target_stable_backing_ratio"]
+    target_rebalancing_condition = params["target_rebalancing_condition"]
 
-    PSEUDO:
-    if good market conditions stable asset target is decreased
-    if good market conditions volatile asset target is increased
-    if bad market conditions stable asset target is increased
-    if bad market conditions volatile asset target is decreased
-
-    MODEL: does this policy need to be called after all these values are calculated?
-    """
-
+    # Previous State
+    timestep = previous_state["timestep"]
     total_pcv = previous_state["total_pcv"]
     stable_backing_ratio = previous_state["stable_backing_ratio"]
-
     volatile_asset_price = previous_state["volatile_asset_price"]
     stable_asset_price = previous_state["stable_asset_price"]
 
-    dt = params["dt"]
-    timestep = previous_state["timestep"]
+    # Relevant PCV Deposits
+    stable_deposit_idle: PCVDeposit = previous_state["stable_deposit_idle"]
+    stable_deposit_yield_bearing: PCVDeposit = previous_state["stable_deposit_yield_bearing"]
+    volatile_deposit_idle: PCVDeposit = previous_state["volatile_deposit_idle"]
+    volatile_deposit_yield_bearing: PCVDeposit = previous_state["volatile_deposit_yield_bearing"]
 
-    target_stable_backing_ratio = params["target_stable_backing_ratio"]
-
-    # Arbitrarily rebalance every X days
-    rebalancing_period = params["rebalancing_period"]
-
-    # The stable backing ratio is what % of PCV value is backed by stable assets
-    # in this two-asset model this is the same thing as the % weight of stables for PCV
+    # The stable backing ratio is the % of PCV value that is backed by stable assets
     stable_allocation = stable_backing_ratio
     volatile_allocation = 1 - stable_backing_ratio
 
+    # The rebalancing strategy will move PCV assets between stable and volatile deposits,
+    # to TRY make the current allocation meet the target allocation
     current_allocation = {
         "stable_asset": stable_allocation,
         "volatile_asset": volatile_allocation,
     }
-
-    """
-    MODEL ASSUMPTION: At the highest level, we are interested in rebalancing between two assets only,
-    stable and volatile. In practice, this is of interest for the policy.
-    When it comes to subdividing the total amount to be rebalanced it is more opportune to deal with
-    'internal' weights than to consider each deposit type as its own asset type - which is de facto
-    the case once the target allocation has more than two values.
-    
-    Formally, W_S + W_V = 1, where W_S = W_S,I + W_S,Y and W_V = W_V,I + W_V,Y.
-    """
-
     target_allocation = {
         "stable_asset": target_stable_backing_ratio,
         "volatile_asset": (1 - target_stable_backing_ratio),
     }
 
-    # ASSUMPTION: arbitrarily make all rebalancing changes to idle PCV deposits only
-    stable_asset_internal_weights = {
-        "idle": 1.0,
-        "yield_bearing": 0.0,
-    }
-    volatile_asset_internal_weights = {
-        "idle": 1.0,
-        "yield_bearing": 0.0,
-    }
-
-    # How much of each asset out of each deposit type to buy/sell in total after the policy has evaluated
-    stable_asset_target_amount_change = {
-        "idle": 0.0,
-        "yield_bearing": 0.0,
-    }
-    volatile_asset_target_amount_change = {
-        "idle": 0.0,
-        "yield_bearing": 0.0,
-    }
-
-    # Condition of being under-backed by stable asset
     if (
-        current_allocation["stable_asset"] < target_allocation["stable_asset"]
+        # Rebalance towards target stable backing ratio if either less than (lt, <) or greater than (gt, >) target,
+        # according to target_rebalancing_condition parameter.
+        target_rebalancing_condition(
+            current_allocation["stable_asset"], target_allocation["stable_asset"]
+        )
         # and VOLATILITY_CONDITION
         # and/or WHATEVER_ELSE
         and timestep % rebalancing_period / dt == 0
     ):
-        # calculate total amount of stable and volatile asset to rebalance
+        # Calculate required rebalancing between stable and volatile assets to meet the stable backing ratio target
         stable_allocation_pct_change = (
             target_allocation["stable_asset"] - current_allocation["stable_asset"]
         )
-
         stable_asset_target_value_change = stable_allocation_pct_change * total_pcv
-        total_required_stable_asset_change = stable_asset_target_value_change / stable_asset_price
+        total_stable_asset_balance_change = stable_asset_target_value_change / stable_asset_price
 
         volatile_allocation_pct_change = (
             target_allocation["volatile_asset"] - current_allocation["volatile_asset"]
         )
-
         volatile_asset_target_value_change = volatile_allocation_pct_change * total_pcv
-        total_required_volatile_asset_change = (
+        total_volatile_asset_balance_change = (
             volatile_asset_target_value_change / volatile_asset_price
         )
 
-        # split allocation of amount to rebalance between existing deposit types
-        stable_asset_target_amount_change["idle"] = (
-            total_required_stable_asset_change * stable_asset_internal_weights["idle"]
+        # NOTE Switch between rebalancing strategies here (e.g. v1, v2, ...)
+        pcv_deposit_rebalancing_strategy_v2(
+            volatile_asset_price,
+            stable_asset_price,
+            volatile_deposit_idle,
+            volatile_deposit_yield_bearing,
+            stable_deposit_idle,
+            stable_deposit_yield_bearing,
+            total_stable_asset_balance_change,
+            total_volatile_asset_balance_change,
         )
-        stable_asset_target_amount_change["yield_bearing"] = (
-            total_required_stable_asset_change * stable_asset_internal_weights["yield_bearing"]
-        )
-
-        volatile_asset_target_amount_change["idle"] = (
-            total_required_volatile_asset_change * volatile_asset_internal_weights["idle"]
-        )
-
-        volatile_asset_target_amount_change["yield_bearing"] = (
-            total_required_volatile_asset_change * volatile_asset_internal_weights["yield_bearing"]
-        )
-
-    """
-    Should use value weights to attempt to answer - based on the current weighting in
-    value for stable and volatile assets, what quantity of each asset: volatile / stable
-    needs to be bought / sold to achieve new target weights?
-
-    Can encode the concept of a stable weights target (long term stable backing) and a
-    max per-period target since shifts that are too big would cause jumps / instability - need to DCA
-    out of and into assets
-
-    volatility + asset allocation deviation - based asset value rebalancing
-    """
 
     return {
-        "stable_asset_target_amount_change": stable_asset_target_amount_change,  # NB: these are NOT weights
-        "volatile_asset_target_amount_change": volatile_asset_target_amount_change,
+        "stable_deposit_idle": stable_deposit_idle,
+        "stable_deposit_yield_bearing": stable_deposit_yield_bearing,
+        "volatile_deposit_idle": volatile_deposit_idle,
+        "volatile_deposit_yield_bearing": volatile_deposit_yield_bearing,
     }
+
+
+def pcv_deposit_rebalancing_strategy_v1(
+    volatile_asset_price,
+    stable_asset_price,
+    volatile_deposit_idle,
+    volatile_deposit_yield_bearing,
+    stable_deposit_idle,
+    stable_deposit_yield_bearing,
+    total_stable_asset_balance_change,
+    total_volatile_asset_balance_change,
+):
+
+    # NOTE: unsure of how memory optimal it is to assign these to new variables by reference,
+    # if one wanted to avoid doing this one could make the rebalancing section explicit for both cases
+
+    # scenario where the policy must sell volatile asset and buy stable asset (increase stable backing)
+    if total_stable_asset_balance_change >= 0 and total_volatile_asset_balance_change < 0:
+
+        # cast stable and volatile deposits into buy and sell side deposits depending
+        # on sign of balance changes
+        sell_side_balance_change = abs(total_volatile_asset_balance_change)
+        buy_side_balance_change = total_stable_asset_balance_change
+
+        sell_side_deposit_idle = volatile_deposit_idle
+        sell_side_deposit_yield_bearing = volatile_deposit_yield_bearing
+        buy_side_deposit_idle = stable_deposit_idle
+        buy_side_deposit_yield_bearing = stable_deposit_yield_bearing
+
+        sell_side_asset_price = volatile_asset_price
+        buy_side_asset_price = stable_asset_price
+
+    # scenario where the policy must sell stable asset and buy volatile asset (decrease stable backing)
+    else:
+
+        # cast stable and volatile deposits into buy and sell side deposits depending
+        # on sign of balance changes
+        sell_side_balance_change = abs(total_stable_asset_balance_change)
+        buy_side_balance_change = total_volatile_asset_balance_change
+
+        sell_side_deposit_idle = stable_deposit_idle
+        sell_side_deposit_yield_bearing = stable_deposit_yield_bearing
+        buy_side_deposit_idle = volatile_deposit_idle
+        buy_side_deposit_yield_bearing = volatile_deposit_yield_bearing
+
+        sell_side_asset_price = stable_asset_price
+        buy_side_asset_price = volatile_asset_price
+
+    ################## PERFORM REBALANCING ################################
+
+    # if the idle sell side deposit has enough balance
+    if sell_side_deposit_idle.balance - sell_side_balance_change >= 0:
+
+        print("DEBUG: only need idle deposits to rebalance")
+
+        # withdraw from sell side asset idle deposit
+        sell_side_deposit_idle.withdraw(sell_side_balance_change, sell_side_asset_price)
+
+        # deposit the balance into idle buy side balance
+        # implicitly: the sell side asset withdrawal perfectly finances the buy side asset deposit
+        buy_side_deposit_idle.deposit(buy_side_balance_change, buy_side_asset_price)
+
+    # if the idle volatile deposit does not by itself have enough balance for the sale
+    else:
+
+        print("DEBUG: cashing out of yield bearing deposits")
+
+        # calculate difference between total amount to sell and idle deposit balance
+        YB_balance_to_withdraw = sell_side_balance_change - sell_side_deposit_idle.balance
+        assert YB_balance_to_withdraw > 0, "balance to withdraw is negative"
+
+        # if the yield bearing deposit has enough balance for the remainder of the withdrawal to occur
+        if sell_side_deposit_yield_bearing.balance - YB_balance_to_withdraw >= 0:
+
+            # withdraw from sell side yield bearing deposit and deposit into sell side idle deposit
+            # (can also use transfer() here)
+            sell_side_deposit_yield_bearing.withdraw(YB_balance_to_withdraw, sell_side_asset_price)
+            sell_side_deposit_idle.deposit(YB_balance_to_withdraw, sell_side_asset_price)
+
+            # now the new balance of the sell side deposit should be == sell_side_balance_change
+            # so the idle deposit has exactly the amount needed to rebalance
+            sell_side_deposit_idle.withdraw(sell_side_balance_change, sell_side_asset_price)
+
+            # deposit the balance into idle balance
+            # implicitly: the volatile asset withdrawal perfectly finances the stable asset deposit
+            buy_side_deposit_idle.deposit(buy_side_balance_change, buy_side_asset_price)
+
+        # yield bearing + idle deposits no NOT have enough to perform the rebalance
+        else:
+            print("not enough balance across all sell side deposits to rebalance!")
+            # this can either sell all remaining balance or perform additional operations
+            # in practice, if a whole layer of DCA'ing into and out of positions happens this should
+            # be unlikely to occur
+
+
+def pcv_deposit_rebalancing_strategy_v2(
+    volatile_asset_price,
+    stable_asset_price,
+    volatile_deposit_idle,
+    volatile_deposit_yield_bearing,
+    stable_deposit_idle,
+    stable_deposit_yield_bearing,
+    total_stable_asset_balance_change,
+    total_volatile_asset_balance_change,
+):
+
+    # Rebalancing Strategy
+    # PCV deposits in tranches / order of priority for rebalancing
+    stable_pcv_deposits = [
+        stable_deposit_idle,
+        stable_deposit_yield_bearing,
+    ]
+    volatile_pcv_deposits = [
+        volatile_deposit_idle,  # Try rebalance from idle assets first
+        volatile_deposit_yield_bearing,  # Followed by any other PCV assets
+    ]
+
+    # PCV movement from volatile to stable
+    if total_stable_asset_balance_change >= 0 and total_volatile_asset_balance_change < 0:
+        balance_change = abs(total_volatile_asset_balance_change)
+        # Try rebalance PCV from deposits in order of priority
+        for deposit in volatile_pcv_deposits:
+            if balance_change:
+                if deposit.yield_rate > 0:
+                    logging.warning("Cashing out of yield-bearing deposit")
+                    # Transfer yield to deposit balance
+                    deposit.transfer_yield(deposit, deposit.yield_accrued, volatile_asset_price)
+                transfer_balance = min(balance_change, deposit.balance)
+                # Transfer from stable PCV to volatile idle PCV deposit
+                deposit.transfer(
+                    stable_deposit_idle,
+                    transfer_balance,
+                    volatile_asset_price,
+                    stable_asset_price,
+                )
+                balance_change -= transfer_balance
+            # Check if balance remainder
+            if balance_change > 0:
+                # TODO Additional constraints on movements and DCAing will be introduced in future,
+                # for now we catch the edge case for further analysis
+                logging.warning("Not enough balance across all sell side deposits to rebalance!")
+    # PCV movement from stable to volatile
+    else:
+        balance_change = abs(total_stable_asset_balance_change)
+        # Try rebalance PCV from deposits in order of priority
+        for deposit in stable_pcv_deposits:
+            if balance_change:
+                if deposit.yield_rate > 0:
+                    logging.warning("Cashing out of yield-bearing deposit")
+                    # Transfer yield to deposit balance
+                    deposit.transfer_yield(deposit, deposit.yield_accrued, stable_asset_price)
+                transfer_balance = min(balance_change, deposit.balance)
+                # Transfer from volatile PCV to stable idle PCV deposit
+                deposit.transfer(
+                    volatile_deposit_idle,
+                    transfer_balance,
+                    stable_asset_price,
+                    volatile_asset_price,
+                )
+                balance_change -= transfer_balance
+        # Check if balance remainder
+        if balance_change > 0:
+            logging.warning("Not enough balance across all sell side deposits to rebalance!")
 
 
 def policy_pcv_accounting(params, substep, state_history, previous_state):
@@ -170,9 +302,15 @@ def update_total_protocol_owned_fei(params, substep, state_history, previous_sta
     # State Variables
     fei_deposit_idle: PCVDeposit = previous_state["fei_deposit_idle"]
     fei_deposit_liquidity_pool: PCVDeposit = previous_state["fei_deposit_liquidity_pool"]
+    fei_deposit_money_market: PCVDeposit = previous_state["fei_deposit_money_market"]
+    fei_money_market_utilization: Percentage = previous_state["fei_money_market_utilization"]
 
     # State Update
-    protocol_owned_fei_balance = fei_deposit_idle.balance + fei_deposit_liquidity_pool.balance
+    protocol_owned_fei_balance = (
+        fei_deposit_idle.balance
+        + fei_deposit_liquidity_pool.balance
+        + fei_deposit_money_market.balance * (1 - fei_money_market_utilization)
+    )
 
     return (
         "total_protocol_owned_fei",
@@ -215,87 +353,3 @@ def update_total_volatile_asset_pcv_balance(
     )
 
     return "total_volatile_asset_pcv_balance", pcv_balance
-
-
-def update_stable_deposit_idle(params, substep, state_history, previous_state, policy_input):
-    # Policy Inputs
-    target_amount_change = policy_input["stable_asset_target_amount_change"]["idle"]
-
-    # State Variables
-    stable_deposit_idle: PCVDeposit = previous_state["stable_deposit_idle"]
-    stable_asset_price = previous_state["stable_asset_price"]
-
-    # State Update
-    if target_amount_change >= 0:
-        stable_deposit_idle.deposit(target_amount_change, stable_asset_price)
-    else:
-        stable_deposit_idle.withdraw(target_amount_change, stable_asset_price)
-
-    return (
-        "stable_deposit_idle",
-        stable_deposit_idle,
-    )
-
-
-def update_stable_deposit_yield_bearing(
-    params, substep, state_history, previous_state, policy_input
-):
-    # Policy Inputs
-    target_amount_change = policy_input["stable_asset_target_amount_change"]["yield_bearing"]
-
-    # State Variables
-    stable_deposit_yield_bearing: PCVDeposit = previous_state["stable_deposit_yield_bearing"]
-    stable_asset_price = previous_state["stable_asset_price"]
-
-    # State Update
-    if target_amount_change >= 0:
-        stable_deposit_yield_bearing.deposit(target_amount_change, stable_asset_price)
-    else:
-        stable_deposit_yield_bearing.withdraw(target_amount_change, stable_asset_price)
-
-    return (
-        "stable_deposit_yield_bearing",
-        stable_deposit_yield_bearing,
-    )
-
-
-def update_volatile_deposit_idle(params, substep, state_history, previous_state, policy_input):
-    # Policy Inputs
-    target_amount_change = policy_input["volatile_asset_target_amount_change"]["idle"]
-
-    # State Variables
-    volatile_deposit_idle: PCVDeposit = previous_state["volatile_deposit_idle"]
-    volatile_asset_price = previous_state["volatile_asset_price"]
-
-    # State Update
-    if target_amount_change >= 0:
-        volatile_deposit_idle.deposit(target_amount_change, volatile_asset_price)
-    else:
-        volatile_deposit_idle.withdraw(abs(target_amount_change), volatile_asset_price)
-
-    return (
-        "volatile_deposit_idle",
-        volatile_deposit_idle,
-    )
-
-
-def update_volatile_deposit_yield_bearing(
-    params, substep, state_history, previous_state, policy_input
-):
-    # Policy Inputs
-    target_amount_change = policy_input["volatile_asset_target_amount_change"]["yield_bearing"]
-
-    # State Variables
-    volatile_deposit_yield_bearing: PCVDeposit = previous_state["volatile_deposit_yield_bearing"]
-    volatile_asset_price = previous_state["volatile_asset_price"]
-
-    # State Update
-    if target_amount_change >= 0:
-        volatile_deposit_yield_bearing.deposit(target_amount_change, volatile_asset_price)
-    else:
-        volatile_deposit_yield_bearing.withdraw(abs(target_amount_change), volatile_asset_price)
-
-    return (
-        "volatile_deposit_yield_bearing",
-        volatile_deposit_yield_bearing,
-    )

@@ -1,5 +1,8 @@
 import radcad as radcad
 import logging
+from dataclasses import make_dataclass
+from model.state_variables import StateVariables
+from model.system_parameters import pcv_deposit_keys
 from model.types import (
     PCVDeposit,
 )
@@ -9,9 +12,17 @@ def setup_initial_state(context: radcad.Context):
     logging.info("Setting up initial state")
 
     params = context.parameters
-    initial_state = context.initial_state
     run = context.run
     timestep = 0
+
+    # Add PCV distribution configuration to StateVariables
+    StateVariablesWithPCV = make_dataclass(
+        "StateVariablesWithPCV",
+        fields=[(key, PCVDeposit, params["pcv_deposits"][key]) for key in pcv_deposit_keys],
+        bases=(StateVariables,),
+    )
+    context.initial_state.update(StateVariablesWithPCV().__dict__)
+    initial_state = context.initial_state
 
     """
     Liquidity Pool Setup

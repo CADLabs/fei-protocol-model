@@ -7,13 +7,17 @@ By using a dataclass to represent the System Parameters:
 """
 
 
+from cmath import inf
+from typing import Dict
 import experiments.simulation_configuration as simulation
 
+from operator import lt, gt
 from dataclasses import dataclass
 from datetime import datetime
 from model.utils import default
 from model.types import (
     Callable,
+    PCVDeposit,
     Timestep,
     Run,
     List,
@@ -46,6 +50,122 @@ stable_asset_price_samples = create_stochastic_process_realizations(
 )
 
 fei_price_mean = 1.0
+
+# Configure distribution of PCV deposits
+# Each distribution must contain the same set of deposits
+pcv_distribution_sweep = [
+    [
+        # FEI PCV
+        PCVDeposit(
+            asset="fei",
+            deposit_type="idle",
+            _balance=170_000_000,
+            _asset_value=170_000_000,
+        ),
+        PCVDeposit(
+            asset="fei",
+            deposit_type="liquidity_pool",
+            # Initialized in setup_initial_state()
+        ),
+        PCVDeposit(
+            asset="fei",
+            deposit_type="money_market",
+            _balance=30_000_000,
+            _asset_value=0.0,  # Accounted as asset value of zero for PCV
+        ),
+        # Stable Asset PCV
+        PCVDeposit(
+            asset="stable",
+            deposit_type="idle",
+            _balance=70_000_000,  # set this to 1_000_000 to test rebalancing policy
+            _asset_value=70_000_000,
+        ),
+        PCVDeposit(
+            asset="stable",
+            deposit_type="yield_bearing",
+            _balance=70_000_000,
+            _asset_value=70_000_000,
+        ),
+        # Volatile Asset PCV
+        PCVDeposit(
+            asset="volatile",
+            deposit_type="idle",
+            # Assumes initial volatile asset price of 2000 USD
+            _balance=102_500_000 / 2_000,
+            _asset_value=102_500_000,
+        ),
+        PCVDeposit(
+            asset="volatile",
+            deposit_type="yield_bearing",
+            _balance=102_500_000 / 2_000,
+            _asset_value=102_500_000,
+        ),
+        PCVDeposit(
+            asset="volatile",
+            deposit_type="liquidity_pool",
+            # Initialized in setup_initial_state()
+        ),
+    ],
+    # Set stable and volatile idle deposit asset values to 1_000_000 USD to test rebalancing policy
+    # [
+    #     # FEI PCV
+    #     PCVDeposit(
+    #         asset="fei",
+    #         deposit_type="idle",
+    #         _balance=170_000_000,
+    #         _asset_value=170_000_000,
+    #     ),
+    #     PCVDeposit(
+    #         asset="fei",
+    #         deposit_type="liquidity_pool",
+    #         # Initialized in setup_initial_state()
+    #     ),
+    #     PCVDeposit(
+    #         asset="fei",
+    #         deposit_type="money_market",
+    #         _balance=30_000_000,
+    #         _asset_value=0.0,  # Accounted as asset value of zero for PCV
+    #     ),
+    #     # Stable Asset PCV
+    #     PCVDeposit(
+    #         asset="stable",
+    #         deposit_type="idle",
+    #         _balance=1_000_000,
+    #         _asset_value=1_000_000,
+    #     ),
+    #     PCVDeposit(
+    #         asset="stable",
+    #         deposit_type="yield_bearing",
+    #         _balance=70_000_000,
+    #         _asset_value=70_000_000,
+    #     ),
+    #     # Volatile Asset PCV
+    #     PCVDeposit(
+    #         asset="volatile",
+    #         deposit_type="idle",
+    #         # Assumes initial volatile asset price of 2000 USD
+    #         _balance=1_000_000 / 2_000,
+    #         _asset_value=1_000_000,
+    #     ),
+    #     PCVDeposit(
+    #         asset="volatile",
+    #         deposit_type="yield_bearing",
+    #         _balance=102_500_000 / 2_000,
+    #         _asset_value=102_500_000,
+    #     ),
+    #     PCVDeposit(
+    #         asset="volatile",
+    #         deposit_type="liquidity_pool",
+    #         # Initialized in setup_initial_state()
+    #     )
+    # ]
+]
+# Generate PCV Deposit keys
+pcv_distribution_sweep = [
+    {deposit.asset + "_deposit_" + deposit.deposit_type: deposit for deposit in distribution}
+    for distribution in pcv_distribution_sweep
+]
+pcv_deposit_keys = pcv_distribution_sweep[0].keys()
 
 
 @dataclass
@@ -107,9 +227,16 @@ class Parameters:
 
     # PCV Management Strategy
     rebalancing_period: List[Timestep] = default([int(365 / 4)])  # days
-    yield_withdrawal_period: List[Timestep] = default([int(365 / 4)])  # days
-    yield_reinvest_period: List[Timestep] = default([int(365 / 4)])  # days
+    yield_withdrawal_period: List[Timestep] = default([-1])  # days, -1 == disabled
+    yield_reinvest_period: List[Timestep] = default([-1])  # days, -1 == disabled
     target_stable_backing_ratio: List[float] = default([0.5])
+    target_rebalancing_condition: List[str] = default([lt])
+    """
+    Rebalance towards target stable backing ratio if less than (lt, <) or greater than (gt, >) target
+    """
+
+    # PCV Deposit configuration
+    pcv_deposits: List[Dict[str, PCVDeposit]] = default(pcv_distribution_sweep)
 
 
 # Initialize Parameters instance with default values

@@ -41,13 +41,11 @@ Currently the model includes the following features:
 ### Next Steps
 
 In the next phase of development the focus will be on the following:
-* [ ] Implementation and integration of WIP FEI Savings Deposit model with complex relationships identified and appropriately included
-* [ ] Formalisation of FEI demand
+* [ ] Development of Fei Protocol risk metrics and analyses specified in [Fei Protocol Risk Metrics and Analyses HackMD document](TODO)
+* [ ] Implementation and integration of WIP FEI Savings Deposit Bayesian model
+* [ ] Testing and validation of WIP FEI Savings Deposit Bayesian model
+* [ ] Formalisation of FEI Demand metric
 * [ ] Development of set of experiments to deliver on the ultimate goal of the model, as a useful tool for the Fei team and community in illuminating complexity in the system, and developing, testing, and deploying various PCV management strategies during the FIP process
-
-Additionally:
-* [ ] Develop user-circulating FEI processes and accounting
-* [ ] Replace Money Market placeholder utilization dynamics and integrate into rest of system
 
 ### Directory Structure
 

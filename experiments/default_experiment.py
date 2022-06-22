@@ -9,7 +9,7 @@ The defaults are defined in their respective modules:
 from radcad import Simulation, Experiment, Backend
 
 from model import model
-from experiments.simulation_configuration import TIMESTEPS, DELTA_TIME, MONTE_CARLO_RUNS
+from experiments.simulation_configuration import TIMESTEPS, MONTE_CARLO_RUNS
 from model.initialization import setup_initial_state, setup_state_update_blocks
 
 

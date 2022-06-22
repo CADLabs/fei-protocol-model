@@ -38,10 +38,10 @@ class StateVariables:
     # FEI Supply
     total_fei_supply: FEI = Uninitialized
     total_protocol_owned_fei: FEI = Uninitialized
-    total_user_circulating_fei: FEI = 225_000_000
+    total_user_circulating_fei: FEI = Uninitialized
 
     # TODO: configure user-circulating FEI states
-    idle_user_circulating_fei: FEI = 0.0
+    idle_user_circulating_fei: FEI = 225_000_000
     fei_minted_redeemed: FEI = 0.0
     cumulative_psm_redemptions: FEI = 0.0
 
@@ -74,7 +74,7 @@ class StateVariables:
 
     # FEI Savings Deposit
     # TODO Account for wrapped yield-bearing FEI supply
-    fei_savings_deposit_balance: FEI = Uninitialized
+    fei_savings_deposit_balance: FEI = 0.0
     fei_savings_rate: APR = Uninitialized
 
     # PCV Aggregates
@@ -84,9 +84,8 @@ class StateVariables:
     total_stable_asset_pcv: USD = Uninitialized
     total_volatile_asset_pcv: USD = Uninitialized
 
+    # PCV Metrics
     stable_backing_ratio: Percentage = Uninitialized
-    # volatile_backing_ratio: Percentage = Uninitialized
-
     collateralization_ratio: Percentage = Uninitialized
     protocol_equity: USD = Uninitialized
 

@@ -1,3 +1,6 @@
+"""Money Markets
+"""
+
 from model.types import FEI, PCVDeposit
 from model.constants import wei, blocks_per_year
 

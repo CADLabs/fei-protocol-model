@@ -1,4 +1,3 @@
-import itertools
 import types as types
 import collections
 import inspect

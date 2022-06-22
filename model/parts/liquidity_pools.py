@@ -1,5 +1,6 @@
-# -*- coding: utf-8 -*-
-from model.state_variables import StateVariables
+"""Liquidity Pools
+"""
+
 from model.utils import approx_eq
 import math
 

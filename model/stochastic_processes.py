@@ -40,7 +40,6 @@ def create_stable_price_process(
     rng=np.random.default_rng(1),
     **kwargs,
 ):
-
     """Configure environmental stable price process
 
     Gaussian Noise Process

@@ -1,3 +1,6 @@
+"""PCV Yield
+"""
+
 from model.types import (
     APR,
     PCVDeposit,

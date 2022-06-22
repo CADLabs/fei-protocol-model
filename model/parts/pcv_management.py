@@ -1,9 +1,10 @@
+"""PCV Management
+"""
+
 import logging
 from model.types import (
-    Percentage,
     PCVDeposit,
 )
-from operator import lt, gt
 
 
 def policy_pcv_rebalancing_target_stable_backing(params, substep, state_history, previous_state):
@@ -271,85 +272,3 @@ def pcv_deposit_rebalancing_strategy_v2(
         # Check if balance remainder
         if balance_change > 0:
             logging.warning("Not enough balance across all sell side deposits to rebalance!")
-
-
-def policy_pcv_accounting(params, substep, state_history, previous_state):
-    # State Variables
-    total_user_circulating_fei = previous_state["total_user_circulating_fei"]
-    total_stable_asset_pcv_balance = previous_state["total_stable_asset_pcv_balance"]
-    total_volatile_asset_pcv_balance = previous_state["total_volatile_asset_pcv_balance"]
-
-    fei_price = previous_state["fei_price"]
-    stable_asset_price = previous_state["stable_asset_price"]
-    volatile_asset_price = previous_state["volatile_asset_price"]
-
-    # State Update
-    total_stable_asset_pcv = total_stable_asset_pcv_balance * stable_asset_price
-    total_volatile_asset_pcv = total_volatile_asset_pcv_balance * volatile_asset_price
-    total_pcv = total_stable_asset_pcv + total_volatile_asset_pcv
-
-    return {
-        "total_pcv": total_pcv,
-        "total_stable_asset_pcv": total_stable_asset_pcv,
-        "total_volatile_asset_pcv": total_volatile_asset_pcv,
-        "protocol_equity": total_pcv - (total_user_circulating_fei * fei_price),
-        "stable_backing_ratio": total_stable_asset_pcv / total_pcv,
-        "collateralization_ratio": total_pcv / total_user_circulating_fei,
-    }
-
-
-def update_total_protocol_owned_fei(params, substep, state_history, previous_state, policy_input):
-    # State Variables
-    fei_deposit_idle: PCVDeposit = previous_state["fei_deposit_idle"]
-    fei_deposit_liquidity_pool: PCVDeposit = previous_state["fei_deposit_liquidity_pool"]
-    fei_deposit_money_market: PCVDeposit = previous_state["fei_deposit_money_market"]
-    fei_money_market_utilization: Percentage = previous_state["fei_money_market_utilization"]
-
-    # State Update
-    protocol_owned_fei_balance = (
-        fei_deposit_idle.balance
-        + fei_deposit_liquidity_pool.balance
-        + fei_deposit_money_market.balance * (1 - fei_money_market_utilization)
-    )
-
-    return (
-        "total_protocol_owned_fei",
-        protocol_owned_fei_balance,
-    )
-
-
-def update_total_stable_asset_pcv_balance(
-    params, substep, state_history, previous_state, policy_input
-):
-    """
-    Update total stable asset PCV balance
-    """
-    # State Variables
-    stable_deposit_idle: PCVDeposit = previous_state["stable_deposit_idle"]
-    stable_deposit_yield_bearing: PCVDeposit = previous_state["stable_deposit_yield_bearing"]
-
-    # State Update
-    pcv_balance = stable_deposit_idle.balance + stable_deposit_yield_bearing.balance
-
-    return "total_stable_asset_pcv_balance", pcv_balance
-
-
-def update_total_volatile_asset_pcv_balance(
-    params, substep, state_history, previous_state, policy_input
-):
-    """
-    Update total volatile asset PCV balance
-    """
-    # State Variables
-    volatile_deposit_idle: PCVDeposit = previous_state["volatile_deposit_idle"]
-    volatile_deposit_yield_bearing: PCVDeposit = previous_state["volatile_deposit_yield_bearing"]
-    volatile_deposit_liquidity_pool: PCVDeposit = previous_state["volatile_deposit_liquidity_pool"]
-
-    # State Update
-    pcv_balance = (
-        volatile_deposit_idle.balance
-        + volatile_deposit_yield_bearing.balance
-        + volatile_deposit_liquidity_pool.balance
-    )
-
-    return "total_volatile_asset_pcv_balance", pcv_balance

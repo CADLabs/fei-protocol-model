@@ -8,6 +8,7 @@ import model.parts.pcv_management as pcv_management
 import model.parts.liquidity_pools as liquidity_pools
 import model.parts.pcv_yield as pcv_yield
 import model.parts.money_markets as money_markets
+import model.parts.system_metrics as system_metrics
 
 from model.utils import update_from_signal, accumulate_from_signal, update_timestamp
 
@@ -15,16 +16,56 @@ from model.utils import update_from_signal, accumulate_from_signal, update_times
 state_update_blocks = [
     {
         "description": """
-            Assorted accounting
+            Simulation Accounting
         """,
-        "policies": {
-            "accounting": accounting.policy_accounting,
-        },
+        "policies": {},
         "variables": {
             "timestamp": update_timestamp,
+        },
+    },
+    {
+        "description": """
+            FEI Accounting
+        """,
+        "policies": {
+            "fei_accounting": accounting.policy_fei_accounting,
+        },
+        "variables": {
             "total_protocol_owned_fei": update_from_signal("total_protocol_owned_fei"),
             "total_user_circulating_fei": update_from_signal("total_user_circulating_fei"),
             "total_fei_supply": update_from_signal("total_fei_supply"),
+        },
+    },
+    {
+        "description": """
+            PCV Accounting
+        """,
+        "policies": {
+            "pcv_accounting": accounting.policy_pcv_accounting,
+        },
+        "variables": {
+            "total_stable_asset_pcv_balance": update_from_signal("total_stable_asset_pcv_balance"),
+            "total_volatile_asset_pcv_balance": update_from_signal(
+                "total_volatile_asset_pcv_balance"
+            ),
+            "total_stable_asset_pcv": update_from_signal("total_stable_asset_pcv"),
+            "total_volatile_asset_pcv": update_from_signal("total_volatile_asset_pcv"),
+            "total_pcv": update_from_signal("total_pcv"),
+        },
+    },
+    {
+        "description": """
+            System Metrics
+        """,
+        "policies": {
+            # TODO FEI Demand Metrics
+            "pcv_metrics": system_metrics.policy_pcv_metrics,
+        },
+        "variables": {
+            # PCV Metrics
+            "stable_backing_ratio": update_from_signal("stable_backing_ratio"),
+            "collateralization_ratio": update_from_signal("collateralization_ratio"),
+            "protocol_equity": update_from_signal("protocol_equity"),
         },
     },
     {
@@ -43,7 +84,7 @@ state_update_blocks = [
             FEI-X Liquidity Pool
         """,
         "policies": {
-            "cfmm": liquidity_pools.policy_constant_function_market_maker,
+            "market_maker": liquidity_pools.policy_constant_function_market_maker,
         },
         "variables": {
             "liquidity_pool_fei_source_sink": update_from_signal("liquidity_pool_fei_source_sink"),
@@ -128,23 +169,6 @@ state_update_blocks = [
             "volatile_deposit_idle": update_from_signal("volatile_deposit_idle"),
             "stable_deposit_yield_bearing": update_from_signal("stable_deposit_yield_bearing"),
             "volatile_deposit_yield_bearing": update_from_signal("volatile_deposit_yield_bearing"),
-            "total_stable_asset_pcv_balance": pcv_management.update_total_stable_asset_pcv_balance,
-            "total_volatile_asset_pcv_balance": pcv_management.update_total_volatile_asset_pcv_balance,
-            "total_protocol_owned_fei": pcv_management.update_total_protocol_owned_fei,
-        },
-    },
-    {
-        "description": """
-            PCV Accounting
-        """,
-        "policies": {"pcv_accounting": pcv_management.policy_pcv_accounting},
-        "variables": {
-            "total_pcv": update_from_signal("total_pcv"),
-            "total_stable_asset_pcv": update_from_signal("total_stable_asset_pcv"),
-            "total_volatile_asset_pcv": update_from_signal("total_volatile_asset_pcv"),
-            "stable_backing_ratio": update_from_signal("stable_backing_ratio"),
-            "collateralization_ratio": update_from_signal("collateralization_ratio"),
-            "protocol_equity": update_from_signal("protocol_equity"),
         },
     },
 ]

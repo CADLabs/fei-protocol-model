@@ -6,9 +6,8 @@ import numpy as np
 import sys
 
 # See https://docs.python.org/3/library/dataclasses.html
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from enforce_typing import enforce_types
-from enum import Enum
 from typing import Union
 
 # If Python version is greater than equal to 3.8, import from typing module

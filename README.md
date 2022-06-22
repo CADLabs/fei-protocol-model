@@ -66,8 +66,8 @@ The model is composed of several structural modules in the [model/parts/](model/
 
 | Module | Description |
 | --- | --- |
-| [accounting.py](model/parts/accounting.py) | Assorted accounting of FEI aggregate State Variables such as Protocol Owned FEI, User-circulating FEI, etc. |
-| [system_metrics.py](model/parts/system_metrics.py) | [Placeholder] Assorted system metrics such as FEI Demand |
+| [accounting.py](model/parts/accounting.py) | Assorted accounting of aggregate State Variables such as Protocol Owned FEI, User-circulating FEI, etc. |
+| [system_metrics.py](model/parts/system_metrics.py) | Assorted system metrics |
 | [fei_savings_deposit.py](model/parts/fei_savings_deposit.py) | [Placeholder] Implementation of the FEI Savings Deposit |
 | [liquidity_pools.py](model/parts/liquidity_pools.py) | Implementation of a generic Uniswap style FEI-Volatile Liquidity Pool |
 | [money_markets.py](model/parts/money_markets.py) | Implementation of a generic Aave/Compound style Money Market |
@@ -188,6 +188,12 @@ The purpose of this notebook was to demonstrate the state of the model during a 
 See [experiments/notebooks/exploratory_data_analysis.ipynb](experiments/notebooks/exploratory_data_analysis.ipynb)
 
 The purpose of this notebook is to perform Exploratory Data Analysis of real Fei data sets using `checkthechain`. This notebook currently has Storm's original analysis and is on-hold until further exploration is needed and the `ctc` issues are resolved.
+
+#### Liquidity Pools Notebook
+
+See [experiments/notebooks/liquidity_pools_notebook.ipynb](experiments/notebooks/liquidity_pools_notebook.ipynb)
+
+The purpose of this notebook is to illustrate the operation of the generic FEI-Volatile Liquidity Pool subsystem.
 
 #### Money Markets Notebook
 

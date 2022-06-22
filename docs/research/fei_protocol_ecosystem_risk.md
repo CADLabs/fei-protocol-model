@@ -43,13 +43,11 @@ Here we go over where each of the three prongs of the risk analysis framework ca
 - B) None
 - C) None
 
-### FEI-X Liquidity Pool & Rebalacing
+### FEI-X Liquidity Pool & Rebalancing
 
 - A) Summary statistics of the TVL, FEI Source/Sink, and IL processes
 - B) Metrics for delta in FEI Source/Sink, TVL, and cumulative FEI redemptions under different price trajectories
 - C) Metrics for delta in LP PCV Deposit size under different stable backing targets from PCV rebalancing
-
-Additionally: Metrics for liquidation risk
 
 ### FEI-X Money Market
 
@@ -59,7 +57,7 @@ Additionally: Metrics for liquidation risk
 
 Additionally: Metrics for Lending Market Insolvency, Liquidations at Risk, and Borrower usage (informs FEI demand). See [Gauntlet](https://governance.aave.com/t/gauntlet-market-risk-primer/2097).
 
-### User-Circulating FEI
+### User-circulating FEI
 
 - A) Summary statistics for user circulating fei, fei mint/redemption processes
 - B) Metrics for delta in user circulating fei under different external processes (price trajectories, lending market rates)

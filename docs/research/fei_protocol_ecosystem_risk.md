@@ -39,49 +39,49 @@ Here we go over where each of the three prongs of the risk analysis framework ca
 
 ### Price Processes
 
-A) Summary Statistics(*see appendix) of Volatile Asset price, Stable Asset price. More interesting for stable asset if a jump process for tail event occasional de-pegs is introduced.
-B) None
-C) None
+- A) Summary Statistics(*see appendix) of Volatile Asset price, Stable Asset price. More interesting for stable asset if a jump process for tail event occasional de-pegs is introduced.
+- B) None
+- C) None
 
 ### FEI-X Liquidity Pool & Rebalacing
 
-A) Summary statistics of the TVL, FEI Source/Sink, and IL processes
-B) Metrics for delta in FEI Source/Sink, TVL, and cumulative FEI redemptions under different price trajectories
-C) Metrics for delta in LP PCV Deposit size under different stable backing targets from PCV rebalancing
+- A) Summary statistics of the TVL, FEI Source/Sink, and IL processes
+- B) Metrics for delta in FEI Source/Sink, TVL, and cumulative FEI redemptions under different price trajectories
+- C) Metrics for delta in LP PCV Deposit size under different stable backing targets from PCV rebalancing
 
 Additionally: Metrics for liquidation risk
 
 ### FEI-X Money Market
 
-A) Summary statistics for lending rate, APR, and utilization processes
-B) Metrics for delta in lending and utilization rate under different price trajectories
-C) Metrics for delta in lending and utilization rate under different levels of FEI Savings Rate
+- A) Summary statistics for lending rate, APR, and utilization processes
+- B) Metrics for delta in lending and utilization rate under different price trajectories
+- C) Metrics for delta in lending and utilization rate under different levels of FEI Savings Rate
 
 Additionally: Metrics for Lending Market Insolvency, Liquidations at Risk, and Borrower usage (informs FEI demand). See [Gauntlet](https://governance.aave.com/t/gauntlet-market-risk-primer/2097).
 
 ### User-Circulating FEI
 
-A) Summary statistics for user circulating fei, fei mint/redemption processes
-B) Metrics for delta in user circulating fei under different external processes (price trajectories, lending market rates)
-C) Metrics for delta in user circulating fei under different polcies: FEI savings rate, PCV rebalancing stable backing ratio targets, etc (informs FEI demand)
+- A) Summary statistics for user circulating fei, fei mint/redemption processes
+- B) Metrics for delta in user circulating fei under different external processes (price trajectories, lending market rates)
+- C) Metrics for delta in user circulating fei under different polcies: FEI savings rate, PCV rebalancing stable backing ratio targets, etc (informs FEI demand)
 
 ### FEI Savings Deposit
 
-A) Summary statistics for user FEI savings deposit size, deposit cap, lockup, and idle FEI processes
-B) Metrics for delta in idle and yield bearing FEI under different external processes (price trajectories, lending market rates)
-C) Metrics for delta in idle and yield bearing FEI under different polcies: FEI savings rate (informs FEI demand)
+- A) Summary statistics for user FEI savings deposit size, deposit cap, lockup, and idle FEI processes
+- B) Metrics for delta in idle and yield bearing FEI under different external processes (price trajectories, lending market rates)
+- C) Metrics for delta in idle and yield bearing FEI under different polcies: FEI savings rate (informs FEI demand)
 
 Additionally: FEI savings rate opportunity cost and circulation related metrics (Danilo's WIP TBC here)
 
 ### PCV Yield
-A) Summary statistics PCV yield amounts and yield value processes
-B) Metrics for relating PCV yield amounts and deposit amounts under different external processes (price trajectories, lending market rates) for all PCV deposit types
-C) Metrics for relating PCV yield amounts and deposit amounts under different polcies: specifically FEI rebalancing under different stable backing targets and various approaches for integrating yield accrual
+- A) Summary statistics PCV yield amounts and yield value processes
+- B) Metrics for relating PCV yield amounts and deposit amounts under different external processes (price trajectories, lending market rates) for all PCV deposit types
+- C) Metrics for relating PCV yield amounts and deposit amounts under different polcies: specifically FEI rebalancing under different stable backing targets and various approaches for integrating yield accrual
 
 ### PCV Management
-A) Summary statistics for PCV amount and value processes, in individual deposits and in aggregation
-B) Metrics for relating PCV yield amounts and deposit amounts under different external processes (price trajectories, lending market rates) for all PCV deposit types
-C) Metrics for relating PCV amounts under different polcies: specifically FEI rebalancing under different stable backing targets, FEI savings rate policy, PCV yield policy, FEI money market deployment policy
+- A) Summary statistics for PCV amount and value processes, in individual deposits and in aggregation
+- B) Metrics for relating PCV yield amounts and deposit amounts under different external processes (price trajectories, lending market rates) for all PCV deposit types
+- C) Metrics for relating PCV amounts under different polcies: specifically FEI rebalancing under different stable backing targets, FEI savings rate policy, PCV yield policy, FEI money market deployment policy
 
 Additionally: Metrics and tail risk analyisis for mechanism-level contribution to protocol debt, collateral ratio solvency.
 

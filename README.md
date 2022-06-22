@@ -41,7 +41,7 @@ Currently the model includes the following features:
 ### Next Steps
 
 In the next phase of development the focus will be on the following:
-* [ ] Development of Fei Protocol risk metrics and analyses specified in [Fei Protocol Risk Metrics and Analyses HackMD document](TODO)
+* [ ] Development of Fei Protocol risk metrics and analyses specified in ["Fei Protocol Ecosystem Risk" HackMD document](https://hackmd.io/@CADLabs/r1xWhwl59)
 * [ ] Implementation and integration of WIP FEI Savings Deposit Bayesian model
 * [ ] Testing and validation of WIP FEI Savings Deposit Bayesian model
 * [ ] Formalisation of FEI Demand metric

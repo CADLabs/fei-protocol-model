@@ -49,8 +49,6 @@ stable_asset_price_samples = create_stochastic_process_realizations(
     runs=10,
 )
 
-fei_price_mean = 1.0
-
 # Configure distribution of PCV deposits
 # Each distribution must contain the same set of deposits
 pcv_distribution_sweep = [
@@ -180,10 +178,10 @@ class Parameters:
     # Time parameters
     dt: List[Timestep] = default([simulation.DELTA_TIME])
     """
-    Simulation timescale / timestep unit of time, in _.
-    Used to scale calculations that depend on the number of _ that have passed.
-    For example, for dt = 100, each timestep equals 100 _.
-    By default set to _
+    Simulation timescale / timestep unit of time, in days.
+    Used to scale calculations that depend on the number of days that have passed.
+    For example, for dt = 100, each timestep equals 100 days.
+    By default set to 1 day.
     """
 
     date_start: List[datetime] = default([datetime.now()])
@@ -191,14 +189,29 @@ class Parameters:
 
     # Price Processes
     fei_price_process: List[Callable[[Run, Timestep], USD]] = default(
-        [lambda _run, _timestep: fei_price_mean]
+        [lambda _run, _timestep: 1.0]
     )
+    """
+    A process that returns the FEI spot price at each timestep.
+
+    By default set a static price of 1 USD.
+    """
     stable_asset_price_process: List[Callable[[Run, Timestep], USD]] = default(
         [lambda run, timestep: stable_asset_price_samples[run - 1][timestep]]
     )
+    """
+    A process that returns the stable asset spot price at each timestep.
+
+    By default set to a Gaussian Noise stochastic process.
+    """
     volatile_asset_price_process: List[Callable[[Run, Timestep], USD]] = default(
         [lambda run, timestep: volatile_asset_price_samples[run - 1][timestep]]
     )
+    """
+    A process that returns the volatile asset spot price at each timestep.
+
+    By default set to a Brownian meander stochastic process.
+    """
 
     # Liquidity Pool
     liquidity_pool_tvl: List[USD] = default([50_000_000])
@@ -213,6 +226,9 @@ class Parameters:
     * https://forum.balancer.fi/t/fei-weth-liquidity-and-strenghtening-ties-with-fei/2381
     """
     liquidity_pool_trading_fee: List[float] = default([0.003])
+    """
+    The Uniswap style trading fee collected on incoming assets
+    """
 
     # Money Market
     base_rate_per_block: List[float] = default([0])
@@ -223,20 +239,44 @@ class Parameters:
 
     # Asset Yield Rates
     stable_asset_yield_rate: List[APR] = default([0.10])
+    """
+    The annualized yield (APR) earned by the stable asset yield-bearing PCV Deposit
+    """
     volatile_asset_yield_rate: List[APR] = default([0.10])
+    """
+    The annualized yield (APR) earned by the volatile asset yield-bearing PCV Deposit
+    """
 
     # PCV Management Strategy
     rebalancing_period: List[Timestep] = default([int(365 / 4)])  # days
+    """
+    The duration in days between applying rebalancing strategy
+    """
     yield_withdrawal_period: List[Timestep] = default([-1])  # days, -1 == disabled
+    """
+    The duration in days between withdrawing yield to an idle PCV Deposit
+    """
     yield_reinvest_period: List[Timestep] = default([-1])  # days, -1 == disabled
+    """
+    The duration in days between reinvesting yield into the PCV Deposit balance
+    """
     target_stable_backing_ratio: List[float] = default([0.5])
+    """
+    The target % of PCV value that is backed by stable assets
+    """
     target_rebalancing_condition: List[str] = default([lt])
     """
-    Rebalance towards target stable backing ratio if less than (lt, <) or greater than (gt, >) target
+    Rebalance towards target stable backing ratio if less than (lt, <) or greater than (gt, >) target,
+    if market conditions are good the strategy can increase volatile asset exposure (gt, >),
+    and if market conditions are bad the strategy can reduce volatile asset exposure (lt, <).
     """
 
     # PCV Deposit configuration
     pcv_deposits: List[Dict[str, PCVDeposit]] = default(pcv_distribution_sweep)
+    """
+    The distribution of PCV Deposits used to initialize the PCV Deposit State Variables,
+    to enable performing a parameter sweep of the Initial State of PCV Deposits.
+    """
 
 
 # Initialize Parameters instance with default values

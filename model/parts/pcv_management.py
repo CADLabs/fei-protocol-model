@@ -24,7 +24,7 @@ def policy_pcv_rebalancing_target_stable_backing(params, substep, state_history,
     according to the target_rebalancing_condition parameter.
 
     # Rebalancing Parameters
-    rebalancing_period: the duration in days between rebalancing
+    rebalancing_period: the duration in days between applying rebalancing strategy
 
     target_stable_backing_ratio: the target % of PCV value that is backed by stable assets
 

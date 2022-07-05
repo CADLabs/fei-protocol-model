@@ -65,7 +65,8 @@ def policy_money_market(params, substep, state_history, previous_state):
     supply_interest_rate = borrowing_interest_rate * utilization_rate * (1 - reserve_factor)
 
     # State Update
-    fei_deposit_money_market.yield_rate = supply_interest_rate
+    # Calculate effective yield rate on total PCVDeposit balance
+    fei_deposit_money_market.yield_rate = utilization_rate * supply_interest_rate
 
     return {
         "fei_deposit_money_market": fei_deposit_money_market,

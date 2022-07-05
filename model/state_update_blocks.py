@@ -124,6 +124,7 @@ state_update_blocks = [
         "variables": {
             "stable_deposit_yield_bearing": update_from_signal("stable_deposit_yield_bearing"),
             "volatile_deposit_yield_bearing": update_from_signal("volatile_deposit_yield_bearing"),
+            "fei_deposit_money_market": update_from_signal("fei_deposit_money_market"),
         },
     },
     {

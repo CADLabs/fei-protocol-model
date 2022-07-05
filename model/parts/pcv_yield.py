@@ -17,16 +17,21 @@ def policy_yield_accrual(params, substep, state_history, previous_state):
     # State Variables
     stable_deposit_yield_bearing: PCVDeposit = previous_state["stable_deposit_yield_bearing"]
     volatile_deposit_yield_bearing: PCVDeposit = previous_state["volatile_deposit_yield_bearing"]
+    fei_deposit_money_market: PCVDeposit = previous_state["fei_deposit_money_market"]
+
     stable_asset_price = previous_state["stable_asset_price"]
     volatile_asset_price = previous_state["volatile_asset_price"]
+    fei_price = previous_state["fei_price"]
 
     # State Update
     stable_deposit_yield_bearing.accrue_yield(dt, stable_asset_price)
     volatile_deposit_yield_bearing.accrue_yield(dt, volatile_asset_price)
+    fei_deposit_money_market.accrue_yield(dt, fei_price)
 
     return {
         "stable_deposit_yield_bearing": stable_deposit_yield_bearing,
         "volatile_deposit_yield_bearing": volatile_deposit_yield_bearing,
+        "fei_deposit_money_market": fei_deposit_money_market,
     }
 
 

@@ -188,9 +188,7 @@ class Parameters:
     """Start date for simulation as Python datetime"""
 
     # Price Processes
-    fei_price_process: List[Callable[[Run, Timestep], USD]] = default(
-        [lambda _run, _timestep: 1.0]
-    )
+    fei_price_process: List[Callable[[Run, Timestep], USD]] = default([lambda _run, _timestep: 1.0])
     """
     A process that returns the FEI spot price at each timestep.
 

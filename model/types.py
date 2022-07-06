@@ -118,15 +118,16 @@ class PCVDeposit:
             asset_price (float):    Requires asset_price to update the yield_value
 
         Returns:
-            The PCVDeposit instance
+            The yield accrued in the current timestep
         """
         assert asset_price >= 0, "Asset price must be a positive value"
         assert period_in_days >= 0, "Period in days must be a positive value"
 
-        self._yield_accrued += self._balance * (self._yield_rate * period_in_days / 365)
+        delta_yield_accrued = self._balance * (self._yield_rate * period_in_days / 365)
+        self._yield_accrued += delta_yield_accrued
         self._yield_value = self._yield_accrued * asset_price
 
-        return self
+        return delta_yield_accrued
 
     def accrue_yield_compounded(self, period_in_days, asset_price):
         """

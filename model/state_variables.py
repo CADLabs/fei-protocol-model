@@ -56,6 +56,7 @@ class StateVariables:
     liquidity_pool_fei_source_sink: FEI = 0.0
     liquidity_pool_impermanent_loss: USD = 0.0
     liquidity_pool_trading_fees: USD = 0.0
+    total_liquidity_pool_trading_fees: USD = 0.0
 
     # Money Markets
     fei_money_market_borrowed: FEI = 0.0
@@ -89,6 +90,8 @@ class StateVariables:
     stable_pcv_ratio: Percentage = Uninitialized
     collateralization_ratio: Percentage = Uninitialized
     protocol_equity: USD = Uninitialized
+    pcv_yield: Percentage = Uninitialized
+    pcv_yield_rate: Percentage = Uninitialized
 
     # Assorted System Metrics
     fei_demand: float = Uninitialized

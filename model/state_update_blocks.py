@@ -63,7 +63,7 @@ state_update_blocks = [
         },
         "variables": {
             # PCV Metrics
-            "stable_backing_ratio": update_from_signal("stable_backing_ratio"),
+            "stable_pcv_ratio": update_from_signal("stable_pcv_ratio"),
             "collateralization_ratio": update_from_signal("collateralization_ratio"),
             "protocol_equity": update_from_signal("protocol_equity"),
         },
@@ -162,7 +162,7 @@ state_update_blocks = [
             PCV Rebalancing
         """,
         "policies": {
-            "pcv_rebalancing": pcv_management.policy_pcv_rebalancing_target_stable_backing,
+            "pcv_rebalancing": pcv_management.policy_pcv_rebalancing_target_stable_pcv,
         },
         "variables": {
             # NOTE PCV asset value implicitly updated every period even if no rebalancing performed

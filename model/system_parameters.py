@@ -258,13 +258,22 @@ class Parameters:
     """
     The duration in days between reinvesting yield into the PCV Deposit balance
     """
-    target_stable_backing_ratio: List[float] = default([0.5])
+    target_stable_backing_ratio: List[float] = default([0.8])
+    """
+    The target % of user-circulating FEI that is backed by stable assets
+
+    See https://tribe.fei.money/t/fip-104-fei-pcv-reinforcement-proposal
+
+    TODO Introduce policy for rebalancing towards stable backing ratio,
+    to replace current policy of rebalancing towards stable PCV ratio
+    """
+    target_stable_pcv_ratio: List[float] = default([0.5])
     """
     The target % of PCV value that is backed by stable assets
     """
     target_rebalancing_condition: List[str] = default([lt])
     """
-    Rebalance towards target stable backing ratio if less than (lt, <) or greater than (gt, >) target,
+    Rebalance towards target stable PCV or backing ratio if less than (lt, <) or greater than (gt, >) target,
     if market conditions are good the strategy can increase volatile asset exposure (gt, >),
     and if market conditions are bad the strategy can reduce volatile asset exposure (lt, <).
     """

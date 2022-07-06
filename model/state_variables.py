@@ -85,7 +85,7 @@ class StateVariables:
     total_volatile_asset_pcv: USD = Uninitialized
 
     # PCV Metrics
-    stable_backing_ratio: Percentage = Uninitialized
+    stable_pcv_ratio: Percentage = Uninitialized
     collateralization_ratio: Percentage = Uninitialized
     protocol_equity: USD = Uninitialized
 

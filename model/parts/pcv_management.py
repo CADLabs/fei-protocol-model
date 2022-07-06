@@ -7,41 +7,41 @@ from model.types import (
 )
 
 
-def policy_pcv_rebalancing_target_stable_backing(params, substep, state_history, previous_state):
-    """PCV Rebalancing: Target Stable Backing Policy
-    The following PCV rebalancing policy targets a specific stable backing ratio,
+def policy_pcv_rebalancing_target_stable_pcv(params, substep, state_history, previous_state):
+    """PCV Rebalancing: Target Stable PCV Policy
+    The following PCV rebalancing policy targets a specific stable PCV ratio,
     i.e. the % of PCV value that is backed by stable assets.
 
     To meet the target allocation between stable and volatile assets,
     PCV rebalancing is first attempted from idle PCV deposits.
 
-    If there is insufficient capital in idle PCV deposits to allocate to meet the stable backing target,
+    If there is insufficient capital in idle PCV deposits to allocate to meet the stable PCV target,
     movements are made in tranches/priority first from yield-bearing PCV,
     followed by any other PCV included in the rebalancing strategy.
 
     Rebalancing is performed periodically according to the rebalancing_period parameter,
-    when the target_stable_backing_ratio parameter is below OR above the target,
+    when the target_stable_pcv_ratio parameter is below OR above the target,
     according to the target_rebalancing_condition parameter.
 
     # Rebalancing Parameters
     rebalancing_period: the duration in days between applying rebalancing strategy
 
-    target_stable_backing_ratio: the target % of PCV value that is backed by stable assets
+    target_stable_pcv_ratio: the target % of PCV value that is backed by stable assets
 
-    target_rebalancing_condition: rebalance towards target stable backing ratio if less than (lt, <) or greater than (gt, >) target,
+    target_rebalancing_condition: rebalance towards target stable PCV ratio if less than (lt, <) or greater than (gt, >) target,
     if market conditions are good the strategy can increase volatile asset exposure,
     and if market conditions are bad the strategy can reduce volatile asset exposure.
     """
     # Params
     dt = params["dt"]
     rebalancing_period = params["rebalancing_period"]
-    target_stable_backing_ratio = params["target_stable_backing_ratio"]
+    target_stable_pcv_ratio = params["target_stable_pcv_ratio"]
     target_rebalancing_condition = params["target_rebalancing_condition"]
 
     # Previous State
     timestep = previous_state["timestep"]
     total_pcv = previous_state["total_pcv"]
-    stable_backing_ratio = previous_state["stable_backing_ratio"]
+    stable_pcv_ratio = previous_state["stable_pcv_ratio"]
     volatile_asset_price = previous_state["volatile_asset_price"]
     stable_asset_price = previous_state["stable_asset_price"]
 
@@ -51,9 +51,9 @@ def policy_pcv_rebalancing_target_stable_backing(params, substep, state_history,
     volatile_deposit_idle: PCVDeposit = previous_state["volatile_deposit_idle"]
     volatile_deposit_yield_bearing: PCVDeposit = previous_state["volatile_deposit_yield_bearing"]
 
-    # The stable backing ratio is the % of PCV value that is backed by stable assets
-    stable_allocation = stable_backing_ratio
-    volatile_allocation = 1 - stable_backing_ratio
+    # The stable PCV ratio is the % of PCV value that is backed by stable assets
+    stable_allocation = stable_pcv_ratio
+    volatile_allocation = 1 - stable_pcv_ratio
 
     # The rebalancing strategy will move PCV assets between stable and volatile deposits,
     # to TRY make the current allocation meet the target allocation
@@ -62,12 +62,12 @@ def policy_pcv_rebalancing_target_stable_backing(params, substep, state_history,
         "volatile_asset": volatile_allocation,
     }
     target_allocation = {
-        "stable_asset": target_stable_backing_ratio,
-        "volatile_asset": (1 - target_stable_backing_ratio),
+        "stable_asset": target_stable_pcv_ratio,
+        "volatile_asset": (1 - target_stable_pcv_ratio),
     }
 
     if (
-        # Rebalance towards target stable backing ratio if either less than (lt, <) or greater than (gt, >) target,
+        # Rebalance towards target stable PCV ratio if either less than (lt, <) or greater than (gt, >) target,
         # according to target_rebalancing_condition parameter.
         target_rebalancing_condition(
             current_allocation["stable_asset"], target_allocation["stable_asset"]
@@ -76,7 +76,7 @@ def policy_pcv_rebalancing_target_stable_backing(params, substep, state_history,
         # and/or WHATEVER_ELSE
         and timestep % rebalancing_period / dt == 0
     ):
-        # Calculate required rebalancing between stable and volatile assets to meet the stable backing ratio target
+        # Calculate required rebalancing between stable and volatile assets to meet the stable PCV ratio target
         stable_allocation_pct_change = (
             target_allocation["stable_asset"] - current_allocation["stable_asset"]
         )
@@ -125,7 +125,7 @@ def pcv_deposit_rebalancing_strategy_v1(
     # NOTE: unsure of how memory optimal it is to assign these to new variables by reference,
     # if one wanted to avoid doing this one could make the rebalancing section explicit for both cases
 
-    # scenario where the policy must sell volatile asset and buy stable asset (increase stable backing)
+    # scenario where the policy must sell volatile asset and buy stable asset (increase stable PCV)
     if total_stable_asset_balance_change >= 0 and total_volatile_asset_balance_change < 0:
 
         # cast stable and volatile deposits into buy and sell side deposits depending
@@ -141,7 +141,7 @@ def pcv_deposit_rebalancing_strategy_v1(
         sell_side_asset_price = volatile_asset_price
         buy_side_asset_price = stable_asset_price
 
-    # scenario where the policy must sell stable asset and buy volatile asset (decrease stable backing)
+    # scenario where the policy must sell stable asset and buy volatile asset (decrease stable PCV)
     else:
 
         # cast stable and volatile deposits into buy and sell side deposits depending

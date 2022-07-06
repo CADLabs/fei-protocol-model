@@ -30,7 +30,7 @@ See the [CADLabs Ethereum Economic Model](https://github.com/CADLabs/ethereum-ec
 
 Currently the model includes the following features:
 * [PCV Deposit Class](model/types.py) with standard methods and assertions for safe operation and a familiar interface
-* [PCV movements](model/parts/pcv_management.py) between PCV Deposit instances including a basic rebalancing strategy targeting a stable backing ratio
+* [PCV movements](model/parts/pcv_management.py) between PCV Deposit instances including a basic rebalancing strategy targeting a stable PCV ratio
 * [PCV Deposit yield accrual](model/parts/pcv_yield.py) and management
 * [Liquidity Pool subsystem](model/parts/liquidity_pools.py) that sources and sinks FEI directly between the pool and PSM, ready to be integrated with more granular strategies such as capital allocation of user-circulating FEI
 * [Money Market subsystem](model/parts/money_markets.py) with placeholder dynamics, ready to be integrated

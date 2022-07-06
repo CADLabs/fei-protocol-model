@@ -37,7 +37,7 @@ volatile_asset_price_samples = create_stochastic_process_realizations(
     mu=-50,
     sigma=20,
     initial_price=2000,
-    runs=10,
+    runs=100,
 )
 
 stable_asset_price_samples = create_stochastic_process_realizations(
@@ -46,7 +46,7 @@ stable_asset_price_samples = create_stochastic_process_realizations(
     dt=simulation.DELTA_TIME,
     mu=1,
     sigma=0.005,
-    runs=10,
+    runs=100,
 )
 
 # Configure distribution of PCV deposits

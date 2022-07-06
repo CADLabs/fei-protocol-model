@@ -63,6 +63,7 @@ state_update_blocks = [
         },
         "variables": {
             # PCV Metrics
+            "stable_backing_ratio": update_from_signal("stable_backing_ratio"),
             "stable_pcv_ratio": update_from_signal("stable_pcv_ratio"),
             "collateralization_ratio": update_from_signal("collateralization_ratio"),
             "protocol_equity": update_from_signal("protocol_equity"),

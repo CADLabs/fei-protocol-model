@@ -31,6 +31,8 @@ def post_process(df: pd.DataFrame, drop_timestep_zero=True, parameters=parameter
     for key in pcv_deposit_keys:
         for variable in PCVDeposit(asset="", deposit_type="").__dict__.keys():
             df[key + ('_' if not variable.startswith('_') else '') + variable] = df.apply(lambda row: getattr(row[key], variable), axis=1)
+    # Remove PCVDeposit instances from state
+    df = df.drop(pcv_deposit_keys, axis=1)
 
     # Drop the initial state for plotting
     if drop_timestep_zero:

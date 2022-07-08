@@ -64,7 +64,7 @@ class StateVariables:
     fei_money_market_supply_rate: APR = 0.0
     """FEI Money Market Supply Rate
     Current yield for supply of FEI is quite low,
-    historically 3% may be a good base case to parameterise borrow / utilization.
+    historically 3% may be a good base case to parametrise borrow / utilization.
     
     See:
     * https://dune.com/queries/394975/753736

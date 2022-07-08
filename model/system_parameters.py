@@ -7,7 +7,6 @@ By using a dataclass to represent the System Parameters:
 """
 
 
-from cmath import inf
 from typing import Dict
 import experiments.simulation_configuration as simulation
 

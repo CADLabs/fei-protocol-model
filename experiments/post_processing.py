@@ -34,6 +34,20 @@ def post_process(df: pd.DataFrame, drop_timestep_zero=True, parameters=parameter
     # Remove PCVDeposit instances from state
     df = df.drop(pcv_deposit_keys, axis=1)
 
+    # Calculate metrics
+    df["pcv_yield_ratio"] = df["pcv_yield"] / df["total_user_circulating_fei"] * 365 / df["dt"]
+
+    # Convert decimals to percentages
+    convert_to_percentage = [
+        'collateralization_ratio',
+        'stable_backing_ratio',
+        'stable_pcv_ratio',
+        'pcv_yield_rate',
+        'pcv_yield_ratio'
+    ]
+    for variable in convert_to_percentage:
+        df[variable + '_pct'] = df[variable] * 100
+
     # Drop the initial state for plotting
     if drop_timestep_zero:
         df = df.drop(df.query('timestep == 0').index)

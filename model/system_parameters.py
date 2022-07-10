@@ -17,6 +17,7 @@ from model.utils import default
 from model.types import (
     Callable,
     PCVDeposit,
+    Percentage,
     Timestep,
     Run,
     List,
@@ -29,23 +30,43 @@ from model.constants import (
 )
 
 
+monte_carlo_runs = 100
+
+# volatile_asset_price_samples = create_stochastic_process_realizations(
+#     "brownian_motion_process",
+#     timesteps=simulation.TIMESTEPS,
+#     dt=simulation.DELTA_TIME,
+#     mu=-50,
+#     sigma=20,
+#     initial_price=2000,
+#     runs=monte_carlo_runs,
+# )
 volatile_asset_price_samples = create_stochastic_process_realizations(
-    "volatile_asset_price_samples",
+    "geometric_brownian_motion_process",
     timesteps=simulation.TIMESTEPS,
     dt=simulation.DELTA_TIME,
-    mu=-50,
-    sigma=20,
+    mu=0,
+    sigma=0.025,
     initial_price=2000,
-    runs=100,
+    runs=monte_carlo_runs,
 )
 
 stable_asset_price_samples = create_stochastic_process_realizations(
-    "stable_asset_price_samples",
+    "gaussian_noise_process",
     timesteps=simulation.TIMESTEPS,
     dt=simulation.DELTA_TIME,
     mu=1,
     sigma=0.005,
-    runs=100,
+    runs=monte_carlo_runs,
+)
+
+utilization_rate_samples = create_stochastic_process_realizations(
+    "gaussian_noise_process",
+    timesteps=simulation.TIMESTEPS,
+    dt=simulation.DELTA_TIME,
+    mu=0.7,
+    sigma=0.05,
+    runs=monte_carlo_runs,
 )
 
 # Configure distribution of PCV deposits
@@ -103,60 +124,8 @@ pcv_distribution_sweep = [
             # Initialized in setup_initial_state()
         ),
     ],
-    # Set stable and volatile idle deposit asset values to 1_000_000 USD to test rebalancing policy
-    # [
-    #     # FEI PCV
-    #     PCVDeposit(
-    #         asset="fei",
-    #         deposit_type="idle",
-    #         _balance=170_000_000,
-    #         _asset_value=170_000_000,
-    #     ),
-    #     PCVDeposit(
-    #         asset="fei",
-    #         deposit_type="liquidity_pool",
-    #         # Initialized in setup_initial_state()
-    #     ),
-    #     PCVDeposit(
-    #         asset="fei",
-    #         deposit_type="money_market",
-    #         _balance=30_000_000,
-    #         _asset_value=0.0,  # Accounted as asset value of zero for PCV
-    #     ),
-    #     # Stable Asset PCV
-    #     PCVDeposit(
-    #         asset="stable",
-    #         deposit_type="idle",
-    #         _balance=1_000_000,
-    #         _asset_value=1_000_000,
-    #     ),
-    #     PCVDeposit(
-    #         asset="stable",
-    #         deposit_type="yield_bearing",
-    #         _balance=70_000_000,
-    #         _asset_value=70_000_000,
-    #     ),
-    #     # Volatile Asset PCV
-    #     PCVDeposit(
-    #         asset="volatile",
-    #         deposit_type="idle",
-    #         # Assumes initial volatile asset price of 2000 USD
-    #         _balance=1_000_000 / 2_000,
-    #         _asset_value=1_000_000,
-    #     ),
-    #     PCVDeposit(
-    #         asset="volatile",
-    #         deposit_type="yield_bearing",
-    #         _balance=102_500_000 / 2_000,
-    #         _asset_value=102_500_000,
-    #     ),
-    #     PCVDeposit(
-    #         asset="volatile",
-    #         deposit_type="liquidity_pool",
-    #         # Initialized in setup_initial_state()
-    #     )
-    # ]
 ]
+
 # Generate PCV Deposit keys
 pcv_distribution_sweep = [
     {deposit.asset + "_deposit_" + deposit.deposit_type: deposit for deposit in distribution}
@@ -209,6 +178,12 @@ class Parameters:
 
     By default set to a Brownian meander stochastic process.
     """
+
+    # Money Market
+    # TODO Replace placeholder Money Market dynamics
+    utilization_rate_process: List[Callable[[Run, Timestep], Percentage]] = default(
+        [lambda run, timestep: utilization_rate_samples[run - 1][timestep]]
+    )
 
     # Liquidity Pool
     liquidity_pool_tvl: List[USD] = default([50_000_000])

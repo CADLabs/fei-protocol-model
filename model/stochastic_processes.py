@@ -5,25 +5,51 @@ import experiments.simulation_configuration as simulation
 from experiments.utils import rng_generator
 
 
-def create_volatile_price_process(
+def geometric_brownian_motion_process(
     timesteps=simulation.TIMESTEPS,
     dt=simulation.DELTA_TIME,
     rng=np.random.default_rng(1),
     **kwargs,
 ):
-    """Configure environmental volatile price process
-
-    > A Brownian meander is a Brownian motion from (0, 0) to (t, 0) which is conditioned to be non-negative on the interval [0, t].
+    """Configure Geometric Brownian Motion process
+    > A geometric Brownian motion S_t is the analytic solution to the stochastic differential equation with Wiener process...
 
     See https://stochastic.readthedocs.io/en/latest/continuous.html
     """
-
     mu = kwargs.get("mu")
     sigma = kwargs.get("sigma")
-    initial_price = kwargs.get("initial_price")
+    initial_price = kwargs.get("initial_price", 0) or 0
 
-    # runtime checking since this function is called regardless of setting
-    initial_price = initial_price if initial_price is not None else 0
+    process = processes.continuous.GeometricBrownianMotion(
+        drift=mu, volatility=sigma, t=(timesteps * dt), rng=rng
+    )
+    price_samples = process.sample(timesteps * dt + 1)
+    price_samples = [initial_price * z for z in price_samples]
+
+    # Example of Geometric Brownian Motion Process using Numpy:
+    # x = np.exp((mu - sigma ** 2 / 2) * dt + sigma * np.random.normal(0, np.sqrt(dt), size=(timesteps + 1)).T)
+    # x = initial_price * x.cumprod(axis=0)
+
+    return price_samples
+
+
+def brownian_motion_process(
+    timesteps=simulation.TIMESTEPS,
+    dt=simulation.DELTA_TIME,
+    rng=np.random.default_rng(1),
+    **kwargs,
+):
+    """Configure Brownian Motion process
+    > A standard Brownian motion (discretely sampled) has independent and  
+    identically distributed Gaussian increments with variance equal to  
+    increment length. Non-standard Brownian motion includes a linear drift  
+    parameter and scale factor.
+
+    See https://stochastic.readthedocs.io/en/latest/continuous.html
+    """
+    mu = kwargs.get("mu")
+    sigma = kwargs.get("sigma")
+    initial_price = kwargs.get("initial_price", 0) or 0
 
     process = processes.continuous.BrownianMotion(
         drift=mu, scale=sigma, t=(timesteps * dt), rng=rng
@@ -34,13 +60,13 @@ def create_volatile_price_process(
     return price_samples
 
 
-def create_stable_price_process(
+def gaussian_noise_process(
     timesteps=simulation.TIMESTEPS,
     dt=simulation.DELTA_TIME,
     rng=np.random.default_rng(1),
     **kwargs,
 ):
-    """Configure environmental stable price process
+    """Configure Gaussian Noise Process
 
     Gaussian Noise Process
 
@@ -50,13 +76,11 @@ def create_stable_price_process(
     mu = kwargs.get("mu")
     sigma = kwargs.get("sigma")
 
-    if mu and sigma:
-        process = processes.noise.GaussianNoise(t=(timesteps * dt), rng=rng)
-        price_samples = process.sample(timesteps * dt + 1)
-        price_samples = [mu + sigma * z for z in price_samples]
-        return price_samples
-    else:
-        raise Exception("Price process parameters not set")
+    process = processes.noise.GaussianNoise(t=(timesteps * dt), rng=rng)
+    price_samples = process.sample(timesteps * dt + 1)
+    price_samples = [mu + sigma * z for z in price_samples]
+
+    return price_samples
 
 
 def create_stochastic_process_realizations(
@@ -72,9 +96,9 @@ def create_stochastic_process_realizations(
     and use RNG to pre-generate samples for number of simulation timesteps.
     """
 
-    switcher = {
-        "volatile_asset_price_samples": [
-            create_volatile_price_process(
+    if process == "geometric_brownian_motion_process":
+        return [
+            geometric_brownian_motion_process(
                 timesteps=timesteps,
                 dt=dt,
                 rng=rng_generator(),
@@ -83,9 +107,22 @@ def create_stochastic_process_realizations(
                 initial_price=kwargs.get("initial_price"),
             )
             for _ in range(runs)
-        ],
-        "stable_asset_price_samples": [
-            create_stable_price_process(
+        ]
+    elif process == "brownian_motion_process":
+        return [
+            brownian_motion_process(
+                timesteps=timesteps,
+                dt=dt,
+                rng=rng_generator(),
+                mu=kwargs.get("mu"),
+                sigma=kwargs.get("sigma"),
+                initial_price=kwargs.get("initial_price"),
+            )
+            for _ in range(runs)
+        ]
+    elif process == "gaussian_noise_process":
+        return [
+            gaussian_noise_process(
                 timesteps=timesteps,
                 dt=dt,
                 rng=rng_generator(),
@@ -93,7 +130,6 @@ def create_stochastic_process_realizations(
                 sigma=kwargs.get("sigma"),
             )
             for _ in range(runs)
-        ],
-    }
-
-    return switcher.get(process, "Invalid Process")
+        ]
+    else:
+        raise Exception("Invalid Process")

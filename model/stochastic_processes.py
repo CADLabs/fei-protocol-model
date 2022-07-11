@@ -60,7 +60,7 @@ def create_stable_price_process(
 
 
 def create_stochastic_process_realizations(
-    process,
+    process: str,
     timesteps=simulation.TIMESTEPS,
     dt=simulation.DELTA_TIME,
     runs=1,

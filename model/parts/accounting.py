@@ -2,9 +2,10 @@
 """
 
 from model.types import PCVDeposit, Percentage
+from model.system_parameters import Parameters
 
 
-def policy_fei_accounting(params, substep, state_history, previous_state):
+def policy_fei_accounting(params: Parameters, substep, state_history, previous_state):
     # State Variables
     fei_deposit_idle: PCVDeposit = previous_state["fei_deposit_idle"]
     fei_deposit_liquidity_pool: PCVDeposit = previous_state["fei_deposit_liquidity_pool"]

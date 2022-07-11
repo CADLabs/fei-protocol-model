@@ -22,6 +22,9 @@ def post_process(df: pd.DataFrame, drop_timestep_zero=True, parameters=parameter
     assign_parameters(df, parameters, [
         # Parameters to assign to DataFrame
         'dt',
+        'target_stable_pcv_ratio',
+        'target_rebalancing_condition',
+        'rebalancing_period',
     ])
 
     # Set DataFrame index

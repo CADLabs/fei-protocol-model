@@ -3,9 +3,10 @@
 
 from model.types import FEI, PCVDeposit
 from model.constants import wei, blocks_per_year
+from model.system_parameters import Parameters
 
 
-def policy_money_market(params, substep, state_history, previous_state):
+def policy_money_market(params: Parameters, substep, state_history, previous_state):
     """Money Market Policy
     The Compound lending market "Compound Jump Rate Model", shared by a number of lending markets including Aave,
     is used as a proxy for all lending markets in this model.
@@ -45,7 +46,7 @@ def policy_money_market(params, substep, state_history, previous_state):
     # Calculate utilization rate
     # Assume Compound "reserves" or protocolSeizeShare of zero i.e. no profit taken
     cash = balance - borrowed
-    reserves = 0
+    reserves = 0  # placeholder
     utilization_rate = borrowed / (cash + borrowed - reserves)  # == borrowed / balance
 
     # Calculate borrowing interest rate
@@ -56,10 +57,10 @@ def policy_money_market(params, substep, state_history, previous_state):
             multiplier_per_block * min(utilization_rate, kink)
             + jump_multiplier_per_block * max(0, utilization_rate - kink)
             + base_rate_per_block
-        )
+        )  # total reward per block
         * blocks_per_year
         * dt
-    )
+    )  # todo 2022-07-11: do we have any compounding there?
 
     # Calculate supply interest rate
     supply_interest_rate = borrowing_interest_rate * utilization_rate * (1 - reserve_factor)

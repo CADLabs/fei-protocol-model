@@ -5,9 +5,10 @@ import logging
 from model.types import (
     PCVDeposit,
 )
+from model.system_parameters import Parameters
 
 
-def policy_pcv_rebalancing_target_stable_pcv(params, substep, state_history, previous_state):
+def policy_pcv_rebalancing_target_stable_pcv(params: Parameters, substep, state_history, previous_state):
     """PCV Rebalancing: Target Stable PCV Policy
     The following PCV rebalancing policy targets a specific stable PCV ratio,
     i.e. the % of PCV value that is backed by stable assets.
@@ -67,6 +68,10 @@ def policy_pcv_rebalancing_target_stable_pcv(params, substep, state_history, pre
     }
 
     if (
+        # todo [readability] 2022-07-11: can we split this if-statement into two boolean variables
+        #  such that we do: if flag1 and flag2: [...].
+        #  Additionally, it is tough to understand what happens when we call target_rebalancing_condition()
+
         # Rebalance towards target stable PCV ratio if either less than (lt, <) or greater than (gt, >) target,
         # according to target_rebalancing_condition parameter.
         target_rebalancing_condition(
@@ -112,12 +117,13 @@ def policy_pcv_rebalancing_target_stable_pcv(params, substep, state_history, pre
 
 
 def pcv_deposit_rebalancing_strategy_v1(
-    volatile_asset_price,
-    stable_asset_price,
-    volatile_deposit_idle,
-    volatile_deposit_yield_bearing,
-    stable_deposit_idle,
-    stable_deposit_yield_bearing,
+    # todo [documentation] 2022-07-11: add rationale about v1 and v2 functions in docstring, or cross reference with document
+    volatile_asset_price: float,
+    stable_asset_price: float,
+    volatile_deposit_idle: PCVDeposit,
+    volatile_deposit_yield_bearing: PCVDeposit,
+    stable_deposit_idle: PCVDeposit,
+    stable_deposit_yield_bearing: PCVDeposit,
     total_stable_asset_balance_change,
     total_volatile_asset_balance_change,
 ):
@@ -165,11 +171,11 @@ def pcv_deposit_rebalancing_strategy_v1(
         print("DEBUG: only need idle deposits to rebalance")
 
         # withdraw from sell side asset idle deposit
-        sell_side_deposit_idle.withdraw(sell_side_balance_change, sell_side_asset_price)
+        sell_side_deposit_idle.withdraw(amount=sell_side_balance_change, asset_price=sell_side_asset_price)
 
         # deposit the balance into idle buy side balance
         # implicitly: the sell side asset withdrawal perfectly finances the buy side asset deposit
-        buy_side_deposit_idle.deposit(buy_side_balance_change, buy_side_asset_price)
+        buy_side_deposit_idle.deposit(amount=buy_side_balance_change, asset_price=buy_side_asset_price)
 
     # if the idle volatile deposit does not by itself have enough balance for the sale
     else:
@@ -185,16 +191,16 @@ def pcv_deposit_rebalancing_strategy_v1(
 
             # withdraw from sell side yield bearing deposit and deposit into sell side idle deposit
             # (can also use transfer() here)
-            sell_side_deposit_yield_bearing.withdraw(YB_balance_to_withdraw, sell_side_asset_price)
-            sell_side_deposit_idle.deposit(YB_balance_to_withdraw, sell_side_asset_price)
+            sell_side_deposit_yield_bearing.withdraw(amount=YB_balance_to_withdraw, asset_price=sell_side_asset_price)
+            sell_side_deposit_idle.deposit(amount=YB_balance_to_withdraw, asset_price=sell_side_asset_price)
 
             # now the new balance of the sell side deposit should be == sell_side_balance_change
             # so the idle deposit has exactly the amount needed to rebalance
-            sell_side_deposit_idle.withdraw(sell_side_balance_change, sell_side_asset_price)
+            sell_side_deposit_idle.withdraw(amount=sell_side_balance_change, asset_price=sell_side_asset_price)
 
             # deposit the balance into idle balance
             # implicitly: the volatile asset withdrawal perfectly finances the stable asset deposit
-            buy_side_deposit_idle.deposit(buy_side_balance_change, buy_side_asset_price)
+            buy_side_deposit_idle.deposit(amount=buy_side_balance_change, asset_price=buy_side_asset_price)
 
         # yield bearing + idle deposits no NOT have enough to perform the rebalance
         else:
@@ -205,12 +211,13 @@ def pcv_deposit_rebalancing_strategy_v1(
 
 
 def pcv_deposit_rebalancing_strategy_v2(
-    volatile_asset_price,
-    stable_asset_price,
-    volatile_deposit_idle,
-    volatile_deposit_yield_bearing,
-    stable_deposit_idle,
-    stable_deposit_yield_bearing,
+    # todo [documentation] 2022-07-11: add rationale about v1 and v2 functions in docstring, or cross reference with document
+    volatile_asset_price: float,
+    stable_asset_price: float,
+    volatile_deposit_idle: PCVDeposit,
+    volatile_deposit_yield_bearing: PCVDeposit,
+    stable_deposit_idle: PCVDeposit,
+    stable_deposit_yield_bearing: PCVDeposit,
     total_stable_asset_balance_change,
     total_volatile_asset_balance_change,
 ):
@@ -235,14 +242,14 @@ def pcv_deposit_rebalancing_strategy_v2(
                 if deposit.yield_rate > 0:
                     logging.warning("Cashing out of yield-bearing deposit")
                     # Transfer yield to deposit balance
-                    deposit.transfer_yield(deposit, deposit.yield_accrued, volatile_asset_price)
+                    deposit.transfer_yield(to=deposit, amount=deposit.yield_accrued, asset_price=volatile_asset_price)
                 transfer_balance = min(balance_change, deposit.balance)
                 # Transfer from stable PCV to volatile idle PCV deposit
                 deposit.transfer(
-                    stable_deposit_idle,
-                    transfer_balance,
-                    volatile_asset_price,
-                    stable_asset_price,
+                    to=stable_deposit_idle,
+                    amount=transfer_balance,
+                    from_asset_price=volatile_asset_price,
+                    to_asset_price=stable_asset_price
                 )
                 balance_change -= transfer_balance
             # Check if balance remainder
@@ -259,14 +266,14 @@ def pcv_deposit_rebalancing_strategy_v2(
                 if deposit.yield_rate > 0:
                     logging.warning("Cashing out of yield-bearing deposit")
                     # Transfer yield to deposit balance
-                    deposit.transfer_yield(deposit, deposit.yield_accrued, stable_asset_price)
+                    deposit.transfer_yield(to=deposit, amount=deposit.yield_accrued, asset_price=stable_asset_price)
                 transfer_balance = min(balance_change, deposit.balance)
                 # Transfer from volatile PCV to stable idle PCV deposit
                 deposit.transfer(
-                    volatile_deposit_idle,
-                    transfer_balance,
-                    stable_asset_price,
-                    volatile_asset_price,
+                    to=volatile_deposit_idle,
+                    amount=transfer_balance,
+                    from_asset_price=stable_asset_price,
+                    to_asset_price=volatile_asset_price,
                 )
                 balance_change -= transfer_balance
         # Check if balance remainder

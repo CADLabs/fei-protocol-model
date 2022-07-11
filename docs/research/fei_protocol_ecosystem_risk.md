@@ -7,7 +7,7 @@ Fei Protocol and Ecosystem Risk can be broadly examined under three aspects:
 2. Mechanism-Specific Risk Analysis - in which useful / nontrivial observed relationships as a result of mechanism-specific state variables are quantified as metrics.
 3. Policy-Driven Risk Analysis - in which the isolated or combined effects of monetary policy levers are gauged and causally linked to key system KPIs.
 
-Each of these aspects assumes a different importance based on the existance of independent stochastic drivers in the FEI Protocol model versus trajectories - ex: price processes.
+Each of these aspects assumes a different importance based on the existence of independent stochastic drivers in the FEI Protocol model versus trajectories - ex: price processes.
 
 ## Examples
 
@@ -61,27 +61,27 @@ Additionally: Metrics for Lending Market Insolvency, Liquidations at Risk, and B
 
 - A) Summary statistics for user circulating fei, fei mint/redemption processes
 - B) Metrics for delta in user circulating fei under different external processes (price trajectories, lending market rates)
-- C) Metrics for delta in user circulating fei under different polcies: FEI savings rate, PCV rebalancing stable backing ratio targets, etc (informs FEI demand)
+- C) Metrics for delta in user circulating fei under different policies: FEI savings rate, PCV rebalancing stable backing ratio targets, etc (informs FEI demand)
 
 ### FEI Savings Deposit
 
 - A) Summary statistics for user FEI savings deposit size, deposit cap, lockup, and idle FEI processes
 - B) Metrics for delta in idle and yield bearing FEI under different external processes (price trajectories, lending market rates)
-- C) Metrics for delta in idle and yield bearing FEI under different polcies: FEI savings rate (informs FEI demand)
+- C) Metrics for delta in idle and yield bearing FEI under different policies: FEI savings rate (informs FEI demand)
 
 Additionally: FEI savings rate opportunity cost and circulation related metrics (Danilo's WIP TBC here)
 
 ### PCV Yield
 - A) Summary statistics PCV yield amounts and yield value processes
 - B) Metrics for relating PCV yield amounts and deposit amounts under different external processes (price trajectories, lending market rates) for all PCV deposit types
-- C) Metrics for relating PCV yield amounts and deposit amounts under different polcies: specifically FEI rebalancing under different stable backing targets and various approaches for integrating yield accrual
+- C) Metrics for relating PCV yield amounts and deposit amounts under different policies: specifically FEI rebalancing under different stable backing targets and various approaches for integrating yield accrual
 
 ### PCV Management
 - A) Summary statistics for PCV amount and value processes, in individual deposits and in aggregation
 - B) Metrics for relating PCV yield amounts and deposit amounts under different external processes (price trajectories, lending market rates) for all PCV deposit types
-- C) Metrics for relating PCV amounts under different polcies: specifically FEI rebalancing under different stable backing targets, FEI savings rate policy, PCV yield policy, FEI money market deployment policy
+- C) Metrics for relating PCV amounts under different policies: specifically FEI rebalancing under different stable backing targets, FEI savings rate policy, PCV yield policy, FEI money market deployment policy
 
-Additionally: Metrics and tail risk analyisis for mechanism-level contribution to protocol debt, collateral ratio solvency.
+Additionally: Metrics and tail risk analysis for mechanism-level contribution to protocol debt, collateral ratio solvency.
 
 ### FEI Demand Metric Construction and Comparison
 
@@ -111,7 +111,7 @@ The evolution of these metrics based on a rolling window over the duration of th
 
 In general, it may be useful to compute a correlation matrix for all state variables which play a role in determining future system state: ex - informing FEI demand. Correlations can be computed once as a result of simulation outputs or on a rolling basis, as to be able to inspect the evolution of correlations themselves.
 
-Whilst analyisis of correlations is not a formal parameter hypothesis testing procedure, one may informally gauge the simulated strength of relationships, and even compare to real world data, in order to validate assumptions.
+Whilst analysis of correlations is not a formal parameter hypothesis testing procedure, one may informally gauge the simulated strength of relationships, and even compare to real world data, in order to validate assumptions.
 
 **Examples:**
 - Direct Minting/Redemption via PSMs

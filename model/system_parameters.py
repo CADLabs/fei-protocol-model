@@ -45,7 +45,7 @@ volatile_asset_price_samples = create_stochastic_process_realizations(
     "geometric_brownian_motion_process",
     timesteps=simulation.TIMESTEPS,
     dt=simulation.DELTA_TIME,
-    mu=0,
+    mu=-0.5,
     sigma=0.025,
     initial_price=2000,
     runs=monte_carlo_runs,

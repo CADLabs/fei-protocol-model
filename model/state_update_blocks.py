@@ -99,7 +99,9 @@ state_update_blocks = [
                 "liquidity_pool_impermanent_loss"
             ),
             "liquidity_pool_trading_fees": update_from_signal("liquidity_pool_trading_fees"),
-            "total_liquidity_pool_trading_fees": accumulate_from_signal("total_liquidity_pool_trading_fees", "liquidity_pool_trading_fees")
+            "total_liquidity_pool_trading_fees": accumulate_from_signal(
+                "total_liquidity_pool_trading_fees", "liquidity_pool_trading_fees"
+            ),
         },
     },
     {

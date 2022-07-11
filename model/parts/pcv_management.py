@@ -4,6 +4,7 @@
 import logging
 from model.types import (
     PCVDeposit,
+    USD,
 )
 from model.system_parameters import Parameters
 
@@ -98,14 +99,14 @@ def policy_pcv_rebalancing_target_stable_pcv(params: Parameters, substep, state_
 
         # NOTE Switch between rebalancing strategies here (e.g. v1, v2, ...)
         pcv_deposit_rebalancing_strategy_v2(
-            volatile_asset_price,
-            stable_asset_price,
-            volatile_deposit_idle,
-            volatile_deposit_yield_bearing,
-            stable_deposit_idle,
-            stable_deposit_yield_bearing,
-            total_stable_asset_balance_change,
-            total_volatile_asset_balance_change,
+            volatile_asset_price=volatile_asset_price,
+            stable_asset_price=stable_asset_price,
+            volatile_deposit_idle=volatile_deposit_idle,
+            volatile_deposit_yield_bearing=volatile_deposit_yield_bearing,
+            stable_deposit_idle=stable_deposit_idle,
+            stable_deposit_yield_bearing=stable_deposit_yield_bearing,
+            total_stable_asset_balance_change=total_stable_asset_balance_change,
+            total_volatile_asset_balance_change=total_volatile_asset_balance_change,
         )
 
     return {
@@ -118,8 +119,8 @@ def policy_pcv_rebalancing_target_stable_pcv(params: Parameters, substep, state_
 
 def pcv_deposit_rebalancing_strategy_v1(
     # todo [documentation] 2022-07-11: add rationale about v1 and v2 functions in docstring, or cross reference with document
-    volatile_asset_price: float,
-    stable_asset_price: float,
+    volatile_asset_price: USD,
+    stable_asset_price: USD,
     volatile_deposit_idle: PCVDeposit,
     volatile_deposit_yield_bearing: PCVDeposit,
     stable_deposit_idle: PCVDeposit,
@@ -212,8 +213,8 @@ def pcv_deposit_rebalancing_strategy_v1(
 
 def pcv_deposit_rebalancing_strategy_v2(
     # todo [documentation] 2022-07-11: add rationale about v1 and v2 functions in docstring, or cross reference with document
-    volatile_asset_price: float,
-    stable_asset_price: float,
+    volatile_asset_price: USD,
+    stable_asset_price: USD,
     volatile_deposit_idle: PCVDeposit,
     volatile_deposit_yield_bearing: PCVDeposit,
     stable_deposit_idle: PCVDeposit,

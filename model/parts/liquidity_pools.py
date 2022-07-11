@@ -2,14 +2,15 @@
 """
 
 from model.utils import approx_eq
-import math
-
+from model.system_parameters import Parameters
 from model.types import (
     PCVDeposit,
 )
 
+import math
 
-def policy_constant_function_market_maker(params, substep, state_history, previous_state):
+
+def policy_constant_function_market_maker(params: Parameters, substep, state_history, previous_state):
     # Parameters
     liquidity_pool_trading_fee = params["liquidity_pool_trading_fee"]
 
@@ -21,6 +22,11 @@ def policy_constant_function_market_maker(params, substep, state_history, previo
     volatile_asset_price = previous_state["volatile_asset_price"]
 
     # Liquidity Pool Imbalance
+    # todo [engineering] 2022-07-11: i believe it is worthwhile moving this part until Impermanent Loss calculation,
+    #  to a separate function since it is highly specific and is not about fetching values from previous states and spitting out the values.
+    #  Rather we calculate something entirely new. C++ creator Bjarne Stroustrup advocates for separate functions when code becomes longer than 7 lines.
+    #  It would also bring the chance to add a docstring to that function, and eventually make it generic enough to easily re-use it for other
+    #  liquidity pool venues. We could then think of extensions of fragmented liquidity / uniformly allocating our PCV to several liquidity pools.
     fei_balance = math.sqrt(k * volatile_asset_price / fei_price)
     volatile_asset_balance = math.sqrt(k * fei_price / volatile_asset_price)
     fei_source_sink = fei_deposit_liquidity_pool.balance - fei_balance
@@ -66,9 +72,7 @@ def policy_constant_function_market_maker(params, substep, state_history, previo
     }
 
 
-def update_volatile_deposit_liquidity_pool(
-    params, substep, state_history, previous_state, policy_input
-):
+def update_volatile_deposit_liquidity_pool(params: Parameters, substep, state_history, previous_state, policy_input):
     # Policy Inputs
     volatile_asset_balance = policy_input["volatile_asset_balance"]
 
@@ -82,7 +86,7 @@ def update_volatile_deposit_liquidity_pool(
     return "volatile_deposit_liquidity_pool", volatile_deposit_liquidity_pool
 
 
-def update_fei_deposit_liquidity_pool(params, substep, state_history, previous_state, policy_input):
+def update_fei_deposit_liquidity_pool(params: Parameters, substep, state_history, previous_state, policy_input):
     # Policy Inputs
     fei_balance = policy_input["fei_balance"]
 

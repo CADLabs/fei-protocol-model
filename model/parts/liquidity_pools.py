@@ -37,7 +37,7 @@ def policy_constant_function_market_maker(params, substep, state_history, previo
     (x1 - 0.003 · xin)) · y1 >= x0 · y0
     """
     trading_fees = 0
-    if fei_source_sink:
+    if fei_source_sink > 0:
         # Liquidity pool is a source of FEI
         # Aggregate trading fees collected on incoming volatile asset
         trading_fees = liquidity_pool_trading_fee * abs(volatile_asset_source_sink)

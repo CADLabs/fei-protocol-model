@@ -74,7 +74,7 @@ def policy_pcv_rebalancing_target_stable_pcv(params, substep, state_history, pre
         )
         # and VOLATILITY_CONDITION
         # and/or WHATEVER_ELSE
-        and timestep % rebalancing_period / dt == 0
+        and timestep % int(rebalancing_period / dt) == 0
     ):
         # Calculate required rebalancing between stable and volatile assets to meet the stable PCV ratio target
         stable_allocation_pct_change = (

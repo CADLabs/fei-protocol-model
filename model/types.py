@@ -56,7 +56,7 @@ class PCVDeposit:
     _yield_value: USD = 0.0
     _yield_rate: APR = Uninitialized
 
-    def deposit(self, amount, asset_price):
+    def deposit(self, amount, asset_price: USD):
         """
         Deposit an amount, in asset units, into PCV Deposit balance,
         and update the asset value.
@@ -69,7 +69,7 @@ class PCVDeposit:
 
         return self
 
-    def withdraw(self, amount, asset_price):
+    def withdraw(self, amount, asset_price: USD):
         """
         Withdraw an amount, in asset units, from the PCV Deposit balance,
         and update the asset value.
@@ -96,7 +96,7 @@ class PCVDeposit:
 
         return self, to
 
-    def set_balance(self, balance, asset_price):
+    def set_balance(self, balance, asset_price: USD):
         """
         Directly set the balance for the PCV Deposit,
         and update the asset value.
@@ -109,7 +109,7 @@ class PCVDeposit:
 
         return self
 
-    def accrue_yield(self, period_in_days, asset_price):
+    def accrue_yield(self, period_in_days: int, asset_price: USD):
         """
         Accrue yield on balance to yield_accrued based on yield_rate with simple interest.
 
@@ -128,7 +128,7 @@ class PCVDeposit:
 
         return self
 
-    def accrue_yield_compounded(self, period_in_days, asset_price):
+    def accrue_yield_compounded(self, period_in_days, asset_price: USD):
         """
         Accrue yield on balance to yield_accrued based on yield_rate with compound interest.
 
@@ -150,7 +150,7 @@ class PCVDeposit:
 
         return self
 
-    def transfer_yield(self, to, amount, asset_price):
+    def transfer_yield(self, to, amount, asset_price: USD):
         """
         Transfer an amount from the yield_accrued of one PCV Deposit to the balance of another (can include own balance).
         """
@@ -164,7 +164,7 @@ class PCVDeposit:
 
         return self, to
 
-    def update_asset_value(self, asset_price):
+    def update_asset_value(self, asset_price: USD):
         """
         Update the asset value based on the current asset price.
         """

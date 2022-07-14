@@ -8,9 +8,7 @@ from model.types import (
 from model.system_parameters import Parameters
 
 
-def policy_yield_accrual(
-    params: Parameters, substep, state_history, previous_state
-) -> dict[str, PCVDeposit]:
+def policy_yield_accrual(params: Parameters, substep, state_history, previous_state):
     """Yield Accrual Policy
     Accrue simple interest on yield-bearing PCV Deposits.
     """
@@ -38,9 +36,7 @@ def policy_yield_accrual(
     }
 
 
-def policy_withdraw_yield(
-    params: Parameters, substep, state_history, previous_state
-) -> dict[str, PCVDeposit]:
+def policy_withdraw_yield(params: Parameters, substep, state_history, previous_state):
     """Withdraw Yield Policy
     Withdraw yield into idle PCV Deposit periodically.
     """
@@ -80,9 +76,7 @@ def policy_withdraw_yield(
     }
 
 
-def policy_reinvest_yield(
-    params: Parameters, substep, state_history, previous_state
-) -> dict[str, PCVDeposit]:
+def policy_reinvest_yield(params: Parameters, substep, state_history, previous_state):
     """Reinvest Yield Policy
     Reinvest yield accrued periodically.
     """

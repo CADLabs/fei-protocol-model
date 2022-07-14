@@ -2,6 +2,7 @@ import types as types
 import collections
 import inspect
 import numpy as np
+import radcad
 
 from IPython.display import Code
 from pygments.formatters import HtmlFormatter
@@ -21,12 +22,10 @@ def rng_generator(master_seed=1):
     if 'seed_sequence' not in globals():
         rng = np.random.default_rng(master_seed)
         seed_sequence = rng.bit_generator._seed_seq
-        return np.random.default_rng(seed_sequence.spawn(1)[0])
-    else:
-        return np.random.default_rng(seed_sequence.spawn(1)[0])
+    return np.random.default_rng(seed_sequence.spawn(1)[0])
 
 
-def get_simulation_hash(sim):
+def get_simulation_hash(sim: radcad.wrappers.Simulation):
     # Get inputs for hash function
     model = sim.model
     timesteps = sim.timesteps

@@ -2,14 +2,17 @@
 """
 
 from model.utils import approx_eq
-import math
-
+from model.system_parameters import Parameters
 from model.types import (
     PCVDeposit,
 )
 
+import math
 
-def policy_constant_function_market_maker(params, substep, state_history, previous_state):
+
+def policy_constant_function_market_maker(
+    params: Parameters, substep, state_history, previous_state
+):
     # Parameters
     liquidity_pool_trading_fee = params["liquidity_pool_trading_fee"]
 
@@ -21,6 +24,7 @@ def policy_constant_function_market_maker(params, substep, state_history, previo
     volatile_asset_price = previous_state["volatile_asset_price"]
 
     # Liquidity Pool Imbalance
+    # TODO Consider refactoring this policy to move re-usable liquidity pool logic into its own function
     fei_balance = math.sqrt(k * volatile_asset_price / fei_price)
     volatile_asset_balance = math.sqrt(k * fei_price / volatile_asset_price)
     fei_source_sink = fei_deposit_liquidity_pool.balance - fei_balance
@@ -67,7 +71,7 @@ def policy_constant_function_market_maker(params, substep, state_history, previo
 
 
 def update_volatile_deposit_liquidity_pool(
-    params, substep, state_history, previous_state, policy_input
+    params: Parameters, substep, state_history, previous_state, policy_input
 ):
     # Policy Inputs
     volatile_asset_balance = policy_input["volatile_asset_balance"]
@@ -82,7 +86,9 @@ def update_volatile_deposit_liquidity_pool(
     return "volatile_deposit_liquidity_pool", volatile_deposit_liquidity_pool
 
 
-def update_fei_deposit_liquidity_pool(params, substep, state_history, previous_state, policy_input):
+def update_fei_deposit_liquidity_pool(
+    params: Parameters, substep, state_history, previous_state, policy_input
+):
     # Policy Inputs
     fei_balance = policy_input["fei_balance"]
 

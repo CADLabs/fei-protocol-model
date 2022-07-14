@@ -223,6 +223,7 @@ class Parameters:
     * https://tribe.fei.money/t/fip-70-lets-get-balsy/3752
     * https://forum.balancer.fi/t/fei-weth-liquidity-and-strenghtening-ties-with-fei/2381
     """
+
     liquidity_pool_trading_fee: List[float] = default([0.003])
     """
     The Uniswap style trading fee collected on incoming assets
@@ -230,6 +231,8 @@ class Parameters:
 
     # Money Market
     base_rate_per_block: List[float] = default([0])
+    # Compound lending market "Compound Jump Rate Model" on-chain parameters, see `model.parts.money_markets` module
+    # TODO [eng] As an extension, consider making key parameters config based
     multiplier_per_block: List[float] = default([23782343987 / wei])
     jump_multiplier_per_block: List[float] = default([518455098934 / wei])
     money_market_kink: List[float] = default([0.8])
@@ -240,6 +243,7 @@ class Parameters:
     """
     The annualized yield (APR) earned by the stable asset yield-bearing PCV Deposit
     """
+
     volatile_asset_yield_rate: List[APR] = default([0.10])
     """
     The annualized yield (APR) earned by the volatile asset yield-bearing PCV Deposit
@@ -250,14 +254,17 @@ class Parameters:
     """
     The duration in days between applying rebalancing strategy
     """
+
     yield_withdrawal_period: List[Timestep] = default([-1])  # days, -1 == disabled
     """
     The duration in days between withdrawing yield to an idle PCV Deposit
     """
+
     yield_reinvest_period: List[Timestep] = default([-1])  # days, -1 == disabled
     """
     The duration in days between reinvesting yield into the PCV Deposit balance
     """
+
     target_stable_backing_ratio: List[float] = default([0.8])
     """
     The target % of user-circulating FEI that is backed by stable assets
@@ -267,10 +274,12 @@ class Parameters:
     TODO Introduce policy for rebalancing towards stable backing ratio,
     to replace current policy of rebalancing towards stable PCV ratio
     """
+
     target_stable_pcv_ratio: List[float] = default([0.5])
     """
     The target % of PCV value that is backed by stable assets
     """
+
     target_rebalancing_condition: List[str] = default([lt])
     """
     Rebalance towards target stable PCV or backing ratio if less than (lt, <) or greater than (gt, >) target,

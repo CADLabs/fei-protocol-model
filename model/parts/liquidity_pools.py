@@ -10,7 +10,9 @@ from model.types import (
 import math
 
 
-def policy_constant_function_market_maker(params: Parameters, substep, state_history, previous_state):
+def policy_constant_function_market_maker(
+    params: Parameters, substep, state_history, previous_state
+):
     # Parameters
     liquidity_pool_trading_fee = params["liquidity_pool_trading_fee"]
 
@@ -68,7 +70,9 @@ def policy_constant_function_market_maker(params: Parameters, substep, state_his
     }
 
 
-def update_volatile_deposit_liquidity_pool(params: Parameters, substep, state_history, previous_state, policy_input):
+def update_volatile_deposit_liquidity_pool(
+    params: Parameters, substep, state_history, previous_state, policy_input
+):
     # Policy Inputs
     volatile_asset_balance = policy_input["volatile_asset_balance"]
 
@@ -82,7 +86,9 @@ def update_volatile_deposit_liquidity_pool(params: Parameters, substep, state_hi
     return "volatile_deposit_liquidity_pool", volatile_deposit_liquidity_pool
 
 
-def update_fei_deposit_liquidity_pool(params: Parameters, substep, state_history, previous_state, policy_input):
+def update_fei_deposit_liquidity_pool(
+    params: Parameters, substep, state_history, previous_state, policy_input
+):
     # Policy Inputs
     fei_balance = policy_input["fei_balance"]
 

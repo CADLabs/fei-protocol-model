@@ -9,7 +9,9 @@ from model.types import (
 from model.system_parameters import Parameters
 
 
-def update_fei_price(params: Parameters, substep, state_history, previous_state, policy_input) -> typing.Tuple[str, USD]:
+def update_fei_price(
+    params: Parameters, substep, state_history, previous_state, policy_input
+) -> typing.Tuple[str, USD]:
     """Update FEI price
     Update the FEI price from the `fei_price_process`.
     """
@@ -28,7 +30,9 @@ def update_fei_price(params: Parameters, substep, state_history, previous_state,
     return "fei_price", fei_price_sample
 
 
-def update_stable_asset_price(params: Parameters, substep, state_history, previous_state, policy_input) -> typing.Tuple[str, USD]:
+def update_stable_asset_price(
+    params: Parameters, substep, state_history, previous_state, policy_input
+) -> typing.Tuple[str, USD]:
     """Update Stable Asset Price
     Update the stable asset price from the `stable_asset_price_process`.
     """
@@ -47,7 +51,9 @@ def update_stable_asset_price(params: Parameters, substep, state_history, previo
     return "stable_asset_price", stable_asset_price_sample
 
 
-def update_volatile_asset_price(params: Parameters, substep, state_history, previous_state, policy_input) -> typing.Tuple[str, USD]:
+def update_volatile_asset_price(
+    params: Parameters, substep, state_history, previous_state, policy_input
+) -> typing.Tuple[str, USD]:
     """Update Volatile Asset Price
     Update the volatile asset price from the `volatile_asset_price_process`.
     """

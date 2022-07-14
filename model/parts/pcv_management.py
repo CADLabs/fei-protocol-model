@@ -9,7 +9,9 @@ from model.types import (
 from model.system_parameters import Parameters
 
 
-def policy_pcv_rebalancing_target_stable_pcv(params: Parameters, substep, state_history, previous_state):
+def policy_pcv_rebalancing_target_stable_pcv(
+    params: Parameters, substep, state_history, previous_state
+):
     """PCV Rebalancing: Target Stable PCV Policy
     The following PCV rebalancing policy targets a specific stable PCV ratio,
     i.e. the % of PCV value that is backed by stable assets.
@@ -158,14 +160,16 @@ def pcv_deposit_rebalancing_strategy(
                 if deposit.yield_rate > 0:
                     logging.warning("Cashing out of yield-bearing deposit")
                     # Transfer yield to deposit balance
-                    deposit.transfer_yield(to=deposit, amount=deposit.yield_accrued, asset_price=volatile_asset_price)
+                    deposit.transfer_yield(
+                        to=deposit, amount=deposit.yield_accrued, asset_price=volatile_asset_price
+                    )
                 transfer_balance = min(balance_change, deposit.balance)
                 # Transfer from stable PCV to volatile idle PCV deposit
                 deposit.transfer(
                     to=stable_deposit_idle,
                     amount=transfer_balance,
                     from_asset_price=volatile_asset_price,
-                    to_asset_price=stable_asset_price
+                    to_asset_price=stable_asset_price,
                 )
                 balance_change -= transfer_balance
             # Check if balance remainder
@@ -182,7 +186,9 @@ def pcv_deposit_rebalancing_strategy(
                 if deposit.yield_rate > 0:
                     logging.warning("Cashing out of yield-bearing deposit")
                     # Transfer yield to deposit balance
-                    deposit.transfer_yield(to=deposit, amount=deposit.yield_accrued, asset_price=stable_asset_price)
+                    deposit.transfer_yield(
+                        to=deposit, amount=deposit.yield_accrued, asset_price=stable_asset_price
+                    )
                 transfer_balance = min(balance_change, deposit.balance)
                 # Transfer from volatile PCV to stable idle PCV deposit
                 deposit.transfer(

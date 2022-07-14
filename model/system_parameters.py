@@ -231,10 +231,10 @@ class Parameters:
 
     # Money Market
     base_rate_per_block: List[float] = default([0])
-    # The numbers below are off-chain current config from Aave or Compound
-    # TODO [eng] extension: config-based
-    multiplier_per_block: List[float] = default([23782343987 / wei])  # TODO [formatting] 2022-07-08: where do these numbers come from?
-    jump_multiplier_per_block: List[float] = default([518455098934 / wei])  # TODO [formatting] 2022-07-08: where do these numbers come from?
+    # Compound lending market "Compound Jump Rate Model" on-chain parameters, see `model.parts.money_markets` module
+    # TODO [eng] As an extension, consider making key parameters config based
+    multiplier_per_block: List[float] = default([23782343987 / wei])
+    jump_multiplier_per_block: List[float] = default([518455098934 / wei])
     money_market_kink: List[float] = default([0.8])
     money_market_reserve_factor: List[float] = default([0.25])
 

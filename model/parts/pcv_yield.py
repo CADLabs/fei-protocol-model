@@ -55,9 +55,8 @@ def policy_withdraw_yield(params: Parameters, substep, state_history, previous_s
     volatile_asset_price = previous_state["volatile_asset_price"]
 
     # State Update
-    # TODO [readability] 2022-07-11: for readability purposes, can we please name a boolean for this
-    #  timestep % yield_withdrawal_period / dt == 0 ? With an explicit flag name?
-    if timestep % yield_withdrawal_period / dt == 0:  # Periodic yield withdrawal
+    timestep_equals_withdrawal_period = timestep % yield_withdrawal_period / dt == 0
+    if timestep_equals_withdrawal_period:  # Periodic yield withdrawal
         stable_deposit_yield_bearing.transfer_yield(
             to=stable_deposit_idle,
             amount=stable_deposit_yield_bearing.yield_accrued,
@@ -94,9 +93,8 @@ def policy_reinvest_yield(params: Parameters, substep, state_history, previous_s
     volatile_asset_price = previous_state["volatile_asset_price"]
 
     # State Update
-    # TODO [readability] 2022-07-11: for readability purposes, can we please name a boolean for this
-    #  timestep % yield_withdrawal_period / dt == 0 ? With an explicit flag name?
-    if timestep % yield_reinvest_period / dt == 0:  # Periodic yield reinvestment
+    timestep_equals_reinvest_period = timestep % yield_reinvest_period / dt == 0
+    if timestep_equals_reinvest_period:  # Periodic yield reinvestment
         stable_deposit_yield_bearing.transfer_yield(
             to=stable_deposit_yield_bearing,
             amount=stable_deposit_yield_bearing.yield_accrued,

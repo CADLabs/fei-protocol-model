@@ -60,7 +60,7 @@ def policy_money_market(params: Parameters, substep, state_history, previous_sta
         )  # total reward per block
         * blocks_per_year
         * dt
-    )  # TODO 2022-07-11: do we have any compounding there?
+    )
 
     # Calculate supply interest rate
     supply_interest_rate = borrowing_interest_rate * utilization_rate * (1 - reserve_factor)

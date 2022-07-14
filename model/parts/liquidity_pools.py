@@ -22,11 +22,7 @@ def policy_constant_function_market_maker(params: Parameters, substep, state_his
     volatile_asset_price = previous_state["volatile_asset_price"]
 
     # Liquidity Pool Imbalance
-    # TODO [engineering] 2022-07-11: i believe it is worthwhile moving this part until Impermanent Loss calculation,
-    #  to a separate function since it is highly specific and is not about fetching values from previous states and spitting out the values.
-    #  Rather we calculate something entirely new. C++ creator Bjarne Stroustrup advocates for separate functions when code becomes longer than 7 lines.
-    #  It would also bring the chance to add a docstring to that function, and eventually make it generic enough to easily re-use it for other
-    #  liquidity pool venues. We could then think of extensions of fragmented liquidity / uniformly allocating our PCV to several liquidity pools.
+    # TODO Consider refactoring this policy to move re-usable liquidity pool logic into its own function
     fei_balance = math.sqrt(k * volatile_asset_price / fei_price)
     volatile_asset_balance = math.sqrt(k * fei_price / volatile_asset_price)
     fei_source_sink = fei_deposit_liquidity_pool.balance - fei_balance

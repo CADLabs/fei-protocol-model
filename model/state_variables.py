@@ -40,7 +40,7 @@ class StateVariables:
     total_protocol_owned_fei: FEI = Uninitialized
     total_user_circulating_fei: FEI = Uninitialized
 
-    # TODO: configure user-circulating FEI states
+    # TODO Configure user-circulating FEI states
     idle_user_circulating_fei: FEI = 225_000_000
     fei_minted_redeemed: FEI = 0.0
     cumulative_psm_redemptions: FEI = 0.0

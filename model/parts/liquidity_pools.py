@@ -22,7 +22,7 @@ def policy_constant_function_market_maker(params: Parameters, substep, state_his
     volatile_asset_price = previous_state["volatile_asset_price"]
 
     # Liquidity Pool Imbalance
-    # todo [engineering] 2022-07-11: i believe it is worthwhile moving this part until Impermanent Loss calculation,
+    # TODO [engineering] 2022-07-11: i believe it is worthwhile moving this part until Impermanent Loss calculation,
     #  to a separate function since it is highly specific and is not about fetching values from previous states and spitting out the values.
     #  Rather we calculate something entirely new. C++ creator Bjarne Stroustrup advocates for separate functions when code becomes longer than 7 lines.
     #  It would also bring the chance to add a docstring to that function, and eventually make it generic enough to easily re-use it for other

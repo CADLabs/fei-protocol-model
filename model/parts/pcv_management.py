@@ -69,7 +69,7 @@ def policy_pcv_rebalancing_target_stable_pcv(params: Parameters, substep, state_
     }
 
     if (
-        # todo [readability] 2022-07-11: can we split this if-statement into two boolean variables
+        # TODO [readability] 2022-07-11: can we split this if-statement into two boolean variables
         #  such that we do: if flag1 and flag2: [...].
         #  Additionally, it is tough to understand what happens when we call target_rebalancing_condition()
 
@@ -118,7 +118,7 @@ def policy_pcv_rebalancing_target_stable_pcv(params: Parameters, substep, state_
 
 
 def pcv_deposit_rebalancing_strategy_v1(
-    # todo [documentation] 2022-07-11: add rationale about v1 and v2 functions in docstring, or cross reference with document
+    # TODO [documentation] 2022-07-11: add rationale about v1 and v2 functions in docstring, or cross reference with document
     volatile_asset_price: USD,
     stable_asset_price: USD,
     volatile_deposit_idle: PCVDeposit,
@@ -212,7 +212,7 @@ def pcv_deposit_rebalancing_strategy_v1(
 
 
 def pcv_deposit_rebalancing_strategy_v2(
-    # todo [documentation] 2022-07-11: add rationale about v1 and v2 functions in docstring, or cross reference with document
+    # TODO [documentation] 2022-07-11: add rationale about v1 and v2 functions in docstring, or cross reference with document
     volatile_asset_price: USD,
     stable_asset_price: USD,
     volatile_deposit_idle: PCVDeposit,

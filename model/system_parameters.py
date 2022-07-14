@@ -232,7 +232,7 @@ class Parameters:
     # Money Market
     base_rate_per_block: List[float] = default([0])
     # The numbers below are off-chain current config from Aave or Compound
-    # todo [eng] extension: config-based
+    # TODO [eng] extension: config-based
     multiplier_per_block: List[float] = default([23782343987 / wei])  # TODO [formatting] 2022-07-08: where do these numbers come from?
     jump_multiplier_per_block: List[float] = default([518455098934 / wei])  # TODO [formatting] 2022-07-08: where do these numbers come from?
     money_market_kink: List[float] = default([0.8])

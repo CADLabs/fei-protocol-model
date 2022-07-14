@@ -38,7 +38,9 @@ def policy_yield_accrual(
     }
 
 
-def policy_withdraw_yield(params: Parameters, substep, state_history, previous_state) -> dict[str, PCVDeposit]:
+def policy_withdraw_yield(
+    params: Parameters, substep, state_history, previous_state
+) -> dict[str, PCVDeposit]:
     """Withdraw Yield Policy
     Withdraw yield into idle PCV Deposit periodically.
     """

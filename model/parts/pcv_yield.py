@@ -28,8 +28,12 @@ def policy_yield_accrual(params: Parameters, substep, state_history, previous_st
     # State Update
     pcv_yield = sum(
         # NOTE accrue_yield() updates PCV Deposit yield
-        stable_deposit_yield_bearing.accrue_yield(period_in_days=dt, asset_price=stable_asset_price),
-        volatile_deposit_yield_bearing.accrue_yield(period_in_days=dt, asset_price=volatile_asset_price),
+        stable_deposit_yield_bearing.accrue_yield(
+            period_in_days=dt, asset_price=stable_asset_price
+        ),
+        volatile_deposit_yield_bearing.accrue_yield(
+            period_in_days=dt, asset_price=volatile_asset_price
+        ),
         fei_deposit_money_market.accrue_yield(period_in_days=dt, asset_price=fei_price),
         liquidity_pool_trading_fees,
     )

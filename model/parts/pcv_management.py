@@ -161,7 +161,9 @@ def pcv_deposit_rebalancing_strategy(
                     logging.warning("Cashing out of yield-bearing deposit")
                     # Transfer yield to deposit balance
                     deposit.transfer_yield(
-                        to=deposit, amount=deposit.yield_accrued, asset_price=volatile_asset_price
+                        to=deposit,
+                        amount=deposit.yield_accrued,
+                        asset_price=volatile_asset_price,
                     )
                 transfer_balance = min(balance_change, deposit.balance)
                 # Transfer from stable PCV to volatile idle PCV deposit
@@ -187,7 +189,9 @@ def pcv_deposit_rebalancing_strategy(
                     logging.warning("Cashing out of yield-bearing deposit")
                     # Transfer yield to deposit balance
                     deposit.transfer_yield(
-                        to=deposit, amount=deposit.yield_accrued, asset_price=stable_asset_price
+                        to=deposit,
+                        amount=deposit.yield_accrued,
+                        asset_price=stable_asset_price,
                     )
                 transfer_balance = min(balance_change, deposit.balance)
                 # Transfer from volatile PCV to stable idle PCV deposit

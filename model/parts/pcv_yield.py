@@ -19,20 +19,26 @@ def policy_yield_accrual(params: Parameters, substep, state_history, previous_st
     stable_deposit_yield_bearing: PCVDeposit = previous_state["stable_deposit_yield_bearing"]
     volatile_deposit_yield_bearing: PCVDeposit = previous_state["volatile_deposit_yield_bearing"]
     fei_deposit_money_market: PCVDeposit = previous_state["fei_deposit_money_market"]
+    liquidity_pool_trading_fees = previous_state["liquidity_pool_trading_fees"]
 
     stable_asset_price = previous_state["stable_asset_price"]
     volatile_asset_price = previous_state["volatile_asset_price"]
     fei_price = previous_state["fei_price"]
 
     # State Update
-    stable_deposit_yield_bearing.accrue_yield(period_in_days=dt, asset_price=stable_asset_price)
-    volatile_deposit_yield_bearing.accrue_yield(period_in_days=dt, asset_price=volatile_asset_price)
-    fei_deposit_money_market.accrue_yield(period_in_days=dt, asset_price=fei_price)
+    pcv_yield = sum(
+        # NOTE accrue_yield() updates PCV Deposit yield
+        stable_deposit_yield_bearing.accrue_yield(period_in_days=dt, asset_price=stable_asset_price),
+        volatile_deposit_yield_bearing.accrue_yield(period_in_days=dt, asset_price=volatile_asset_price),
+        fei_deposit_money_market.accrue_yield(period_in_days=dt, asset_price=fei_price),
+        liquidity_pool_trading_fees,
+    )
 
     return {
         "stable_deposit_yield_bearing": stable_deposit_yield_bearing,
         "volatile_deposit_yield_bearing": volatile_deposit_yield_bearing,
         "fei_deposit_money_market": fei_deposit_money_market,
+        "pcv_yield": pcv_yield,
     }
 
 

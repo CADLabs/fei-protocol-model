@@ -2,7 +2,7 @@
 """
 
 from model.types import FEI, PCVDeposit
-from model.constants import wei, blocks_per_year
+from model.constants import blocks_per_year
 from model.system_parameters import Parameters
 
 
@@ -32,22 +32,28 @@ def policy_money_market(params: Parameters, substep, state_history, previous_sta
     jump_multiplier_per_block = params["jump_multiplier_per_block"]
     kink = params["money_market_kink"]
     reserve_factor = params["money_market_reserve_factor"]
+    utilization_rate_process = params["utilization_rate_process"]
 
     # State Variables
+    run = previous_state["run"]
+    timestep = previous_state["timestep"]
     fei_deposit_money_market: PCVDeposit = previous_state["fei_deposit_money_market"]
     balance = fei_deposit_money_market.balance
     borrowed: FEI = previous_state["fei_money_market_borrowed"]
 
-    # TODO Replace placeholder dynamics
+    # TODO Replace placeholder Money Market dynamics
     # Borrowed amount increases linearly until 95% utilization (above kink of 80%)
-    borrowed = min(balance * 0.95, borrowed + balance * 0.005)
+    # borrowed = min(balance * 0.95, borrowed + balance * 0.005)
+    utilization_rate = utilization_rate_process(run, timestep)
+    borrowed = balance * utilization_rate
 
     # Compound Jump Rate Model
     # Calculate utilization rate
     # Assume Compound "reserves" or protocolSeizeShare of zero i.e. no profit taken
-    cash = balance - borrowed
-    reserves = 0  # placeholder
-    utilization_rate = borrowed / (cash + borrowed - reserves)  # == borrowed / balance
+    # TODO Replace placeholder Money Market dynamics
+    # cash = balance - borrowed
+    # reserves = 0  # placeholder
+    # utilization_rate = borrowed / (cash + borrowed - reserves)  # == borrowed / balance
 
     # Calculate borrowing interest rate
     # To be consistent with the smart contract configuration,

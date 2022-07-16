@@ -22,6 +22,9 @@ def post_process(df: pd.DataFrame, drop_timestep_zero=True, parameters=parameter
     assign_parameters(df, parameters, [
         # Parameters to assign to DataFrame
         'dt',
+        'target_stable_pcv_ratio',
+        'target_rebalancing_condition',
+        'rebalancing_period',
     ])
 
     # Set DataFrame index
@@ -31,6 +34,22 @@ def post_process(df: pd.DataFrame, drop_timestep_zero=True, parameters=parameter
     for key in pcv_deposit_keys:
         for variable in PCVDeposit(asset="", deposit_type="").__dict__.keys():
             df[key + ('_' if not variable.startswith('_') else '') + variable] = df.apply(lambda row: getattr(row[key], variable), axis=1)
+    # Remove PCVDeposit instances from state
+    df = df.drop(pcv_deposit_keys, axis=1)
+
+    # Calculate metrics
+    df["pcv_yield_ratio"] = df["pcv_yield"] / df["total_user_circulating_fei"] * 365 / df["dt"]
+
+    # Convert decimals to percentages
+    convert_to_percentage = [
+        'collateralization_ratio',
+        'stable_backing_ratio',
+        'stable_pcv_ratio',
+        'pcv_yield_rate',
+        'pcv_yield_ratio'
+    ]
+    for variable in convert_to_percentage:
+        df[variable + '_pct'] = df[variable] * 100
 
     # Drop the initial state for plotting
     if drop_timestep_zero:

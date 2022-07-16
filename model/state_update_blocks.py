@@ -63,9 +63,11 @@ state_update_blocks = [
         },
         "variables": {
             # PCV Metrics
+            "stable_backing_ratio": update_from_signal("stable_backing_ratio"),
             "stable_pcv_ratio": update_from_signal("stable_pcv_ratio"),
             "collateralization_ratio": update_from_signal("collateralization_ratio"),
             "protocol_equity": update_from_signal("protocol_equity"),
+            "pcv_yield_rate": update_from_signal("pcv_yield_rate"),
         },
     },
     {
@@ -96,7 +98,10 @@ state_update_blocks = [
             "liquidity_pool_impermanent_loss": update_from_signal(
                 "liquidity_pool_impermanent_loss"
             ),
-            "liquidity_pool_trading_fees": accumulate_from_signal("liquidity_pool_trading_fees"),
+            "liquidity_pool_trading_fees": update_from_signal("liquidity_pool_trading_fees"),
+            "total_liquidity_pool_trading_fees": accumulate_from_signal(
+                "total_liquidity_pool_trading_fees", "liquidity_pool_trading_fees"
+            ),
         },
     },
     {
@@ -125,6 +130,7 @@ state_update_blocks = [
             "stable_deposit_yield_bearing": update_from_signal("stable_deposit_yield_bearing"),
             "volatile_deposit_yield_bearing": update_from_signal("volatile_deposit_yield_bearing"),
             "fei_deposit_money_market": update_from_signal("fei_deposit_money_market"),
+            "pcv_yield": update_from_signal("pcv_yield"),
         },
     },
     {

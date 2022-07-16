@@ -44,13 +44,15 @@ def policy_constant_function_market_maker(
     if fei_source_sink > 0:
         # Liquidity pool is a source of FEI
         # Aggregate trading fees collected on incoming volatile asset
-        trading_fees = liquidity_pool_trading_fee * abs(volatile_asset_source_sink)
-        volatile_asset_balance += trading_fees
+        trading_fees_balance = liquidity_pool_trading_fee * abs(volatile_asset_source_sink)
+        volatile_asset_balance += trading_fees_balance
+        trading_fees = trading_fees_balance * volatile_asset_price
     else:
         # Liquidity pool is a sink for FEI
         # Aggregate trading fees collected on incoming FEI
-        trading_fees = liquidity_pool_trading_fee * abs(fei_source_sink)
-        fei_balance += trading_fees
+        trading_fees_balance = liquidity_pool_trading_fee * abs(fei_source_sink)
+        fei_balance += trading_fees_balance
+        trading_fees = trading_fees_balance * fei_price
 
     k = fei_balance * volatile_asset_balance
     liquidity_pool_tvl = fei_balance * fei_price + volatile_asset_balance * volatile_asset_price

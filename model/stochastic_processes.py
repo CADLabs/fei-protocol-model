@@ -26,10 +26,6 @@ def geometric_brownian_motion_process(
     )
     price_samples = process.sample(timesteps * dt + 1, initial=initial_price)
 
-    # Example of Geometric Brownian Motion Process using Numpy:
-    # x = np.exp((mu - sigma ** 2 / 2) * dt + sigma * np.random.normal(0, np.sqrt(dt), size=(timesteps + 1)).T)
-    # x = initial_price * x.cumprod(axis=0)
-
     return price_samples
 
 
@@ -95,48 +91,41 @@ def create_stochastic_process_realizations(
     Using the stochastic processes defined in `processes` module, create random number generator (RNG) seeds,
     and use RNG to pre-generate samples for number of simulation timesteps.
     """
-
-    geometric_brownian_motion_samples = [
-        geometric_brownian_motion_process(
-            timesteps=timesteps,
-            dt=dt,
-            rng=rng_generator(),
-            mu=kwargs.get("mu"),
-            sigma=kwargs.get("sigma"),
-            initial_price=kwargs.get("initial_price"),
-        )
-        for _ in range(runs)
-    ]
-
-    brownian_motion_samples = [
-        brownian_motion_process(
-            timesteps=timesteps,
-            dt=dt,
-            rng=rng_generator(),
-            mu=kwargs.get("mu"),
-            sigma=kwargs.get("sigma"),
-            initial_price=kwargs.get("initial_price"),
-        )
-        for _ in range(runs)
-    ]
-
-    gaussian_noise_samples = [
-        gaussian_noise_process(
-            timesteps=timesteps,
-            dt=dt,
-            rng=rng_generator(),
-            mu=kwargs.get("mu"),
-            sigma=kwargs.get("sigma"),
-        )
-        for _ in range(runs)
-    ]
-
     if process == "geometric_brownian_motion_process":
-        return geometric_brownian_motion_samples
+        return [
+            geometric_brownian_motion_process(
+                timesteps=timesteps,
+                dt=dt,
+                rng=rng_generator(),
+                mu=kwargs.get("mu"),
+                sigma=kwargs.get("sigma"),
+                initial_price=kwargs.get("initial_price"),
+            )
+            for _ in range(runs)
+        ]
     elif process == "brownian_motion_process":
-        return brownian_motion_samples
+        return [
+            brownian_motion_process(
+                timesteps=timesteps,
+                dt=dt,
+                rng=rng_generator(),
+                mu=kwargs.get("mu"),
+                sigma=kwargs.get("sigma"),
+                initial_price=kwargs.get("initial_price"),
+            )
+            for _ in range(runs)
+        ]
     elif process == "gaussian_noise_process":
-        return gaussian_noise_samples
+        return [
+            gaussian_noise_process(
+                timesteps=timesteps,
+                dt=dt,
+                rng=rng_generator(),
+                mu=kwargs.get("mu"),
+                sigma=kwargs.get("sigma"),
+            )
+            for _ in range(runs)
+        ]
     else:
         raise Exception("Invalid Process")
 

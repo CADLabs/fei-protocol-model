@@ -32,24 +32,24 @@ from model.constants import (
 
 monte_carlo_runs = 100
 
-# volatile_asset_price_samples = create_stochastic_process_realizations(
-#     "brownian_motion_process",
-#     timesteps=simulation.TIMESTEPS,
-#     dt=simulation.DELTA_TIME,
-#     mu=-50,
-#     sigma=20,
-#     initial_price=2000,
-#     runs=monte_carlo_runs,
-# )
 volatile_asset_price_samples = create_stochastic_process_realizations(
-    "geometric_brownian_motion_process",
+    "brownian_motion_process",
     timesteps=simulation.TIMESTEPS,
     dt=simulation.DELTA_TIME,
-    mu=-0.5,
-    sigma=0.025,
+    mu=-50,
+    sigma=20,
     initial_price=2000,
     runs=monte_carlo_runs,
 )
+# volatile_asset_price_samples = create_stochastic_process_realizations(
+#     "geometric_brownian_motion_process",
+#     timesteps=simulation.TIMESTEPS,
+#     dt=simulation.DELTA_TIME,
+#     mu=-0.5,
+#     sigma=0.025,
+#     initial_price=2000,
+#     runs=monte_carlo_runs,
+# )
 
 stable_asset_price_samples = create_stochastic_process_realizations(
     "gaussian_noise_process",

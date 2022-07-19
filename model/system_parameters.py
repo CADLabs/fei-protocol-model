@@ -245,13 +245,14 @@ class Parameters:
 
     See https://tribe.fei.money/t/fip-104-fei-pcv-reinforcement-proposal
 
-    TODO Introduce policy for rebalancing towards stable backing ratio,
-    to replace current policy of rebalancing towards stable PCV ratio
+    Set to `None` to disable.
     """
 
-    target_stable_pcv_ratio: List[float] = default([0.5])
+    target_stable_pcv_ratio: List[float] = default([None])
     """
     The target % of PCV value that is backed by stable assets
+
+    Set to `None` to disable.
     """
 
     target_rebalancing_condition: List[str] = default([lt])

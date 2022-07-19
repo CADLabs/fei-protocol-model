@@ -168,7 +168,9 @@ state_update_blocks = [
             PCV Rebalancing
         """,
         "policies": {
-            "pcv_rebalancing": pcv_management.policy_pcv_rebalancing_target_stable_pcv,
+            # Disable execution of Policy by setting relevant target System Parameter to `None`
+            "target_stable_pcv": pcv_management.policy_pcv_rebalancing_target_stable_pcv,
+            "target_stable_backing": pcv_management.policy_pcv_rebalancing_target_stable_backing,
         },
         "variables": {
             # NOTE PCV asset value implicitly updated every period even if no rebalancing performed

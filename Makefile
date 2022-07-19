@@ -20,13 +20,14 @@ format:
 	black --line-length 100 model
 
 test:
+	# Run Pytest tests
+	python3 -m pytest -m "not api_test" tests
+	# Execute Jupyter Notebooks
 	# execute-notebooks
 	# Check formatting
 	python -m black --check --diff --line-length 100 model
 	# Check docstrings
 	# pylint --disable=all --enable=missing-docstring model
-	# Run Pytest tests
-	python3 -m pytest -m "not api_test" tests
 
 build-docs: docs-pdoc docs-jupyter-book
 

@@ -5,6 +5,7 @@ from model.utils import approx_eq
 from model.system_parameters import Parameters
 from model.types import (
     PCVDeposit,
+    UserDeposit,
 )
 
 import math
@@ -17,8 +18,14 @@ def policy_constant_function_market_maker(
     liquidity_pool_trading_fee = params["liquidity_pool_trading_fee"]
 
     # State Variables
-    fei_deposit_liquidity_pool: PCVDeposit = previous_state["fei_deposit_liquidity_pool"]
-    volatile_deposit_liquidity_pool: PCVDeposit = previous_state["volatile_deposit_liquidity_pool"]
+    fei_liquidity_pool_pcv_deposit: PCVDeposit = previous_state["fei_liquidity_pool_pcv_deposit"]
+    volatile_liquidity_pool_pcv_deposit: PCVDeposit = previous_state[
+        "volatile_liquidity_pool_pcv_deposit"
+    ]
+    fei_liquidity_pool_user_deposit: UserDeposit = previous_state["fei_liquidity_pool_user_deposit"]
+    volatile_liquidity_pool_user_deposit: UserDeposit = previous_state[
+        "volatile_liquidity_pool_user_deposit"
+    ]
     k = previous_state["liquidity_pool_invariant"]
     fei_price = previous_state["fei_price"]
     volatile_asset_price = previous_state["volatile_asset_price"]
@@ -27,8 +34,16 @@ def policy_constant_function_market_maker(
     # TODO Consider refactoring this policy to move re-usable liquidity pool logic into its own function
     fei_balance = math.sqrt(k * volatile_asset_price / fei_price)
     volatile_asset_balance = math.sqrt(k * fei_price / volatile_asset_price)
-    fei_source_sink = fei_deposit_liquidity_pool.balance - fei_balance
-    volatile_asset_source_sink = volatile_deposit_liquidity_pool.balance - volatile_asset_balance
+
+    current_fei_balance = (
+        fei_liquidity_pool_pcv_deposit.balance + fei_liquidity_pool_user_deposit.balance
+    )
+    fei_source_sink = current_fei_balance - fei_balance
+
+    current_volatile_asset_balance = (
+        volatile_liquidity_pool_pcv_deposit.balance + volatile_liquidity_pool_user_deposit.balance
+    )
+    volatile_asset_source_sink = current_volatile_asset_balance - volatile_asset_balance
 
     assert approx_eq(
         fei_balance * volatile_asset_balance, k, abs_tol=1e-2
@@ -59,9 +74,24 @@ def policy_constant_function_market_maker(
     price_ratio = state_history[0][0]["volatile_asset_price"] / volatile_asset_price
     impermanent_loss = 2 * math.sqrt(price_ratio) / (1 + price_ratio) - 1
 
+    # Calculate protocol's share of the total liquidity pool liquidity
+    protocol_liquidity_share = fei_liquidity_pool_pcv_deposit.balance / current_fei_balance
+
+    # Update PCV Deposit LP balance
+    fei_liquidity_pool_pcv_deposit.set_balance(fei_balance * protocol_liquidity_share, fei_price)
+    volatile_liquidity_pool_pcv_deposit.set_balance(
+        volatile_asset_balance * protocol_liquidity_share, volatile_asset_price
+    )
+
+    # Update User Deposit LP balance
+    fei_liquidity_pool_user_deposit.set_balance(
+        fei_balance * (1 - protocol_liquidity_share), fei_price
+    )
+    volatile_liquidity_pool_user_deposit.set_balance(
+        volatile_asset_balance * (1 - protocol_liquidity_share), volatile_asset_price
+    )
+
     return {
-        "fei_balance": fei_balance,
-        "volatile_asset_balance": volatile_asset_balance,
         "liquidity_pool_fei_source_sink": fei_source_sink,
         # Assumes any FEI released into circulating supply is redeemed
         "fei_minted_redeemed": -fei_source_sink,
@@ -69,36 +99,9 @@ def policy_constant_function_market_maker(
         "liquidity_pool_tvl": liquidity_pool_tvl,
         "liquidity_pool_impermanent_loss": impermanent_loss,
         "liquidity_pool_trading_fees": trading_fees,
+        # PCV Deposit and User Deposit updates
+        "fei_liquidity_pool_pcv_deposit": fei_liquidity_pool_pcv_deposit,
+        "volatile_liquidity_pool_pcv_deposit": volatile_liquidity_pool_pcv_deposit,
+        "fei_liquidity_pool_user_deposit": fei_liquidity_pool_user_deposit,
+        "volatile_liquidity_pool_user_deposit": volatile_liquidity_pool_user_deposit,
     }
-
-
-def update_volatile_deposit_liquidity_pool(
-    params: Parameters, substep, state_history, previous_state, policy_input
-):
-    # Policy Inputs
-    volatile_asset_balance = policy_input["volatile_asset_balance"]
-
-    # State Variables
-    volatile_deposit_liquidity_pool: PCVDeposit = previous_state["volatile_deposit_liquidity_pool"]
-    volatile_asset_price = previous_state["volatile_asset_price"]
-
-    # State Update
-    volatile_deposit_liquidity_pool.set_balance(volatile_asset_balance, volatile_asset_price)
-
-    return "volatile_deposit_liquidity_pool", volatile_deposit_liquidity_pool
-
-
-def update_fei_deposit_liquidity_pool(
-    params: Parameters, substep, state_history, previous_state, policy_input
-):
-    # Policy Inputs
-    fei_balance = policy_input["fei_balance"]
-
-    # State Variables
-    fei_deposit_liquidity_pool: PCVDeposit = previous_state["fei_deposit_liquidity_pool"]
-    fei_price = previous_state["fei_price"]
-
-    # State Update
-    fei_deposit_liquidity_pool.set_balance(fei_balance, fei_price)
-
-    return "fei_deposit_liquidity_pool", fei_deposit_liquidity_pool

@@ -1,8 +1,8 @@
 import pandas as pd
 from radcad.core import generate_parameter_sweep
 
-from model.system_parameters import parameters, Parameters, pcv_deposit_keys
-from model.types import PCVDeposit
+from model.system_parameters import parameters, Parameters, pcv_deposit_keys, user_deposit_keys
+from model.types import PCVDeposit, UserDeposit
 
 
 def assign_parameters(df: pd.DataFrame, parameters: Parameters, set_params=[]):
@@ -30,12 +30,16 @@ def post_process(df: pd.DataFrame, drop_timestep_zero=True, parameters=parameter
     # Set DataFrame index
     df = df.set_index("timestamp", drop=False)
 
-    # Disaggregate PCV Deposit variables
+    # Disaggregate PCV Deposit State Variables
     for key in pcv_deposit_keys:
-        for variable in PCVDeposit(asset="", deposit_type="").__dict__.keys():
+        for variable in PCVDeposit(asset="", deposit_location="").__dict__.keys():
             df[key + ('_' if not variable.startswith('_') else '') + variable] = df.apply(lambda row: getattr(row[key], variable), axis=1)
-    # Remove PCVDeposit instances from state
-    df = df.drop(pcv_deposit_keys, axis=1)
+    # Disaggregate User Deposit State Variables
+    for key in user_deposit_keys:
+        for variable in UserDeposit(asset="", deposit_location="").__dict__.keys():
+            df[key + ('_' if not variable.startswith('_') else '') + variable] = df.apply(lambda row: getattr(row[key], variable), axis=1)
+    # Remove Deposit instances from state
+    df = df.drop(pcv_deposit_keys + user_deposit_keys, axis=1)
 
     # Calculate metrics
     df["pcv_yield_ratio"] = df["pcv_yield"] / df["total_user_circulating_fei"] * 365 / df["dt"]

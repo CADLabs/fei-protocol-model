@@ -17,6 +17,7 @@ from model.utils import default
 from model.types import (
     Callable,
     PCVDeposit,
+    UserDeposit,
     Percentage,
     Timestep,
     Run,
@@ -69,69 +70,116 @@ utilization_rate_samples = create_stochastic_process_realizations(
     runs=monte_carlo_runs,
 )
 
-# Configure distribution of PCV deposits
+
+# Configure distribution of PCV Deposits
 # Each distribution must contain the same set of deposits
-pcv_distribution_sweep = [
+pcv_deposit_distribution_sweep = [
     [
         # FEI PCV
         PCVDeposit(
             asset="fei",
-            deposit_type="idle",
+            deposit_location="idle",
             _balance=170_000_000,
             _asset_value=170_000_000,
         ),
         PCVDeposit(
             asset="fei",
-            deposit_type="liquidity_pool",
+            deposit_location="liquidity_pool",
             # Initialized in setup_initial_state()
         ),
         PCVDeposit(
             asset="fei",
-            deposit_type="money_market",
+            deposit_location="money_market",
             _balance=30_000_000,
             _asset_value=0.0,  # Accounted as asset value of zero for PCV
         ),
         # Stable Asset PCV
         PCVDeposit(
             asset="stable",
-            deposit_type="idle",
+            deposit_location="idle",
             _balance=70_000_000,  # set this to 1_000_000 to test rebalancing policy
             _asset_value=70_000_000,
         ),
         PCVDeposit(
             asset="stable",
-            deposit_type="yield_bearing",
+            deposit_location="yield_bearing",
             _balance=70_000_000,
             _asset_value=70_000_000,
         ),
         # Volatile Asset PCV
         PCVDeposit(
             asset="volatile",
-            deposit_type="idle",
+            deposit_location="idle",
             # Assumes initial volatile asset price of 2000 USD
             _balance=102_500_000 / 2_000,
             _asset_value=102_500_000,
         ),
         PCVDeposit(
             asset="volatile",
-            deposit_type="yield_bearing",
+            deposit_location="yield_bearing",
             _balance=102_500_000 / 2_000,
             _asset_value=102_500_000,
         ),
         PCVDeposit(
             asset="volatile",
-            deposit_type="liquidity_pool",
+            deposit_location="liquidity_pool",
             # Initialized in setup_initial_state()
         ),
     ],
 ]
 
+
 # Generate PCV Deposit keys
-pcv_distribution_sweep = [
-    {deposit.asset + "_deposit_" + deposit.deposit_type: deposit for deposit in distribution}
-    for distribution in pcv_distribution_sweep
+pcv_deposit_distribution_sweep = [
+    {deposit.key: deposit for deposit in distribution}
+    for distribution in pcv_deposit_distribution_sweep
 ]
-pcv_deposit_keys = pcv_distribution_sweep[0].keys()
+pcv_deposit_keys = list(pcv_deposit_distribution_sweep[0].keys())
+
+
+# Configure distribution of User Deposits
+# Each distribution must contain the same set of deposits
+user_deposit_distribution_sweep = [
+    [
+        UserDeposit(
+            asset="fei",
+            deposit_location="idle",
+            _balance=225_000_000,
+            _asset_value=225_000_000,
+        ),
+        UserDeposit(
+            asset="fei",
+            deposit_location="savings",
+            _balance=0,
+            _asset_value=0,
+        ),
+        UserDeposit(
+            asset="fei",
+            deposit_location="liquidity_pool",
+            _balance=0,
+            _asset_value=0,
+        ),
+        UserDeposit(
+            asset="volatile",
+            deposit_location="liquidity_pool",
+            _balance=0,
+            _asset_value=0,
+        ),
+        UserDeposit(
+            asset="fei",
+            deposit_location="money_market",
+            _balance=0,
+            _asset_value=0,
+        ),
+    ]
+]
+
+# Generate User Deposit keys
+user_deposit_distribution_sweep = [
+    {deposit.key: deposit for deposit in distribution}
+    for distribution in user_deposit_distribution_sweep
+]
+user_deposit_keys = list(user_deposit_distribution_sweep[0].keys())
 
 
 @dataclass
@@ -263,10 +311,17 @@ class Parameters:
     """
 
     # PCV Deposit configuration
-    pcv_deposits: List[Dict[str, PCVDeposit]] = default(pcv_distribution_sweep)
+    pcv_deposits: List[Dict[str, PCVDeposit]] = default(pcv_deposit_distribution_sweep)
     """
     The distribution of PCV Deposits used to initialize the PCV Deposit State Variables,
     to enable performing a parameter sweep of the Initial State of PCV Deposits.
+    """
+
+    # User Deposit configuration
+    user_deposits: List[Dict[str, PCVDeposit]] = default(user_deposit_distribution_sweep)
+    """
+    The distribution of User Deposits used to initialize the User Deposit State Variables,
+    to enable performing a parameter sweep of the Initial State of User Deposits.
     """
 
 

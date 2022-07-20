@@ -2,9 +2,10 @@ import radcad as radcad
 import logging
 from dataclasses import make_dataclass
 from model.state_variables import StateVariables
-from model.system_parameters import pcv_deposit_keys
+from model.system_parameters import pcv_deposit_keys, user_deposit_keys
 from model.types import (
     PCVDeposit,
+    UserDeposit,
 )
 
 
@@ -15,13 +16,19 @@ def setup_initial_state(context: radcad.Context):
     run = context.run
     timestep = 0
 
-    # Add PCV distribution configuration to StateVariables
-    StateVariablesWithPCV = make_dataclass(
-        "StateVariablesWithPCV",
-        fields=[(key, PCVDeposit, params["pcv_deposits"][key]) for key in pcv_deposit_keys],
+    # Add PCV Deposit and User Deposit distribution configuration to StateVariables
+    StateVariablesWithDeposits = make_dataclass(
+        "StateVariablesWithDeposits",
+        fields=(
+            # Add all PCV Deposit instances
+            [(key, PCVDeposit, params["pcv_deposits"][key]) for key in pcv_deposit_keys]
+            # Add all User Deposit instances
+            + [(key, UserDeposit, params["user_deposits"][key]) for key in user_deposit_keys]
+        ),
         bases=(StateVariables,),
     )
-    context.initial_state.update(StateVariablesWithPCV().__dict__)
+    # Update Initial State to include all Deposit instances
+    context.initial_state.update(StateVariablesWithDeposits().__dict__)
     initial_state = context.initial_state
 
     """
@@ -34,8 +41,8 @@ def setup_initial_state(context: radcad.Context):
     volatile_asset_price_process = params["volatile_asset_price_process"]
 
     # State Variables
-    fei_deposit_liquidity_pool = initial_state["fei_deposit_liquidity_pool"]
-    volatile_deposit_liquidity_pool = initial_state["volatile_deposit_liquidity_pool"]
+    fei_liquidity_pool_pcv_deposit = initial_state["fei_liquidity_pool_pcv_deposit"]
+    volatile_liquidity_pool_pcv_deposit = initial_state["volatile_liquidity_pool_pcv_deposit"]
 
     fei_price = fei_price_process(run, timestep * dt)
     volatile_asset_price = volatile_asset_price_process(run, timestep * dt)
@@ -51,10 +58,10 @@ def setup_initial_state(context: radcad.Context):
     liquidity_pool_invariant = liquidity_pool_fei_balance * liquidity_pool_volatile_asset_balance
 
     # State Updates
-    fei_deposit_liquidity_pool._balance = liquidity_pool_fei_balance
-    fei_deposit_liquidity_pool._asset_value = liquidity_pool_fei_balance * fei_price
-    volatile_deposit_liquidity_pool._balance = liquidity_pool_volatile_asset_balance
-    volatile_deposit_liquidity_pool._asset_value = (
+    fei_liquidity_pool_pcv_deposit._balance = liquidity_pool_fei_balance
+    fei_liquidity_pool_pcv_deposit._asset_value = liquidity_pool_fei_balance * fei_price
+    volatile_liquidity_pool_pcv_deposit._balance = liquidity_pool_volatile_asset_balance
+    volatile_liquidity_pool_pcv_deposit._asset_value = (
         liquidity_pool_volatile_asset_balance * volatile_asset_price
     )
 
@@ -62,8 +69,8 @@ def setup_initial_state(context: radcad.Context):
         {
             "liquidity_pool_tvl": liquidity_pool_tvl,
             "liquidity_pool_invariant": liquidity_pool_invariant,
-            "fei_deposit_liquidity_pool": fei_deposit_liquidity_pool,
-            "volatile_deposit_liquidity_pool": volatile_deposit_liquidity_pool,
+            "fei_liquidity_pool_pcv_deposit": fei_liquidity_pool_pcv_deposit,
+            "volatile_liquidity_pool_pcv_deposit": volatile_liquidity_pool_pcv_deposit,
         }
     )
 
@@ -75,12 +82,14 @@ def setup_initial_state(context: radcad.Context):
     volatile_asset_yield_rate = params["volatile_asset_yield_rate"]
 
     # State Variables
-    stable_deposit_yield_bearing: PCVDeposit = initial_state["stable_deposit_yield_bearing"]
-    volatile_deposit_yield_bearing: PCVDeposit = initial_state["volatile_deposit_yield_bearing"]
+    stable_yield_bearing_pcv_deposit: PCVDeposit = initial_state["stable_yield_bearing_pcv_deposit"]
+    volatile_yield_bearing_pcv_deposit: PCVDeposit = initial_state[
+        "volatile_yield_bearing_pcv_deposit"
+    ]
 
     # State Updates
-    stable_deposit_yield_bearing.yield_rate = stable_asset_yield_rate
-    volatile_deposit_yield_bearing.yield_rate = volatile_asset_yield_rate
+    stable_yield_bearing_pcv_deposit.yield_rate = stable_asset_yield_rate
+    volatile_yield_bearing_pcv_deposit.yield_rate = volatile_asset_yield_rate
 
 
 def setup_state_update_blocks(context: radcad.Context):

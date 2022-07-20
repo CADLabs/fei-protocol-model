@@ -1,7 +1,7 @@
 """Money Markets
 """
 
-from model.types import FEI, PCVDeposit
+from model.types import FEI, PCVDeposit, UserDeposit
 from model.constants import blocks_per_year
 from model.system_parameters import Parameters
 
@@ -37,9 +37,12 @@ def policy_money_market(params: Parameters, substep, state_history, previous_sta
     # State Variables
     run = previous_state["run"]
     timestep = previous_state["timestep"]
-    fei_deposit_money_market: PCVDeposit = previous_state["fei_deposit_money_market"]
-    balance = fei_deposit_money_market.balance
+    fei_money_market_pcv_deposit: PCVDeposit = previous_state["fei_money_market_pcv_deposit"]
+    fei_money_market_user_deposit: UserDeposit = previous_state["fei_money_market_user_deposit"]
     borrowed: FEI = previous_state["fei_money_market_borrowed"]
+
+    # Calculate total money market balance as combination of protocol- and user-supplied FEI
+    balance = fei_money_market_pcv_deposit.balance + fei_money_market_user_deposit.balance
 
     # TODO Replace placeholder Money Market dynamics
     # Borrowed amount increases linearly until 95% utilization (above kink of 80%)
@@ -72,11 +75,14 @@ def policy_money_market(params: Parameters, substep, state_history, previous_sta
     supply_interest_rate = borrowing_interest_rate * utilization_rate * (1 - reserve_factor)
 
     # State Update
-    # Calculate effective yield rate on total PCVDeposit balance
-    fei_deposit_money_market.yield_rate = utilization_rate * supply_interest_rate
+    # Calculate effective yield rate on total balance
+    effective_yield_rate = utilization_rate * supply_interest_rate
+    fei_money_market_pcv_deposit.yield_rate = effective_yield_rate
+    fei_money_market_user_deposit.yield_rate = effective_yield_rate
 
     return {
-        "fei_deposit_money_market": fei_deposit_money_market,
+        "fei_money_market_pcv_deposit": fei_money_market_pcv_deposit,
+        "fei_money_market_user_deposit": fei_money_market_user_deposit,
         "fei_money_market_borrowed": borrowed,
         "fei_money_market_utilization": utilization_rate,
         "fei_money_market_borrow_rate": borrowing_interest_rate,

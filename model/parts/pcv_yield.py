@@ -2,8 +2,8 @@
 """
 
 from model.types import (
-    APR,
     PCVDeposit,
+    UserDeposit,
 )
 from model.system_parameters import Parameters
 
@@ -16,34 +16,46 @@ def policy_yield_accrual(params: Parameters, substep, state_history, previous_st
     dt = params["dt"]
 
     # State Variables
-    stable_deposit_yield_bearing: PCVDeposit = previous_state["stable_deposit_yield_bearing"]
-    volatile_deposit_yield_bearing: PCVDeposit = previous_state["volatile_deposit_yield_bearing"]
-    fei_deposit_money_market: PCVDeposit = previous_state["fei_deposit_money_market"]
+    stable_yield_bearing_pcv_deposit: PCVDeposit = previous_state[
+        "stable_yield_bearing_pcv_deposit"
+    ]
+    volatile_yield_bearing_pcv_deposit: PCVDeposit = previous_state[
+        "volatile_yield_bearing_pcv_deposit"
+    ]
+    fei_money_market_pcv_deposit: PCVDeposit = previous_state["fei_money_market_pcv_deposit"]
+    fei_liquidity_pool_pcv_deposit: PCVDeposit = previous_state["fei_liquidity_pool_pcv_deposit"]
+    fei_liquidity_pool_user_deposit: UserDeposit = previous_state["fei_liquidity_pool_user_deposit"]
     liquidity_pool_trading_fees = previous_state["liquidity_pool_trading_fees"]
 
     stable_asset_price = previous_state["stable_asset_price"]
     volatile_asset_price = previous_state["volatile_asset_price"]
     fei_price = previous_state["fei_price"]
 
+    # Calculate protocol's share of the total liquidity pool trading fees
+    protocol_liquidity_share = fei_liquidity_pool_pcv_deposit.balance / (
+        fei_liquidity_pool_pcv_deposit.balance + fei_liquidity_pool_user_deposit.balance
+    )
+    protocol_liquidity_pool_trading_fees = protocol_liquidity_share * liquidity_pool_trading_fees
+
     # State Update
     pcv_yield = sum(
         [
             # NOTE accrue_yield() updates PCV Deposit yield
-            stable_deposit_yield_bearing.accrue_yield(
+            stable_yield_bearing_pcv_deposit.accrue_yield(
                 period_in_days=dt, asset_price=stable_asset_price
             ),
-            volatile_deposit_yield_bearing.accrue_yield(
+            volatile_yield_bearing_pcv_deposit.accrue_yield(
                 period_in_days=dt, asset_price=volatile_asset_price
             ),
-            fei_deposit_money_market.accrue_yield(period_in_days=dt, asset_price=fei_price),
-            liquidity_pool_trading_fees,
+            fei_money_market_pcv_deposit.accrue_yield(period_in_days=dt, asset_price=fei_price),
+            protocol_liquidity_pool_trading_fees,
         ]
     )
 
     return {
-        "stable_deposit_yield_bearing": stable_deposit_yield_bearing,
-        "volatile_deposit_yield_bearing": volatile_deposit_yield_bearing,
-        "fei_deposit_money_market": fei_deposit_money_market,
+        "stable_yield_bearing_pcv_deposit": stable_yield_bearing_pcv_deposit,
+        "volatile_yield_bearing_pcv_deposit": volatile_yield_bearing_pcv_deposit,
+        "fei_money_market_pcv_deposit": fei_money_market_pcv_deposit,
         "pcv_yield": pcv_yield,
     }
 
@@ -59,32 +71,36 @@ def policy_withdraw_yield(params: Parameters, substep, state_history, previous_s
 
     # State Variables
     timestep = previous_state["timestep"]
-    stable_deposit_idle: PCVDeposit = previous_state["stable_deposit_idle"]
-    volatile_deposit_idle: PCVDeposit = previous_state["volatile_deposit_idle"]
-    stable_deposit_yield_bearing: PCVDeposit = previous_state["stable_deposit_yield_bearing"]
-    volatile_deposit_yield_bearing: PCVDeposit = previous_state["volatile_deposit_yield_bearing"]
+    stable_idle_pcv_deposit: PCVDeposit = previous_state["stable_idle_pcv_deposit"]
+    volatile_idle_pcv_deposit: PCVDeposit = previous_state["volatile_idle_pcv_deposit"]
+    stable_yield_bearing_pcv_deposit: PCVDeposit = previous_state[
+        "stable_yield_bearing_pcv_deposit"
+    ]
+    volatile_yield_bearing_pcv_deposit: PCVDeposit = previous_state[
+        "volatile_yield_bearing_pcv_deposit"
+    ]
     stable_asset_price = previous_state["stable_asset_price"]
     volatile_asset_price = previous_state["volatile_asset_price"]
 
     # State Update
     timestep_equals_withdrawal_period = timestep % yield_withdrawal_period / dt == 0
     if timestep_equals_withdrawal_period:  # Periodic yield withdrawal
-        stable_deposit_yield_bearing.transfer_yield(
-            to=stable_deposit_idle,
-            amount=stable_deposit_yield_bearing.yield_accrued,
+        stable_yield_bearing_pcv_deposit.transfer_yield(
+            to=stable_idle_pcv_deposit,
+            amount=stable_yield_bearing_pcv_deposit.yield_accrued,
             asset_price=stable_asset_price,
         )
-        volatile_deposit_yield_bearing.transfer_yield(
-            to=volatile_deposit_idle,
-            amount=volatile_deposit_yield_bearing.yield_accrued,
+        volatile_yield_bearing_pcv_deposit.transfer_yield(
+            to=volatile_idle_pcv_deposit,
+            amount=volatile_yield_bearing_pcv_deposit.yield_accrued,
             asset_price=volatile_asset_price,
         )
 
     return {
-        "stable_deposit_idle": stable_deposit_idle,
-        "volatile_deposit_idle": volatile_deposit_idle,
-        "stable_deposit_yield_bearing": stable_deposit_yield_bearing,
-        "volatile_deposit_yield_bearing": volatile_deposit_yield_bearing,
+        "stable_idle_pcv_deposit": stable_idle_pcv_deposit,
+        "volatile_idle_pcv_deposit": volatile_idle_pcv_deposit,
+        "stable_yield_bearing_pcv_deposit": stable_yield_bearing_pcv_deposit,
+        "volatile_yield_bearing_pcv_deposit": volatile_yield_bearing_pcv_deposit,
     }
 
 
@@ -99,26 +115,30 @@ def policy_reinvest_yield(params: Parameters, substep, state_history, previous_s
 
     # State Variables
     timestep = previous_state["timestep"]
-    stable_deposit_yield_bearing: PCVDeposit = previous_state["stable_deposit_yield_bearing"]
-    volatile_deposit_yield_bearing: PCVDeposit = previous_state["volatile_deposit_yield_bearing"]
+    stable_yield_bearing_pcv_deposit: PCVDeposit = previous_state[
+        "stable_yield_bearing_pcv_deposit"
+    ]
+    volatile_yield_bearing_pcv_deposit: PCVDeposit = previous_state[
+        "volatile_yield_bearing_pcv_deposit"
+    ]
     stable_asset_price = previous_state["stable_asset_price"]
     volatile_asset_price = previous_state["volatile_asset_price"]
 
     # State Update
     timestep_equals_reinvest_period = timestep % yield_reinvest_period / dt == 0
     if timestep_equals_reinvest_period:  # Periodic yield reinvestment
-        stable_deposit_yield_bearing.transfer_yield(
-            to=stable_deposit_yield_bearing,
-            amount=stable_deposit_yield_bearing.yield_accrued,
+        stable_yield_bearing_pcv_deposit.transfer_yield(
+            to=stable_yield_bearing_pcv_deposit,
+            amount=stable_yield_bearing_pcv_deposit.yield_accrued,
             asset_price=stable_asset_price,
         )
-        volatile_deposit_yield_bearing.transfer_yield(
-            to=volatile_deposit_yield_bearing,
-            amount=volatile_deposit_yield_bearing.yield_accrued,
+        volatile_yield_bearing_pcv_deposit.transfer_yield(
+            to=volatile_yield_bearing_pcv_deposit,
+            amount=volatile_yield_bearing_pcv_deposit.yield_accrued,
             asset_price=volatile_asset_price,
         )
 
     return {
-        "stable_deposit_yield_bearing": stable_deposit_yield_bearing,
-        "volatile_deposit_yield_bearing": volatile_deposit_yield_bearing,
+        "stable_yield_bearing_pcv_deposit": stable_yield_bearing_pcv_deposit,
+        "volatile_yield_bearing_pcv_deposit": volatile_yield_bearing_pcv_deposit,
     }

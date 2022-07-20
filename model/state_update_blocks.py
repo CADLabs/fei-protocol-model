@@ -89,11 +89,10 @@ state_update_blocks = [
             "market_maker": liquidity_pools.policy_constant_function_market_maker,
         },
         "variables": {
+            # NOTE Total liquidity pool metrics including both protocol- and user-supplied liquidity
             "liquidity_pool_fei_source_sink": update_from_signal("liquidity_pool_fei_source_sink"),
             "fei_minted_redeemed": update_from_signal("fei_minted_redeemed"),
             "liquidity_pool_tvl": update_from_signal("liquidity_pool_tvl"),
-            "volatile_deposit_liquidity_pool": liquidity_pools.update_volatile_deposit_liquidity_pool,
-            "fei_deposit_liquidity_pool": liquidity_pools.update_fei_deposit_liquidity_pool,
             "liquidity_pool_invariant": update_from_signal("liquidity_pool_invariant"),
             "liquidity_pool_impermanent_loss": update_from_signal(
                 "liquidity_pool_impermanent_loss"
@@ -101,6 +100,17 @@ state_update_blocks = [
             "liquidity_pool_trading_fees": update_from_signal("liquidity_pool_trading_fees"),
             "total_liquidity_pool_trading_fees": accumulate_from_signal(
                 "total_liquidity_pool_trading_fees", "liquidity_pool_trading_fees"
+            ),
+            # PCV Deposit and User Deposit updates
+            "fei_liquidity_pool_pcv_deposit": update_from_signal("fei_liquidity_pool_pcv_deposit"),
+            "volatile_liquidity_pool_pcv_deposit": update_from_signal(
+                "volatile_liquidity_pool_pcv_deposit"
+            ),
+            "fei_liquidity_pool_user_deposit": update_from_signal(
+                "fei_liquidity_pool_user_deposit"
+            ),
+            "volatile_liquidity_pool_user_deposit": update_from_signal(
+                "volatile_liquidity_pool_user_deposit"
             ),
         },
     },
@@ -112,7 +122,8 @@ state_update_blocks = [
             "money_market": money_markets.policy_money_market,
         },
         "variables": {
-            "fei_deposit_money_market": update_from_signal("fei_deposit_money_market"),
+            "fei_money_market_pcv_deposit": update_from_signal("fei_money_market_pcv_deposit"),
+            "fei_money_market_user_deposit": update_from_signal("fei_money_market_user_deposit"),
             "fei_money_market_borrowed": update_from_signal("fei_money_market_borrowed"),
             "fei_money_market_utilization": update_from_signal("fei_money_market_utilization"),
             "fei_money_market_borrow_rate": update_from_signal("fei_money_market_borrow_rate"),
@@ -127,9 +138,15 @@ state_update_blocks = [
             "policy_accrue_yield": pcv_yield.policy_yield_accrual,
         },
         "variables": {
-            "stable_deposit_yield_bearing": update_from_signal("stable_deposit_yield_bearing"),
-            "volatile_deposit_yield_bearing": update_from_signal("volatile_deposit_yield_bearing"),
-            "fei_deposit_money_market": update_from_signal("fei_deposit_money_market"),
+            "stable_yield_bearing_pcv_deposit": update_from_signal(
+                "stable_yield_bearing_pcv_deposit"
+            ),
+            "volatile_yield_bearing_pcv_deposit": update_from_signal(
+                "volatile_yield_bearing_pcv_deposit"
+            ),
+            "fei_money_market_pcv_deposit": update_from_signal("fei_money_market_pcv_deposit"),
+            # TODO Decide if and where we accrue User Deposit yield
+            # "fei_money_market_user_deposit": update_from_signal("fei_money_market_user_deposit"),
             "pcv_yield": update_from_signal("pcv_yield"),
         },
     },
@@ -141,10 +158,14 @@ state_update_blocks = [
             "policy_withdraw_yield": pcv_yield.policy_withdraw_yield,
         },
         "variables": {
-            "stable_deposit_idle": update_from_signal("stable_deposit_idle"),
-            "volatile_deposit_idle": update_from_signal("volatile_deposit_idle"),
-            "stable_deposit_yield_bearing": update_from_signal("stable_deposit_yield_bearing"),
-            "volatile_deposit_yield_bearing": update_from_signal("volatile_deposit_yield_bearing"),
+            "stable_idle_pcv_deposit": update_from_signal("stable_idle_pcv_deposit"),
+            "volatile_idle_pcv_deposit": update_from_signal("volatile_idle_pcv_deposit"),
+            "stable_yield_bearing_pcv_deposit": update_from_signal(
+                "stable_yield_bearing_pcv_deposit"
+            ),
+            "volatile_yield_bearing_pcv_deposit": update_from_signal(
+                "volatile_yield_bearing_pcv_deposit"
+            ),
         },
     },
     # TODO Set up state update block initialization
@@ -159,8 +180,8 @@ state_update_blocks = [
     #         "policy_reinvest_yield": pcv_yield.policy_reinvest_yield,
     #     },
     #     "variables": {
-    #         "stable_deposit_yield_bearing": update_from_signal("stable_deposit_yield_bearing"),
-    #         "volatile_deposit_yield_bearing": update_from_signal("volatile_deposit_yield_bearing"),
+    #         "stable_yield_bearing_pcv_deposit": update_from_signal("stable_yield_bearing_pcv_deposit"),
+    #         "volatile_yield_bearing_pcv_deposit": update_from_signal("volatile_yield_bearing_pcv_deposit"),
     #     },
     # },
     {
@@ -174,10 +195,14 @@ state_update_blocks = [
         },
         "variables": {
             # NOTE PCV asset value implicitly updated every period even if no rebalancing performed
-            "stable_deposit_idle": update_from_signal("stable_deposit_idle"),
-            "volatile_deposit_idle": update_from_signal("volatile_deposit_idle"),
-            "stable_deposit_yield_bearing": update_from_signal("stable_deposit_yield_bearing"),
-            "volatile_deposit_yield_bearing": update_from_signal("volatile_deposit_yield_bearing"),
+            "stable_idle_pcv_deposit": update_from_signal("stable_idle_pcv_deposit"),
+            "volatile_idle_pcv_deposit": update_from_signal("volatile_idle_pcv_deposit"),
+            "stable_yield_bearing_pcv_deposit": update_from_signal(
+                "stable_yield_bearing_pcv_deposit"
+            ),
+            "volatile_yield_bearing_pcv_deposit": update_from_signal(
+                "volatile_yield_bearing_pcv_deposit"
+            ),
         },
     },
 ]

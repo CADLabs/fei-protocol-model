@@ -51,10 +51,14 @@ def policy_pcv_rebalancing_target_stable_pcv(
     stable_asset_price = previous_state["stable_asset_price"]
 
     # Relevant PCV Deposits
-    stable_deposit_idle: PCVDeposit = previous_state["stable_deposit_idle"]
-    stable_deposit_yield_bearing: PCVDeposit = previous_state["stable_deposit_yield_bearing"]
-    volatile_deposit_idle: PCVDeposit = previous_state["volatile_deposit_idle"]
-    volatile_deposit_yield_bearing: PCVDeposit = previous_state["volatile_deposit_yield_bearing"]
+    stable_idle_pcv_deposit: PCVDeposit = previous_state["stable_idle_pcv_deposit"]
+    stable_yield_bearing_pcv_deposit: PCVDeposit = previous_state[
+        "stable_yield_bearing_pcv_deposit"
+    ]
+    volatile_idle_pcv_deposit: PCVDeposit = previous_state["volatile_idle_pcv_deposit"]
+    volatile_yield_bearing_pcv_deposit: PCVDeposit = previous_state[
+        "volatile_yield_bearing_pcv_deposit"
+    ]
 
     # Check if target defined and policy should be executed
     if not target_stable_pcv_ratio:
@@ -106,19 +110,19 @@ def policy_pcv_rebalancing_target_stable_pcv(
         pcv_deposit_rebalancing_strategy(
             volatile_asset_price=volatile_asset_price,
             stable_asset_price=stable_asset_price,
-            volatile_deposit_idle=volatile_deposit_idle,
-            volatile_deposit_yield_bearing=volatile_deposit_yield_bearing,
-            stable_deposit_idle=stable_deposit_idle,
-            stable_deposit_yield_bearing=stable_deposit_yield_bearing,
+            volatile_idle_pcv_deposit=volatile_idle_pcv_deposit,
+            volatile_yield_bearing_pcv_deposit=volatile_yield_bearing_pcv_deposit,
+            stable_idle_pcv_deposit=stable_idle_pcv_deposit,
+            stable_yield_bearing_pcv_deposit=stable_yield_bearing_pcv_deposit,
             total_stable_asset_balance_change=total_stable_asset_balance_change,
             total_volatile_asset_balance_change=total_volatile_asset_balance_change,
         )
 
     return {
-        "stable_deposit_idle": stable_deposit_idle,
-        "stable_deposit_yield_bearing": stable_deposit_yield_bearing,
-        "volatile_deposit_idle": volatile_deposit_idle,
-        "volatile_deposit_yield_bearing": volatile_deposit_yield_bearing,
+        "stable_idle_pcv_deposit": stable_idle_pcv_deposit,
+        "stable_yield_bearing_pcv_deposit": stable_yield_bearing_pcv_deposit,
+        "volatile_idle_pcv_deposit": volatile_idle_pcv_deposit,
+        "volatile_yield_bearing_pcv_deposit": volatile_yield_bearing_pcv_deposit,
     }
 
 
@@ -164,10 +168,14 @@ def policy_pcv_rebalancing_target_stable_backing(
     total_user_circulating_fei = previous_state["total_user_circulating_fei"]
 
     # Relevant PCV Deposits
-    stable_deposit_idle: PCVDeposit = previous_state["stable_deposit_idle"]
-    stable_deposit_yield_bearing: PCVDeposit = previous_state["stable_deposit_yield_bearing"]
-    volatile_deposit_idle: PCVDeposit = previous_state["volatile_deposit_idle"]
-    volatile_deposit_yield_bearing: PCVDeposit = previous_state["volatile_deposit_yield_bearing"]
+    stable_idle_pcv_deposit: PCVDeposit = previous_state["stable_idle_pcv_deposit"]
+    stable_yield_bearing_pcv_deposit: PCVDeposit = previous_state[
+        "stable_yield_bearing_pcv_deposit"
+    ]
+    volatile_idle_pcv_deposit: PCVDeposit = previous_state["volatile_idle_pcv_deposit"]
+    volatile_yield_bearing_pcv_deposit: PCVDeposit = previous_state[
+        "volatile_yield_bearing_pcv_deposit"
+    ]
 
     # Check if target defined and policy should be executed
     if not target_stable_backing_ratio:
@@ -203,29 +211,29 @@ def policy_pcv_rebalancing_target_stable_backing(
         pcv_deposit_rebalancing_strategy(
             volatile_asset_price,
             stable_asset_price,
-            volatile_deposit_idle,
-            volatile_deposit_yield_bearing,
-            stable_deposit_idle,
-            stable_deposit_yield_bearing,
+            volatile_idle_pcv_deposit,
+            volatile_yield_bearing_pcv_deposit,
+            stable_idle_pcv_deposit,
+            stable_yield_bearing_pcv_deposit,
             total_stable_asset_balance_change,
             total_volatile_asset_balance_change,
         )
 
     return {
-        "stable_deposit_idle": stable_deposit_idle,
-        "stable_deposit_yield_bearing": stable_deposit_yield_bearing,
-        "volatile_deposit_idle": volatile_deposit_idle,
-        "volatile_deposit_yield_bearing": volatile_deposit_yield_bearing,
+        "stable_idle_pcv_deposit": stable_idle_pcv_deposit,
+        "stable_yield_bearing_pcv_deposit": stable_yield_bearing_pcv_deposit,
+        "volatile_idle_pcv_deposit": volatile_idle_pcv_deposit,
+        "volatile_yield_bearing_pcv_deposit": volatile_yield_bearing_pcv_deposit,
     }
 
 
 def pcv_deposit_rebalancing_strategy(
     volatile_asset_price: USD,
     stable_asset_price: USD,
-    volatile_deposit_idle: PCVDeposit,
-    volatile_deposit_yield_bearing: PCVDeposit,
-    stable_deposit_idle: PCVDeposit,
-    stable_deposit_yield_bearing: PCVDeposit,
+    volatile_idle_pcv_deposit: PCVDeposit,
+    volatile_yield_bearing_pcv_deposit: PCVDeposit,
+    stable_idle_pcv_deposit: PCVDeposit,
+    stable_yield_bearing_pcv_deposit: PCVDeposit,
     total_stable_asset_balance_change,
     total_volatile_asset_balance_change,
 ):
@@ -236,22 +244,22 @@ def pcv_deposit_rebalancing_strategy(
     Args:
         volatile_asset_price (USD): The volatile asset price
         stable_asset_price (USD): The stable asset price
-        volatile_deposit_idle (PCVDeposit): The idle volatile asset PCV Deposit
-        volatile_deposit_yield_bearing (PCVDeposit): The yield-bearing volatile asset PCV Deposit
-        stable_deposit_idle (PCVDeposit): The idle stable asset PCV Deposit
-        stable_deposit_yield_bearing (PCVDeposit): The yield-bearing stable asset PCV Deposit
+        volatile_idle_pcv_deposit (PCVDeposit): The idle volatile asset PCV Deposit
+        volatile_yield_bearing_pcv_deposit (PCVDeposit): The yield-bearing volatile asset PCV Deposit
+        stable_idle_pcv_deposit (PCVDeposit): The idle stable asset PCV Deposit
+        stable_yield_bearing_pcv_deposit (PCVDeposit): The yield-bearing stable asset PCV Deposit
         total_stable_asset_balance_change (_type_): The total stable asset balance change to meet target
         total_volatile_asset_balance_change (_type_): The total volatile asset balance change to meet target
     """
     # Rebalancing Strategy
     # PCV deposits in tranches / order of priority for rebalancing
     stable_pcv_deposits = [
-        stable_deposit_idle,
-        stable_deposit_yield_bearing,
+        stable_idle_pcv_deposit,
+        stable_yield_bearing_pcv_deposit,
     ]
     volatile_pcv_deposits = [
-        volatile_deposit_idle,  # Try rebalance from idle assets first
-        volatile_deposit_yield_bearing,  # Followed by any other PCV assets
+        volatile_idle_pcv_deposit,  # Try rebalance from idle assets first
+        volatile_yield_bearing_pcv_deposit,  # Followed by any other PCV assets
     ]
 
     # PCV movement from volatile to stable
@@ -271,7 +279,7 @@ def pcv_deposit_rebalancing_strategy(
                 transfer_balance = min(balance_change, deposit.balance)
                 # Transfer from stable PCV to volatile idle PCV deposit
                 deposit.transfer(
-                    to=stable_deposit_idle,
+                    to=stable_idle_pcv_deposit,
                     amount=transfer_balance,
                     from_asset_price=volatile_asset_price,
                     to_asset_price=stable_asset_price,
@@ -299,7 +307,7 @@ def pcv_deposit_rebalancing_strategy(
                 transfer_balance = min(balance_change, deposit.balance)
                 # Transfer from volatile PCV to stable idle PCV deposit
                 deposit.transfer(
-                    to=volatile_deposit_idle,
+                    to=volatile_idle_pcv_deposit,
                     amount=transfer_balance,
                     from_asset_price=stable_asset_price,
                     to_asset_price=volatile_asset_price,

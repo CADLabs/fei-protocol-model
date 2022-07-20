@@ -9,7 +9,7 @@ from pygments.formatters import HtmlFormatter
 from IPython.core.display import HTML
 
 
-def rng_generator(master_seed=2):
+def rng_generator(master_seed=1):
     """Generate a sequence of Numpy RNG seeds
     This method can be initialized using a master seed with `rng_generator(123)`.
     If it isn't initialized, the first call to `rng_generator()`

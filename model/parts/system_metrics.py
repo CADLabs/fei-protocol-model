@@ -9,7 +9,6 @@ def policy_pcv_metrics(params, substep, state_history, previous_state):
     # State Variables
     total_pcv = previous_state["total_pcv"]
     total_stable_asset_pcv = previous_state["total_stable_asset_pcv"]
-    total_volatile_asset_pcv = previous_state["total_volatile_asset_pcv"]
     total_user_circulating_fei = previous_state["total_user_circulating_fei"]
     fei_price = previous_state["fei_price"]
     pcv_yield = previous_state["pcv_yield"]

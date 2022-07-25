@@ -4,6 +4,7 @@ Various Python types used in the model
 
 import numpy as np
 import sys
+import copy
 
 # See https://docs.python.org/3/library/dataclasses.html
 from dataclasses import dataclass
@@ -51,11 +52,13 @@ class Deposit(metaclass=ABCMeta):
     """Asset held in the deposit e.g. 'ETH'"""
     deposit_location: str
     """Location of Deposit (used for State Variable naming) e.g. 'liquidity_pool', 'money_market', 'idle', 'yield_bearing'"""
-    _balance: Union[FEI, StableAssetUnits, VolatileAssetUnits] = Uninitialized
+    _balance: Union[FEI, StableAssetUnits, VolatileAssetUnits] = 0.0
+    # Asset value must be initialized using appropriate method with asset price argument
     _asset_value: USD = Uninitialized
     _yield_accrued: Union[FEI, StableAssetUnits, VolatileAssetUnits] = 0.0
-    _yield_value: USD = 0.0
-    _yield_rate: APR = Uninitialized
+    # Yield value must be initialized using appropriate method with asset price argument
+    _yield_value: USD = Uninitialized
+    _yield_rate: APR = 0.0
 
     @property
     def key(self) -> str:
@@ -69,12 +72,33 @@ class Deposit(metaclass=ABCMeta):
 
     def __add__(self, other):
         """
-        Add two Deposits together, transfering balance and yield from other to self
+        Add two Deposits of the same type (subclass) and asset together. Returns a new Deposit instance.
         """
+
+        assert (
+            self._deposit_type == other._deposit_type
+        ), "Can't add two unlike Deposit instances together"
+        assert self.asset == other.asset, "Can't add two unlike Deposit instances together"
+
         from_asset_price = other.asset_value / other.balance if other.balance else 0
         to_asset_price = self.asset_value / self.balance if self.balance else 0
-        other.transfer(self, other.balance, from_asset_price, to_asset_price)
-        return self
+
+        assert (
+            from_asset_price == to_asset_price
+        ), "Can't add two Deposit instances with different implicit asset prices"
+        assert (
+            self.yield_rate == other.yield_rate
+        ), "Can't add two Deposit instances with different yield rates"
+
+        return self.__class__(
+            asset=self.asset,
+            deposit_location=self.deposit_location,
+            _balance=self.balance + other.balance,
+            _asset_value=self.asset_value + other.asset_value,
+            _yield_accrued=self.yield_accrued + other.yield_accrued,
+            _yield_value=self.yield_value + other.yield_value,
+            _yield_rate=self.yield_rate,
+        )
 
     def deposit(self, amount, asset_price: USD):
         """

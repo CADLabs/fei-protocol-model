@@ -40,7 +40,9 @@ def test_lint_parameters():
     """
 
     # Get all model modules
-    model_modules = inspect.getmembers(model.parts, inspect.ismodule) + inspect.getmembers(model.parts.utils, inspect.ismodule)
+    model_modules = inspect.getmembers(
+        model.parts, inspect.ismodule
+    ) + inspect.getmembers(model.parts.utils, inspect.ismodule)
 
     consts = [
         function.__code__.co_consts

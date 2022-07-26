@@ -141,7 +141,6 @@ state_update_blocks = [
         description: """
             PCV Yield Accrual
         """,
-        "suffix": "yield_bearing_pcv_deposit",
         policies: {
             "policy_accrue_yield": pcv_yield.policy_yield_accrual,
         },

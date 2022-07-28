@@ -13,8 +13,10 @@ def policy_fei_accounting(params: Parameters, substep, state_history, previous_s
     fei_money_market_utilization: Percentage = previous_state["fei_money_market_utilization"]
 
     # User Deposit State Variables
-    fei_idle_user_deposit: UserDeposit = previous_state["fei_idle_user_deposit"]
+    fei_liquidity_pool_user_deposit: UserDeposit = previous_state["fei_liquidity_pool_user_deposit"]
+    fei_money_market_user_deposit: UserDeposit = previous_state["fei_money_market_user_deposit"]
     fei_savings_user_deposit: UserDeposit = previous_state["fei_savings_user_deposit"]
+    fei_idle_user_deposit: UserDeposit = previous_state["fei_idle_user_deposit"]
 
     # State Update
     total_protocol_owned_fei = (
@@ -26,6 +28,10 @@ def policy_fei_accounting(params: Parameters, substep, state_history, previous_s
     total_user_circulating_fei = (
         fei_idle_user_deposit.balance
         + fei_savings_user_deposit.balance
+        + fei_liquidity_pool_user_deposit.balance
+        # Money market user supplied
+        + fei_money_market_user_deposit.balance
+        # Money market user borrowed
         + fei_money_market_pcv_deposit.balance * fei_money_market_utilization
     )
 

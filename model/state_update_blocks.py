@@ -9,6 +9,8 @@ import model.parts.liquidity_pools as liquidity_pools
 import model.parts.pcv_yield as pcv_yield
 import model.parts.money_markets as money_markets
 import model.parts.system_metrics as system_metrics
+import model.parts.fei_savings_deposit as fei_savings_deposit
+import model.parts.fei_capital_allocation as fei_capital_allocation
 
 from model.utils import update_from_signal, accumulate_from_signal, update_timestamp
 
@@ -115,7 +117,7 @@ state_update_blocks = [
                     "volatile_liquidity_pool_user_deposit",
                 ]
             },
-            **{key: accumulate_from_signal(key) for key in ["liquidity_pool_trading_fees"]},
+            # **{key: accumulate_from_signal(key) for key in ["liquidity_pool_trading_fees"]},
         },
     },
     {
@@ -179,8 +181,7 @@ state_update_blocks = [
             PCV Rebalancing
         """,
         policies: {
-            # Disable execution of Policy by setting relevant target System Parameter to `None`
-            "target_stable_pcv": pcv_management.policy_pcv_rebalancing_target_stable_pcv,
+            # "target_stable_pcv": pcv_management.policy_pcv_rebalancing_target_stable_pcv,
             "target_stable_backing": pcv_management.policy_pcv_rebalancing_target_stable_backing,
         },
         # NOTE PCV asset value implicitly updated every period even if no rebalancing performed
@@ -192,6 +193,54 @@ state_update_blocks = [
                 "stable_yield_bearing_pcv_deposit",
                 "volatile_yield_bearing_pcv_deposit",
             ]
+        },
+    },
+    {
+        description: """
+            FEI Savings Deposit
+        """,
+        policies: {
+            "fei_savings_deposit": fei_savings_deposit.policy_fei_savings_deposit,
+        },
+        variables: {
+            **{key: update_from_signal(key) for key in ["fei_savings_rate"]},
+            **{
+                "fei_savings_user_deposit": fei_savings_deposit.update_fei_savings_deposit_yield_rate
+            },
+        },
+    },
+    {
+        description: """
+            User-circulating FEI Capital Allocation Model Weight Update
+        """,
+        policies: {
+            # Perform weight updates using exogenous dirichlet stochastic process:
+            # "capital_allocation_exogenous_weight_update": fei_capital_allocation.policy_exogenous_weight_update,
+            "capital_allocation_endogenous_weight_update": fei_capital_allocation.policy_endogenous_weight_update,
+        },
+        variables: {key: update_from_signal(key) for key in ["capital_allocation_target_weights"]},
+    },
+    {
+        description: """
+            User-circulating FEI Capital Allocation Model Deposit Rebalancing
+        """,
+        policies: {
+            "capital_allocation_deposit_rebalance": fei_capital_allocation.policy_deposit_rebalance,
+        },
+        variables: {
+            **{
+                key: update_from_signal(key)
+                for key in [
+                    "capital_allocation_rebalance_matrix",
+                    "fei_liquidity_pool_user_deposit",
+                    "fei_money_market_user_deposit",
+                    "fei_savings_user_deposit",
+                    "fei_idle_user_deposit",
+                ]
+            },
+            **{
+                "volatile_liquidity_pool_user_deposit": liquidity_pools.update_volatile_liquidity_pool_user_deposit,
+            },
         },
     },
 ]

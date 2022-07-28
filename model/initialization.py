@@ -90,15 +90,3 @@ def setup_initial_state(context: radcad.Context):
     # State Updates
     stable_yield_bearing_pcv_deposit.yield_rate = stable_asset_yield_rate
     volatile_yield_bearing_pcv_deposit.yield_rate = volatile_asset_yield_rate
-
-
-def setup_state_update_blocks(context: radcad.Context):
-    # TODO Set up state update block initialization
-    # state_update_blocks = context.state_update_blocks
-    # params = context.parameters
-
-    # state_update_blocks = [
-    #     block for block in state_update_blocks \
-    #     if block.get("include_if", False) and params[block["include_if"]]
-    # ]
-    return None

@@ -19,6 +19,8 @@ def df():
 
 
 def test_liquidity_pool_invariant(df):
+    # Only expected to be consistent at end of each timestep
+    df = df.query("substep == substep.max")
     fei_balance = (
         df.fei_liquidity_pool_pcv_deposit_balance
         + df.fei_liquidity_pool_user_deposit_balance
@@ -59,7 +61,7 @@ def test_pcv_accounting(df):
         df.total_pcv == df.total_stable_asset_pcv + df.total_volatile_asset_pcv
     ).all(), "Total PCV constituents inconsistent"
 
-    # PCV value depends on asset price and is only consistent at each timestep
+    # # Only expected to be consistent at end of each timestep because PCV value depends on asset price
     df = df.query("substep == substep.max")
     assert (
         df.total_pcv
@@ -69,8 +71,10 @@ def test_pcv_accounting(df):
 
 
 def test_money_market_utilization(df):
-    calculated_utilization_rate = (
-        df.fei_money_market_borrowed / df.fei_money_market_pcv_deposit_balance
+    # Only expected to be consistent at end of each timestep
+    df = df.query("substep == substep.max")
+    calculated_utilization_rate = df.fei_money_market_borrowed / (
+        df.fei_money_market_pcv_deposit_balance
         + df.fei_money_market_user_deposit_balance
     )
 

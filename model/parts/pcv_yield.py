@@ -16,6 +16,8 @@ def policy_yield_accrual(params: Parameters, substep, state_history, previous_st
     dt = params["dt"]
 
     # State Variables
+    liquidity_pool_trading_fees = previous_state["liquidity_pool_trading_fees"]
+    fei_liquidity_pool_user_deposit = previous_state["fei_liquidity_pool_user_deposit"]
     stable_yield_bearing_pcv_deposit: PCVDeposit = previous_state[
         "stable_yield_bearing_pcv_deposit"
     ]
@@ -24,8 +26,9 @@ def policy_yield_accrual(params: Parameters, substep, state_history, previous_st
     ]
     fei_money_market_pcv_deposit: PCVDeposit = previous_state["fei_money_market_pcv_deposit"]
     fei_liquidity_pool_pcv_deposit: PCVDeposit = previous_state["fei_liquidity_pool_pcv_deposit"]
-    fei_liquidity_pool_user_deposit: UserDeposit = previous_state["fei_liquidity_pool_user_deposit"]
-    liquidity_pool_trading_fees = previous_state["liquidity_pool_trading_fees"]
+    volatile_liquidity_pool_pcv_deposit: PCVDeposit = previous_state[
+        "volatile_liquidity_pool_pcv_deposit"
+    ]
 
     stable_asset_price = previous_state["stable_asset_price"]
     volatile_asset_price = previous_state["volatile_asset_price"]
@@ -40,7 +43,7 @@ def policy_yield_accrual(params: Parameters, substep, state_history, previous_st
     # State Update
     pcv_yield = sum(
         [
-            # NOTE accrue_yield() updates PCV Deposit yield
+            # NOTE accrue_yield() directly updates PCV Deposit yield
             stable_yield_bearing_pcv_deposit.accrue_yield(
                 period_in_days=dt, asset_price=stable_asset_price
             ),
@@ -56,6 +59,8 @@ def policy_yield_accrual(params: Parameters, substep, state_history, previous_st
         "stable_yield_bearing_pcv_deposit": stable_yield_bearing_pcv_deposit,
         "volatile_yield_bearing_pcv_deposit": volatile_yield_bearing_pcv_deposit,
         "fei_money_market_pcv_deposit": fei_money_market_pcv_deposit,
+        "fei_liquidity_pool_pcv_deposit": fei_liquidity_pool_pcv_deposit,
+        "volatile_liquidity_pool_pcv_deposit": volatile_liquidity_pool_pcv_deposit,
         "pcv_yield": pcv_yield,
     }
 

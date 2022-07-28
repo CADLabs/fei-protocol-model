@@ -9,7 +9,7 @@ import copy
 # See https://docs.python.org/3/library/dataclasses.html
 from dataclasses import dataclass
 from enforce_typing import enforce_types
-from typing import Union
+from typing import Union, List, Dict
 from abc import ABCMeta, abstractmethod
 
 # If Python version is greater than equal to 3.8, import from typing module
@@ -35,6 +35,10 @@ USD = Union[int, float]
 FEI = Union[int, float]
 VolatileAssetUnits = Union[int, float]
 StableAssetUnits = Union[int, float]
+
+# Weights
+CAMWeights = List[FEI]
+CAMDeltas = Dict[str, FEI]
 
 
 @enforce_types
@@ -249,7 +253,7 @@ class Deposit(metaclass=ABCMeta):
 
     @yield_rate.setter
     def yield_rate(self, new_yield_rate):
-        assert new_yield_rate >= 0
+        assert new_yield_rate >= 0, new_yield_rate
         self._yield_rate = new_yield_rate
 
 

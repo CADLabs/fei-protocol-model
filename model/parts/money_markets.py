@@ -1,6 +1,8 @@
 """Money Markets
 """
 
+import numpy as np
+
 from model.types import FEI, PCVDeposit, UserDeposit
 from model.constants import blocks_per_year
 from model.system_parameters import Parameters
@@ -32,30 +34,27 @@ def policy_money_market(params: Parameters, substep, state_history, previous_sta
     jump_multiplier_per_block = params["jump_multiplier_per_block"]
     kink = params["money_market_kink"]
     reserve_factor = params["money_market_reserve_factor"]
-    utilization_rate_process = params["utilization_rate_process"]
+    money_market_utilization_rate_process = params["money_market_utilization_rate_process"]
 
     # State Variables
     run = previous_state["run"]
     timestep = previous_state["timestep"]
     fei_money_market_pcv_deposit: PCVDeposit = previous_state["fei_money_market_pcv_deposit"]
     fei_money_market_user_deposit: UserDeposit = previous_state["fei_money_market_user_deposit"]
-    borrowed: FEI = previous_state["fei_money_market_borrowed"]
 
     # Calculate total money market balance as combination of protocol- and user-supplied FEI
     balance = fei_money_market_pcv_deposit.balance + fei_money_market_user_deposit.balance
 
-    # TODO Replace placeholder Money Market dynamics
-    # Borrowed amount increases linearly until 95% utilization (above kink of 80%)
-    # borrowed = min(balance * 0.95, borrowed + balance * 0.005)
-    utilization_rate = utilization_rate_process(run, timestep)
+    # Utilization rate stochastic process:
+    # NOTE As an extension, can introduce a lag in the process
+    utilization_rate = money_market_utilization_rate_process(run, timestep)
     borrowed = balance * utilization_rate
 
-    # Compound Jump Rate Model
-    # Calculate utilization rate
-    # Assume Compound "reserves" or protocolSeizeShare of zero i.e. no profit taken
-    # TODO Replace placeholder Money Market dynamics
+    # Borrowing driven utilization rate:
+    # borrowed = money_market_borrowed_process(run, timestep)
     # cash = balance - borrowed
-    # reserves = 0  # placeholder
+    # Assume Compound "reserves" or protocolSeizeShare of zero i.e. no profit taken
+    # reserves = 0
     # utilization_rate = borrowed / (cash + borrowed - reserves)  # == borrowed / balance
 
     # Calculate borrowing interest rate

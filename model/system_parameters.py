@@ -7,18 +7,19 @@ By using a dataclass to represent the System Parameters:
 """
 
 
-from typing import Dict
+from typing import Dict, List
 import experiments.simulation_configuration as simulation
 
+import numpy as np
 from operator import lt, gt
 from dataclasses import dataclass
 from datetime import datetime
 from model.utils import default
 from model.types import (
     Callable,
+    Deposit,
     PCVDeposit,
     UserDeposit,
-    Percentage,
     Timestep,
     Run,
     List,
@@ -42,15 +43,6 @@ volatile_asset_price_samples = create_stochastic_process_realizations(
     initial_price=2000,
     runs=monte_carlo_runs,
 )
-# volatile_asset_price_samples = create_stochastic_process_realizations(
-#     "geometric_brownian_motion_process",
-#     timesteps=simulation.TIMESTEPS,
-#     dt=simulation.DELTA_TIME,
-#     mu=-0.5,
-#     sigma=0.025,
-#     initial_price=2000,
-#     runs=monte_carlo_runs,
-# )
 
 stable_asset_price_samples = create_stochastic_process_realizations(
     "gaussian_noise_process",
@@ -61,10 +53,11 @@ stable_asset_price_samples = create_stochastic_process_realizations(
     runs=monte_carlo_runs,
 )
 
-utilization_rate_samples = create_stochastic_process_realizations(
+money_market_utilization_rate_samples = create_stochastic_process_realizations(
     "gaussian_noise_process",
     timesteps=simulation.TIMESTEPS,
     dt=simulation.DELTA_TIME,
+    # NOTE Equivalent to money market utilisation rate
     mu=0.7,
     sigma=0.05,
     runs=monte_carlo_runs,
@@ -137,28 +130,37 @@ pcv_deposit_distribution_sweep = [
 pcv_deposit_keys = list(pcv_deposit_distribution_sweep[0].keys())
 
 
+# From Dune dashboard
+total_user_circulating_fei = 225_000_000
+# TODO Confirm how much of 30e6 MM supply is user-supplied
+fei_money_market_user_deposit_balance = 30_000_000
+
 # Configure distribution of User Deposits
 # Each distribution must contain the same set of deposits
 user_deposit_distribution_sweep = [
     [
+        # Assume all user-circulating FEI, apart from borrowed FEI, not supplied in money market is idle
         UserDeposit(
             asset="fei",
             deposit_location="idle",
-            _balance=225_000_000,
-            _asset_value=225_000_000,
+            _balance=total_user_circulating_fei - fei_money_market_user_deposit_balance,
+            _asset_value=total_user_circulating_fei - fei_money_market_user_deposit_balance,
         ),
+        # Assume FEI Savings Deposit starts with no FEI deposited
         UserDeposit(
             asset="fei",
             deposit_location="savings",
             _balance=0,
             _asset_value=0,
         ),
+        # Assume majority of liquidity provided by protocol
         UserDeposit(
             asset="fei",
             deposit_location="liquidity_pool",
             _balance=0,
             _asset_value=0,
         ),
+        # Assume majority of liquidity provided by protocol
         UserDeposit(
             asset="volatile",
             deposit_location="liquidity_pool",
@@ -168,8 +170,8 @@ user_deposit_distribution_sweep = [
         UserDeposit(
             asset="fei",
             deposit_location="money_market",
-            _balance=0,
-            _asset_value=0,
+            _balance=fei_money_market_user_deposit_balance,
+            _asset_value=fei_money_market_user_deposit_balance,
         ),
     ]
 ]
@@ -227,10 +229,9 @@ class Parameters:
     By default set to a Brownian meander stochastic process.
     """
 
-    # Money Market
-    # TODO Replace placeholder Money Market dynamics
-    utilization_rate_process: List[Callable[[Run, Timestep], Percentage]] = default(
-        [lambda run, timestep: utilization_rate_samples[run - 1][timestep]]
+    # FEI Savings Deposit
+    fei_savings_rate_process: List[Callable[[Run, Timestep], APR]] = default(
+        [lambda _run, _timestep: 0.015]
     )
 
     # Liquidity Pool
@@ -259,6 +260,9 @@ class Parameters:
     jump_multiplier_per_block: List[float] = default([518455098934 / wei])
     money_market_kink: List[float] = default([0.8])
     money_market_reserve_factor: List[float] = default([0.25])
+    money_market_utilization_rate_process: List[Callable[[Run, Timestep], APR]] = default(
+        [lambda run, timestep: money_market_utilization_rate_samples[run - 1][timestep]]
+    )
 
     # Asset Yield Rates
     stable_asset_yield_rate: List[APR] = default([0.10])
@@ -308,6 +312,36 @@ class Parameters:
     Rebalance towards target stable PCV or backing ratio if less than (lt, <) or greater than (gt, >) target,
     if market conditions are good the strategy can increase volatile asset exposure (gt, >),
     and if market conditions are bad the strategy can reduce volatile asset exposure (lt, <).
+    """
+
+    # User-circulating FEI Capital Allocation Model
+    capital_allocation_fei_deposit_variables: List[Deposit] = default(
+        [
+            [
+                "fei_liquidity_pool_user_deposit",
+                "fei_money_market_user_deposit",
+                "fei_savings_user_deposit",
+                # "fei_idle_user_deposit",
+            ]
+        ]
+    )
+    """
+    FEI Deposit class State Variables rebalanced in Capital Allocation Model.
+    """
+
+    capital_allocation_rebalance_duration: Timestep = default([30])
+    """
+    Rebalance over X number of timesteps towards target user-circulating FEI Capital Allocation.
+    """
+
+    capital_allocation_yield_rate_moving_average_window: Timestep = default([3])
+    """
+    Calculate moving average of yield rate over window of X number of timesteps
+    """
+
+    capital_allocation_exogenous_concentration: List[np.ndarray] = default([np.array([1, 1, 1, 1])])
+    """
+    Dirichlet distribution concentration parameter for use in Capital Allocation exogenous, stochastic policy
     """
 
     # PCV Deposit configuration

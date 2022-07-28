@@ -33,3 +33,4 @@ toolplot==0.2.0
 werkzeug==2.0.3
 pytest-benchmark==3.4.1
 enforce-typing==1.0.0.post1
+networkx==2.6.3

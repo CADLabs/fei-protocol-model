@@ -6,8 +6,9 @@ By using a dataclass to represent the State Variables:
 * Ensure that all State Variables are initialized
 """
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime
+import numpy as np
 from model.types import (
     Uninitialized,
     Percentage,
@@ -57,8 +58,8 @@ class StateVariables:
     total_liquidity_pool_trading_fees: USD = 0.0
 
     # Money Markets
-    fei_money_market_borrowed: FEI = 0.0
-    fei_money_market_utilization: Percentage = 0.0
+    fei_money_market_borrowed: FEI = Uninitialized
+    fei_money_market_utilization: Percentage = Uninitialized
     fei_money_market_borrow_rate: APR = 0.0
     fei_money_market_supply_rate: APR = 0.0
     """FEI Money Market Supply Rate
@@ -88,6 +89,10 @@ class StateVariables:
     protocol_equity: USD = Uninitialized
     pcv_yield: Percentage = Uninitialized
     pcv_yield_rate: Percentage = Uninitialized
+
+    # User-circulating FEI Capital Allocation Model
+    capital_allocation_target_weights: np.ndarray = Uninitialized
+    capital_allocation_rebalance_matrix: np.ndarray = field(default_factory=dict)
 
     # Assorted System Metrics
     fei_demand: float = Uninitialized

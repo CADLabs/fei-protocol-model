@@ -26,6 +26,7 @@ simulation.engine = experiment.engine
 experiment.engine.backend = Backend.SINGLE_PROCESS
 experiment.engine.deepcopy = True
 experiment.engine.drop_substeps = True
+experiment.engine.raise_exceptions = True
 
 # Configure simulation hooks
 before_subset = lambda context: [

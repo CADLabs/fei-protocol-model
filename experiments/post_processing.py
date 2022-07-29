@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 from radcad.core import generate_parameter_sweep
 
 from model.system_parameters import parameters, Parameters, pcv_deposit_keys, user_deposit_keys
@@ -43,6 +44,11 @@ def post_process(df: pd.DataFrame, drop_timestep_zero=True, parameters=parameter
 
     # Calculate metrics
     df["pcv_yield_ratio"] = df["pcv_yield"] / df["total_user_circulating_fei"] * 365 / df["dt"]
+
+    df["fei_minted"] = np.maximum(df.fei_minted_redeemed, 0)
+    df["fei_redeemed"] = np.abs(np.minimum(df.fei_minted_redeemed, 0))
+    df["cumulative_fei_minted"] = df["fei_minted"].cumsum()
+    df["cumulative_fei_redeemed"] = df["fei_redeemed"].cumsum()
 
     # Convert decimals to percentages
     convert_to_percentage = [

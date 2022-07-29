@@ -10,6 +10,7 @@ from dataclasses import dataclass, field
 from datetime import datetime
 import numpy as np
 from model.types import (
+    StateVariableKey,
     Uninitialized,
     Percentage,
     APR,
@@ -41,7 +42,7 @@ class StateVariables:
     total_protocol_owned_fei: FEI = Uninitialized
     total_user_circulating_fei: FEI = Uninitialized
     fei_minted_redeemed: FEI = 0.0
-    cumulative_psm_redemptions: FEI = 0.0
+    active_psm_pcv_deposit_key: StateVariableKey = "stable_idle_pcv_deposit"
 
     # Price Processes
     fei_price: USD = 1.0

@@ -29,6 +29,7 @@ APR = float
 # Simulation types
 Timestep = int
 Run = int
+StateVariableKey = str
 
 # Assets
 USD = Union[int, float]

@@ -11,6 +11,7 @@ import model.parts.money_markets as money_markets
 import model.parts.system_metrics as system_metrics
 import model.parts.fei_savings_deposit as fei_savings_deposit
 import model.parts.fei_capital_allocation as fei_capital_allocation
+import model.parts.price_stability_module as price_stability_module
 
 from model.utils import update_from_signal, accumulate_from_signal, update_timestamp
 
@@ -118,6 +119,19 @@ state_update_blocks = [
                 ]
             },
             # **{key: accumulate_from_signal(key) for key in ["liquidity_pool_trading_fees"]},
+        },
+    },
+    {
+        description: """
+            Price Stability Module Minting / Redemption
+        """,
+        policies: {"price_stability_module": price_stability_module.policy_price_stability_module},
+        variables: {
+            key: update_from_signal(key, optional_update=True)
+            for key in [
+                # List of all possible PSM PCV Deposits, with one PSM enabled at a time
+                "stable_idle_pcv_deposit",
+            ]
         },
     },
     {

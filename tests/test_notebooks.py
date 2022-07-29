@@ -2,7 +2,8 @@ import os
 import pytest
 
 
-@pytest.mark.skip(reason="notebooks tested outside of Pytest framework")
+# @pytest.mark.skip(reason="notebooks tested outside of Pytest framework")
+@pytest.mark.notebook_test
 def test_notebooks():
     """Test all Jupyter Notebooks
     Test that the notebooks run to completion

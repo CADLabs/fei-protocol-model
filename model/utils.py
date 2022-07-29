@@ -13,16 +13,20 @@ from functools import partial
 def _update_from_signal(
     state_variable,
     signal_key,
+    optional_update,
     params,
     substep,
     state_history,
     previous_state,
     policy_input,
 ):
-    return state_variable, policy_input[signal_key]
+    if not signal_key in policy_input and optional_update:
+        return state_variable, previous_state[state_variable]
+    else:
+        return state_variable, policy_input[signal_key]
 
 
-def update_from_signal(state_variable, signal_key=None):
+def update_from_signal(state_variable, signal_key=None, optional_update=False):
     """A generic State Update Function to update a State Variable directly from a Policy Signal
     Args:
         state_variable (str): State Variable key
@@ -32,7 +36,7 @@ def update_from_signal(state_variable, signal_key=None):
     """
     if not signal_key:
         signal_key = state_variable
-    return partial(_update_from_signal, state_variable, signal_key)
+    return partial(_update_from_signal, state_variable, signal_key, optional_update)
 
 
 def _accumulate_from_signal(

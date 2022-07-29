@@ -94,6 +94,7 @@ class StateVariables:
     # User-circulating FEI Capital Allocation Model
     capital_allocation_target_weights: np.ndarray = Uninitialized
     capital_allocation_rebalance_matrix: np.ndarray = field(default_factory=dict)
+    capital_allocation_rebalance_remainder: FEI = Uninitialized
 
     # Assorted System Metrics
     fei_demand: float = Uninitialized

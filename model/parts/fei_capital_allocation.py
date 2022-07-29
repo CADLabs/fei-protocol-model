@@ -9,6 +9,7 @@ from scipy.stats import dirichlet
 import numpy as np
 import pprint
 import networkx as nx
+import logging
 
 pp = pprint.PrettyPrinter(indent=4)
 
@@ -101,7 +102,7 @@ def policy_deposit_rebalance(params: Parameters, substep, state_history, previou
 
     # Calculate current weights
     fei_deposits = [previous_state[key] for key in fei_deposit_variables]
-    current_deposit_balances = [deposit.balance for deposit in fei_deposits]
+    current_deposit_balances = np.array([deposit.balance for deposit in fei_deposits])
     total_fei = sum(current_deposit_balances)
     current_weights = np.array([balance / total_fei for balance in current_deposit_balances])
 
@@ -124,9 +125,9 @@ def policy_deposit_rebalance(params: Parameters, substep, state_history, previou
         to_index = row if value > 0 else column
 
         transfer_amount = min(abs(value), fei_deposits[from_index].balance)
-        assert transfer_amount >= abs(
+        assert transfer_amount <= abs(
             value
-        ), "Deposit balance less than capital allocation rebalance value"
+        ), f"Deposit {fei_deposits[from_index].key} balance {fei_deposits[from_index].balance} less than capital allocation rebalance value {abs(value)}"
 
         fei_deposits[from_index].transfer(
             to=fei_deposits[to_index],
@@ -138,13 +139,27 @@ def policy_deposit_rebalance(params: Parameters, substep, state_history, previou
     new_capital_allocation = [deposit.balance for deposit in fei_deposits]
 
     # Check that deposit sizes after all rebalances match the total balance change set by weight changes
-    assert np.allclose(
-        current_deposit_balances + total_fei_deposit_balance_change, new_capital_allocation
-    ), "Capital allocation rebalancing error"
+    # assert np.allclose(
+    #     current_deposit_balances + total_fei_deposit_balance_change, new_capital_allocation
+    # ), "Capital allocation rebalancing error"
+    rebalance_remainder = (
+        current_deposit_balances + total_fei_deposit_balance_change
+    ) - new_capital_allocation
+    rebalance_remainder_tolerance = 0.001  # % of deposit balance
+    rebalance_remainder[np.isclose(rebalance_remainder, 0)] = 0
+    rebalance_remainder_pct = rebalance_remainder / (current_deposit_balances + 1e-9)
+    if np.any(rebalance_remainder_pct > rebalance_remainder_tolerance):
+        log_rebalance_remainder = {
+            deposit.key: rebalance_remainder[index] for index, deposit in enumerate(fei_deposits)
+        }
+        logging.warning(
+            f"Capital allocation rebalancing error: movement of {log_rebalance_remainder} FEI unallocated"
+        )
     assert array_sum_threshold_check(new_capital_allocation, total_fei, 1e-3), "Summation error"
 
     return {
         "capital_allocation_rebalance_matrix": rebalance_matrix,
+        "capital_allocation_rebalance_remainder": rebalance_remainder,
         "fei_liquidity_pool_user_deposit": fei_liquidity_pool_user_deposit,
         "fei_money_market_user_deposit": fei_money_market_user_deposit,
         "fei_savings_user_deposit": fei_savings_user_deposit,

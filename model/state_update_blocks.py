@@ -246,6 +246,7 @@ state_update_blocks = [
                 key: update_from_signal(key)
                 for key in [
                     "capital_allocation_rebalance_matrix",
+                    "capital_allocation_rebalance_remainder",
                     "fei_liquidity_pool_user_deposit",
                     "fei_money_market_user_deposit",
                     "fei_savings_user_deposit",

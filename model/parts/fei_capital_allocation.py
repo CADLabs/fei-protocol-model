@@ -142,6 +142,8 @@ def policy_deposit_rebalance(params: Parameters, substep, state_history, previou
     # assert np.allclose(
     #     current_deposit_balances + total_fei_deposit_balance_change, new_capital_allocation
     # ), "Capital allocation rebalancing error"
+
+    # error handling
     rebalance_remainder = (
         current_deposit_balances + total_fei_deposit_balance_change
     ) - new_capital_allocation
@@ -155,6 +157,7 @@ def policy_deposit_rebalance(params: Parameters, substep, state_history, previou
         logging.warning(
             f"Capital allocation rebalancing error: movement of {log_rebalance_remainder} FEI unallocated"
         )
+
     assert array_sum_threshold_check(new_capital_allocation, total_fei, 1e-3), "Summation error"
 
     return {
@@ -185,8 +188,10 @@ def compute_rebalance_matrix(
     deltas = np.linalg.pinv(deposit_incidence_matrix) @ total_balance_changes
 
     assert np.allclose(
-        np.dot(deposit_incidence_matrix, deltas), total_balance_changes
-    ), "No solution to linear algebra problem"
+        np.dot(deposit_incidence_matrix, deltas),
+        total_balance_changes,
+        atol=1e-3,
+    ), "Linear algebra solution is above imprecision tolerance"
 
     rebalance_matrix = populate_delta_triu(deltas, number_of_deposits)
 

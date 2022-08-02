@@ -121,19 +121,19 @@ state_update_blocks = [
             # **{key: accumulate_from_signal(key) for key in ["liquidity_pool_trading_fees"]},
         },
     },
-    {
-        description: """
-            Price Stability Module Minting / Redemption
-        """,
-        policies: {"price_stability_module": price_stability_module.policy_price_stability_module},
-        variables: {
-            key: update_from_signal(key, optional_update=True)
-            for key in [
-                # List of all possible PSM PCV Deposits, with one PSM enabled at a time
-                "stable_idle_pcv_deposit",
-            ]
-        },
-    },
+    # {
+    #     description: """
+    #         Price Stability Module Minting / Redemption
+    #     """,
+    #     policies: {"price_stability_module": price_stability_module.policy_price_stability_module},
+    #     variables: {
+    #         key: update_from_signal(key, optional_update=True)
+    #         for key in [
+    #             # List of all possible PSM PCV Deposits, with one PSM enabled at a time
+    #             "stable_idle_pcv_deposit",
+    #         ]
+    #     },
+    # },
     {
         description: """"
             FEI-X Money Market

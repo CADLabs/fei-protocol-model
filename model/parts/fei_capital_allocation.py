@@ -185,8 +185,8 @@ def compute_rebalance_matrix(
     deltas = np.linalg.pinv(deposit_incidence_matrix) @ total_balance_changes
 
     assert np.allclose(
-        np.dot(deposit_incidence_matrix, deltas), total_balance_changes
-    ), "No solution to linear algebra problem"
+        np.dot(deposit_incidence_matrix, deltas), total_balance_changes,
+    atol=1e-3), "Delta calculation beyond acceptable precision bounds"
 
     rebalance_matrix = populate_delta_triu(deltas, number_of_deposits)
 

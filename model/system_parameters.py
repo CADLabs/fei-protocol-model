@@ -90,7 +90,7 @@ pcv_deposit_distribution_sweep = [
         PCVDeposit(
             asset="stable",
             deposit_location="idle",
-            _balance=70_000_000,  # set this to 1_000_000 to test rebalancing policy
+            _balance=70_000_000,
             _asset_value=70_000_000,
         ),
         PCVDeposit(
@@ -321,7 +321,7 @@ class Parameters:
                 "fei_liquidity_pool_user_deposit",
                 "fei_money_market_user_deposit",
                 "fei_savings_user_deposit",
-                # "fei_idle_user_deposit",
+                "fei_idle_user_deposit",
             ]
         ]
     )

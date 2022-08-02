@@ -1,15 +1,14 @@
 """FEI Capital Allocation  Model
 """
 
-from model.types import (
-    UserDeposit,
-)
 from model.system_parameters import Parameters
+import model.parts.liquidity_pools as liquidity_pools
 from scipy.stats import dirichlet
 import numpy as np
 import pprint
 import networkx as nx
 import logging
+import copy
 
 pp = pprint.PrettyPrinter(indent=4)
 
@@ -95,13 +94,8 @@ def policy_deposit_rebalance(params: Parameters, substep, state_history, previou
     target_weights: np.ndarray = previous_state["capital_allocation_target_weights"]
     fei_price = previous_state["fei_price"]
 
-    fei_liquidity_pool_user_deposit: UserDeposit = previous_state["fei_liquidity_pool_user_deposit"]
-    fei_money_market_user_deposit: UserDeposit = previous_state["fei_money_market_user_deposit"]
-    fei_savings_user_deposit: UserDeposit = previous_state["fei_savings_user_deposit"]
-    fei_idle_user_deposit: UserDeposit = previous_state["fei_idle_user_deposit"]
-
     # Calculate current weights
-    fei_deposits = [previous_state[key] for key in fei_deposit_variables]
+    fei_deposits = [copy.deepcopy(previous_state[key]) for key in fei_deposit_variables]
     current_deposit_balances = np.array([deposit.balance for deposit in fei_deposits])
     total_fei = sum(current_deposit_balances)
     current_weights = np.array([balance / total_fei for balance in current_deposit_balances])
@@ -117,17 +111,12 @@ def policy_deposit_rebalance(params: Parameters, substep, state_history, previou
         target_weights, current_weights, total_fei, rebalance_rate
     )
 
-    # TODO Correctly handle transfers of volatile asset liquidity to / from liquidity pool,
-    # specifically for exogenous process currently
     for (row, column), value in filter(lambda x: x != 0, np.ndenumerate(rebalance_matrix)):
         # Perform balance transfer
         from_index = column if value > 0 else row
         to_index = row if value > 0 else column
 
         transfer_amount = min(abs(value), fei_deposits[from_index].balance)
-        assert transfer_amount <= abs(
-            value
-        ), f"Deposit {fei_deposits[from_index].key} balance {fei_deposits[from_index].balance} less than capital allocation rebalance value {abs(value)}"
 
         fei_deposits[from_index].transfer(
             to=fei_deposits[to_index],
@@ -138,12 +127,7 @@ def policy_deposit_rebalance(params: Parameters, substep, state_history, previou
 
     new_capital_allocation = [deposit.balance for deposit in fei_deposits]
 
-    # Check that deposit sizes after all rebalances match the total balance change set by weight changes
-    # assert np.allclose(
-    #     current_deposit_balances + total_fei_deposit_balance_change, new_capital_allocation
-    # ), "Capital allocation rebalancing error"
-
-    # error handling
+    # Check constraints
     rebalance_remainder = (
         current_deposit_balances + total_fei_deposit_balance_change
     ) - new_capital_allocation
@@ -154,8 +138,8 @@ def policy_deposit_rebalance(params: Parameters, substep, state_history, previou
         log_rebalance_remainder = {
             deposit.key: rebalance_remainder[index] for index, deposit in enumerate(fei_deposits)
         }
-        logging.warning(
-            f"Capital allocation rebalancing error: movement of {log_rebalance_remainder} FEI unallocated"
+        logging.debug(
+            f"Capital allocation rebalancing: movement of {log_rebalance_remainder} FEI unallocated"
         )
 
     assert array_sum_threshold_check(new_capital_allocation, total_fei, 1e-3), "Summation error"
@@ -163,10 +147,16 @@ def policy_deposit_rebalance(params: Parameters, substep, state_history, previou
     return {
         "capital_allocation_rebalance_matrix": rebalance_matrix,
         "capital_allocation_rebalance_remainder": rebalance_remainder,
-        "fei_liquidity_pool_user_deposit": fei_liquidity_pool_user_deposit,
-        "fei_money_market_user_deposit": fei_money_market_user_deposit,
-        "fei_savings_user_deposit": fei_savings_user_deposit,
-        "fei_idle_user_deposit": fei_idle_user_deposit,
+        # FEI User Deposit updates
+        **{key: fei_deposits[index] for index, key in enumerate(fei_deposit_variables)},
+        **(
+            liquidity_pools.update_fei_liquidity(
+                previous_state,
+                dict(zip(fei_deposit_variables, fei_deposits))["fei_liquidity_pool_user_deposit"],
+            )
+            if "fei_liquidity_pool_user_deposit" in fei_deposit_variables
+            else {}
+        ),
     }
 
 

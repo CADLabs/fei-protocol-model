@@ -12,6 +12,9 @@ from model import model
 from experiments.simulation_configuration import TIMESTEPS, MONTE_CARLO_RUNS
 from model.initialization import setup_initial_state
 
+import logging
+logging.disable(logging.DEBUG)
+
 
 # Create Model Simulation
 simulation = Simulation(
@@ -23,7 +26,7 @@ simulation = Simulation(
 experiment = Experiment([simulation])
 # Configure Simulation & Experiment engine
 simulation.engine = experiment.engine
-experiment.engine.backend = Backend.SINGLE_PROCESS
+# experiment.engine.backend = Backend.SINGLE_PROCESS
 experiment.engine.deepcopy = True
 experiment.engine.drop_substeps = True
 experiment.engine.raise_exceptions = True

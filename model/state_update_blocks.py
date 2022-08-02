@@ -195,12 +195,12 @@ state_update_blocks = [
             PCV Rebalancing
         """,
         policies: {
-            # "target_stable_pcv": pcv_management.policy_pcv_rebalancing_target_stable_pcv,
             "target_stable_backing": pcv_management.policy_pcv_rebalancing_target_stable_backing,
+            # "target_stable_pcv": pcv_management.policy_pcv_rebalancing_target_stable_pcv,
         },
         # NOTE PCV asset value implicitly updated every period even if no rebalancing performed
         variables: {
-            key: update_from_signal(key)
+            key: update_from_signal(key, optional_update=True)
             for key in [
                 "stable_idle_pcv_deposit",
                 "volatile_idle_pcv_deposit",
@@ -247,14 +247,23 @@ state_update_blocks = [
                 for key in [
                     "capital_allocation_rebalance_matrix",
                     "capital_allocation_rebalance_remainder",
-                    "fei_liquidity_pool_user_deposit",
-                    "fei_money_market_user_deposit",
-                    "fei_savings_user_deposit",
-                    "fei_idle_user_deposit",
                 ]
             },
             **{
-                "volatile_liquidity_pool_user_deposit": liquidity_pools.update_volatile_liquidity_pool_user_deposit,
+                key: update_from_signal(key, optional_update=True)
+                for key in [
+                    "capital_allocation_rebalance_matrix",
+                    "capital_allocation_rebalance_remainder",
+                    # FEI User Deposits
+                    "fei_money_market_user_deposit",
+                    "fei_savings_user_deposit",
+                    "fei_idle_user_deposit",
+                    # Liquidity Pool updates
+                    "liquidity_pool_liquidity_tokens",
+                    "liquidity_pool_invariant",
+                    "fei_liquidity_pool_user_deposit",
+                    "volatile_liquidity_pool_user_deposit",
+                ]
             },
         },
     },

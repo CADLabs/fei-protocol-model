@@ -56,19 +56,19 @@ def setup_initial_state(context: radcad.Context):
     )
 
     liquidity_pool_invariant = liquidity_pool_fei_balance * liquidity_pool_volatile_asset_balance
+    liquidity_pool_liquidity_tokens = liquidity_pool_fei_balance
 
     # State Updates
-    fei_liquidity_pool_pcv_deposit._balance = liquidity_pool_fei_balance
-    fei_liquidity_pool_pcv_deposit._asset_value = liquidity_pool_fei_balance * fei_price
-    volatile_liquidity_pool_pcv_deposit._balance = liquidity_pool_volatile_asset_balance
-    volatile_liquidity_pool_pcv_deposit._asset_value = (
-        liquidity_pool_volatile_asset_balance * volatile_asset_price
+    fei_liquidity_pool_pcv_deposit.set_balance(liquidity_pool_fei_balance, fei_price)
+    volatile_liquidity_pool_pcv_deposit.set_balance(
+        liquidity_pool_volatile_asset_balance, volatile_asset_price
     )
 
     context.initial_state.update(
         {
             "liquidity_pool_tvl": liquidity_pool_tvl,
             "liquidity_pool_invariant": liquidity_pool_invariant,
+            "liquidity_pool_liquidity_tokens": liquidity_pool_liquidity_tokens,
             "fei_liquidity_pool_pcv_deposit": fei_liquidity_pool_pcv_deposit,
             "volatile_liquidity_pool_pcv_deposit": volatile_liquidity_pool_pcv_deposit,
         }

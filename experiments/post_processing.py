@@ -65,4 +65,13 @@ def post_process(df: pd.DataFrame, drop_timestep_zero=True, parameters=parameter
     if drop_timestep_zero:
         df = df.drop(df.query('timestep == 0').index)
 
+    # Disaggregate Capital Allocation Target Weights
+    capital_allocation_fei_deposit_variables = parameters["capital_allocation_fei_deposit_variables"][0]
+    df[[key + '_weight' for key in capital_allocation_fei_deposit_variables]] = df.apply(
+        lambda row: list(
+            row.capital_allocation_target_weights) if row.capital_allocation_target_weights.size
+            else [None for _ in capital_allocation_fei_deposit_variables],
+            axis=1, result_type='expand'
+    ).astype('float32')
+
     return df

@@ -8,8 +8,10 @@ By using a dataclass to represent the State Variables:
 
 from dataclasses import dataclass, field
 from datetime import datetime
+from typing import List
 import numpy as np
 from model.types import (
+    UNI,
     StateVariableKey,
     Uninitialized,
     Percentage,
@@ -19,6 +21,7 @@ from model.types import (
     VolatileAssetUnits,
     StableAssetUnits,
 )
+from model.utils import default
 
 
 @dataclass
@@ -42,7 +45,13 @@ class StateVariables:
     total_protocol_owned_fei: FEI = Uninitialized
     total_user_circulating_fei: FEI = Uninitialized
     fei_minted_redeemed: FEI = 0.0
-    active_psm_pcv_deposit_key: StateVariableKey = "stable_idle_pcv_deposit"
+    active_psm_pcv_deposit_keys: List[StateVariableKey] = default(
+        [
+            "stable_idle_pcv_deposit",
+            "volatile_idle_pcv_deposit",
+            "volatile_yield_bearing_pcv_deposit",
+        ]
+    )
 
     # Price Processes
     fei_price: USD = 1.0
@@ -56,6 +65,7 @@ class StateVariables:
     liquidity_pool_fei_source_sink: FEI = 0.0
     liquidity_pool_impermanent_loss: USD = 0.0
     liquidity_pool_trading_fees: USD = 0.0
+    liquidity_pool_liquidity_tokens: UNI = 0.0
     total_liquidity_pool_trading_fees: USD = 0.0
 
     # Money Markets
@@ -92,9 +102,9 @@ class StateVariables:
     pcv_yield_rate: Percentage = Uninitialized
 
     # User-circulating FEI Capital Allocation Model
-    capital_allocation_target_weights: np.ndarray = Uninitialized
-    capital_allocation_rebalance_matrix: np.ndarray = field(default_factory=dict)
-    capital_allocation_rebalance_remainder: FEI = Uninitialized
+    capital_allocation_target_weights: np.ndarray = default(np.array([]))
+    capital_allocation_rebalance_matrix: np.ndarray = default(np.array([]))
+    capital_allocation_rebalance_remainder: np.ndarray = default(np.array([]))
 
     # Assorted System Metrics
     fei_demand: float = Uninitialized

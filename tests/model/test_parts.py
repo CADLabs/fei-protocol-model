@@ -1,10 +1,8 @@
 import pytest
-import pandas as pd
 import numpy as np
 
 from experiments.default_experiment import experiment
 from experiments.run import run
-from model.utils import approx_eq
 
 
 @pytest.fixture

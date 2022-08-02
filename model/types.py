@@ -34,6 +34,7 @@ StateVariableKey = str
 # Assets
 USD = Union[int, float]
 FEI = Union[int, float]
+UNI = Union[int, float]
 VolatileAssetUnits = Union[int, float]
 StableAssetUnits = Union[int, float]
 

@@ -57,6 +57,10 @@ class StateVariables:
     fei_price: USD = 1.0
     volatile_asset_price: USD = 2_000
     stable_asset_price: USD = 1.0
+    volatile_asset_price_mean: float = 0.0
+    volatile_asset_risk_metric: float = Uninitialized
+    volatile_asset_risk_metric_min: float = 0.0
+    volatile_asset_risk_metric_max: float = 0.0
 
     # Liquidity Pools
     # NOTE Total liquidity pool metrics including both protocol- and user-supplied liquidity

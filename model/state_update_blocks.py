@@ -150,6 +150,10 @@ state_update_blocks = [
                 "fei_money_market_utilization",
                 "fei_money_market_borrow_rate",
                 "fei_money_market_supply_rate",
+                "volatile_asset_risk_metric",
+                "volatile_asset_risk_metric_min",
+                "volatile_asset_risk_metric_max",
+                "volatile_asset_price_mean",
             ]
         },
     },

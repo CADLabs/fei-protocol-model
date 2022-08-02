@@ -275,6 +275,11 @@ class Parameters:
     The annualized yield (APR) earned by the volatile asset yield-bearing PCV Deposit
     """
 
+    volatile_asset_risk_metric_time_window: List[Timestep] = default([30])
+    """
+    The time window used for calculating the Volatile Asset Risk Metric
+    """
+
     # PCV Management Strategy
     rebalancing_period: List[Timestep] = default([int(365 / 4)])  # days
     """

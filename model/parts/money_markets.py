@@ -2,8 +2,9 @@
 """
 
 import numpy as np
+import pandas as pd
 
-from model.types import FEI, PCVDeposit, UserDeposit
+from model.types import FEI, PCVDeposit, Timestep, UserDeposit
 from model.constants import blocks_per_year
 from model.system_parameters import Parameters
 
@@ -45,9 +46,44 @@ def policy_money_market(params: Parameters, substep, state_history, previous_sta
     # Calculate total money market balance as combination of protocol- and user-supplied FEI
     balance = fei_money_market_pcv_deposit.balance + fei_money_market_user_deposit.balance
 
+    # Get volatile asset (va) price series
+    va_price_series = pd.Series(substate[-1]["volatile_asset_price"] for substate in state_history)
+
+    # Volatile asset price trend risk metric = price slope / average price
+    va_price_mean = (
+        previous_state["volatile_asset_price_mean"] * (timestep - 1)
+        + previous_state["volatile_asset_price"]
+    ) / timestep
+    time_window: Timestep = params["volatile_asset_risk_metric_time_window"]
+    # y1 = va_price_series.get(timestep-time_window, va_price_series.iloc[0])
+    # y2 = va_price_series.iloc[-1]
+    # va_price_slope = ((y1 - y2) / -time_window)
+    va_price_slope = (
+        np.polyfit(
+            range(len(va_price_series[-min(timestep, time_window) : -1])),
+            va_price_series[-min(timestep, time_window) : -1],
+            1,
+        )[0]
+        if timestep > 2
+        else 0
+    )
+    va_risk_metric = -va_price_slope / va_price_mean
+    # Min-max normalization
+    va_risk_metric_min = min(va_risk_metric, previous_state["volatile_asset_risk_metric_min"])
+    va_risk_metric_max = max(va_risk_metric, previous_state["volatile_asset_risk_metric_max"])
+    va_risk_metric = (
+        (va_risk_metric - va_risk_metric_min) / (va_risk_metric_max - va_risk_metric_min)
+        if va_risk_metric_max - va_risk_metric_min
+        else va_risk_metric
+    )
+    va_risk_metric = np.nan_to_num(va_risk_metric, posinf=0, neginf=0)
+
     # Utilization rate stochastic process:
     # NOTE As an extension, can introduce a lag in the process
-    utilization_rate = money_market_utilization_rate_process(run, timestep)
+    max_risk_discount = 0.5
+    utilization_rate = money_market_utilization_rate_process(run, timestep) * (
+        1 - max_risk_discount * va_risk_metric
+    )  # At peak risk, set to max_risk_discount % of utilization rate
     borrowed = balance * utilization_rate
 
     # Borrowing driven utilization rate:
@@ -80,6 +116,10 @@ def policy_money_market(params: Parameters, substep, state_history, previous_sta
     fei_money_market_user_deposit.yield_rate = effective_yield_rate
 
     return {
+        "volatile_asset_risk_metric": va_risk_metric,
+        "volatile_asset_risk_metric_min": va_risk_metric_min,
+        "volatile_asset_risk_metric_max": va_risk_metric_max,
+        "volatile_asset_price_mean": va_price_mean,
         "fei_money_market_pcv_deposit": fei_money_market_pcv_deposit,
         "fei_money_market_user_deposit": fei_money_market_user_deposit,
         "fei_money_market_borrowed": borrowed,

@@ -23,6 +23,7 @@ def post_process(df: pd.DataFrame, drop_timestep_zero=True, parameters=parameter
     assign_parameters(df, parameters, [
         # Parameters to assign to DataFrame
         'dt',
+        'target_stable_backing_ratio',
         'target_stable_pcv_ratio',
         'target_rebalancing_condition',
         'rebalancing_period',
@@ -49,29 +50,34 @@ def post_process(df: pd.DataFrame, drop_timestep_zero=True, parameters=parameter
     df["fei_redeemed"] = np.abs(np.minimum(df.fei_minted_redeemed, 0))
     df["cumulative_fei_minted"] = df["fei_minted"].cumsum()
     df["cumulative_fei_redeemed"] = df["fei_redeemed"].cumsum()
-
+    
+    df["fsr_expenditure"] = df["fei_savings_user_deposit_balance"] * df["fei_savings_rate"] * parameters["dt"] / 365
+    df["protocol_profit"] = df["protocol_revenue"] - df["fsr_expenditure"]
+    
     # Convert decimals to percentages
     convert_to_percentage = [
         'collateralization_ratio',
         'stable_backing_ratio',
         'stable_pcv_ratio',
         'pcv_yield_rate',
-        'pcv_yield_ratio'
+        'pcv_yield_ratio',
+        'fei_savings_rate',
     ]
     for variable in convert_to_percentage:
         df[variable + '_pct'] = df[variable] * 100
 
-    # Drop the initial state for plotting
-    if drop_timestep_zero:
-        df = df.drop(df.query('timestep == 0').index)
-
     # Disaggregate Capital Allocation Target Weights
     capital_allocation_fei_deposit_variables = parameters["capital_allocation_fei_deposit_variables"][0]
+    
     df[[key + '_weight' for key in capital_allocation_fei_deposit_variables]] = df.apply(
         lambda row: list(
             row.capital_allocation_target_weights) if row.capital_allocation_target_weights.size
             else [None for _ in capital_allocation_fei_deposit_variables],
             axis=1, result_type='expand'
     ).astype('float32')
+
+    # Drop the initial state for plotting
+    if drop_timestep_zero:
+        df = df.drop(df.query('timestep == 0').index)
 
     return df

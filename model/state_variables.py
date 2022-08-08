@@ -52,6 +52,7 @@ class StateVariables:
             "volatile_yield_bearing_pcv_deposit",
         ]
     )
+    psm_mint_redeem_fees: USD = Uninitialized
 
     # Price Processes
     fei_price: USD = 1.0
@@ -101,14 +102,18 @@ class StateVariables:
     stable_backing_ratio: Percentage = Uninitialized
     stable_pcv_ratio: Percentage = Uninitialized
     collateralization_ratio: Percentage = Uninitialized
-    protocol_equity: USD = Uninitialized
-    pcv_yield: Percentage = Uninitialized
+    pcv_yield: USD = Uninitialized
     pcv_yield_rate: Percentage = Uninitialized
+    protocol_equity: USD = Uninitialized
+    protocol_revenue: USD = Uninitialized
 
     # User-circulating FEI Capital Allocation Model
     capital_allocation_target_weights: np.ndarray = default(np.array([]))
     capital_allocation_rebalance_matrix: np.ndarray = default(np.array([]))
     capital_allocation_rebalance_remainder: np.ndarray = default(np.array([]))
+    """
+    TODO docstrings
+    """
 
     # Assorted System Metrics
     fei_demand: float = Uninitialized

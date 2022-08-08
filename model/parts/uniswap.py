@@ -1,9 +1,9 @@
 def add_liquidity(reserve_balance, supply_balance, voucher_balance, tokens, value):
     """
     Example:
-    new_reserve = (1 + alpha)*reserve_balance
-    new_supply = (1 + alpha)*supply_balance
-    new_vouchers = (1 + alpha)*voucher_balance
+    new_reserve = (1 + alpha) * reserve_balance
+    new_supply = (1 + alpha) * supply_balance
+    new_vouchers = (1 + alpha) * voucher_balance
     """
     if voucher_balance <= 0:
         dr = value
@@ -23,9 +23,9 @@ def add_liquidity(reserve_balance, supply_balance, voucher_balance, tokens, valu
 def remove_liquidity(reserve_balance, supply_balance, voucher_balance, tokens):
     """
     Example:
-    new_reserve = (1 - alpha)*reserve_balance
-    new_supply = (1 - alpha)*supply_balance
-    new_liquidity_tokens = (1 - alpha)*liquidity_token_balance
+    new_reserve = (1 - alpha) * reserve_balance
+    new_supply = (1 - alpha) * supply_balance
+    new_vouchers = (1 - alpha) * voucher_balance
     """
     alpha = tokens / voucher_balance
 

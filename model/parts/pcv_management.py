@@ -2,6 +2,7 @@
 """
 
 import logging
+import numpy as np
 from model.system_parameters import Parameters
 from model.types import (
     PCVDeposit,
@@ -194,8 +195,6 @@ def policy_pcv_rebalancing_target_stable_backing(
         and timestep_equals_rebalancing_period
     ):
         # Calculate required change in total stable asset PCV to meet new target
-        # (Stable_Total + x) / FEI_U == Target
-        # x = (Target * FEI_U) - Stable_Total
         stable_asset_target_value_change = (
             target_stable_backing_ratio * total_user_circulating_fei
         ) - total_stable_asset_pcv
@@ -269,7 +268,7 @@ def pcv_deposit_rebalancing_strategy(
         for deposit in volatile_pcv_deposits:
             if balance_change:
                 if deposit.yield_rate > 0:
-                    logging.warning("Cashing out of yield-bearing deposit")
+                    logging.debug("Cashing out of yield-bearing deposit")
                     # Transfer yield to deposit balance
                     deposit.transfer_yield(
                         to=deposit,
@@ -289,7 +288,7 @@ def pcv_deposit_rebalancing_strategy(
             if balance_change > 0:
                 # TODO Additional constraints on movements and DCAing will be introduced in future,
                 # for now we catch the edge case for further analysis
-                logging.warning("Not enough balance across all sell side deposits to rebalance!")
+                logging.debug("Not enough balance across all sell side deposits to rebalance!")
     # PCV movement from stable to volatile
     else:
         balance_change = abs(total_stable_asset_balance_change)
@@ -297,7 +296,7 @@ def pcv_deposit_rebalancing_strategy(
         for deposit in stable_pcv_deposits:
             if balance_change:
                 if deposit.yield_rate > 0:
-                    logging.warning("Cashing out of yield-bearing deposit")
+                    logging.debug("Cashing out of yield-bearing deposit")
                     # Transfer yield to deposit balance
                     deposit.transfer_yield(
                         to=deposit,
@@ -315,4 +314,4 @@ def pcv_deposit_rebalancing_strategy(
                 balance_change -= transfer_balance
         # Check if balance remainder
         if balance_change > 0:
-            logging.warning("Not enough balance across all sell side deposits to rebalance!")
+            logging.debug("Not enough balance across all sell side deposits to rebalance!")

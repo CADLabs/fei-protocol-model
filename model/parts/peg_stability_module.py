@@ -4,7 +4,14 @@ from model.system_parameters import Parameters
 from model.types import FEI, USD, PCVDeposit, StateVariableKey, UserDeposit
 
 
-def policy_price_stability_module(params: Parameters, substep, state_history, previous_state):
+def policy_peg_stability_module(params: Parameters, substep, state_history, previous_state):
+    """Peg Stability Module Policy
+    See https://docs.tribedao.xyz/docs/protocol/Mechanism/PegStabilityModule
+    """
+    # Parameters
+    psm_mint_fee = params["psm_mint_fee"]
+    psm_redeem_fee = params["psm_redeem_fee"]
+
     # State Variables
     fei_minted_redeemed: FEI = previous_state["fei_minted_redeemed"]
     active_psm_pcv_deposit_keys: List[StateVariableKey] = previous_state[
@@ -14,6 +21,8 @@ def policy_price_stability_module(params: Parameters, substep, state_history, pr
         previous_state[key] for key in active_psm_pcv_deposit_keys
     ]
     fei_price: USD = previous_state["fei_price"]
+
+    psm_mint_redeem_fees: USD = 0
 
     # Check if PSM enabled
     if not active_psm_pcv_deposit_keys:
@@ -32,6 +41,8 @@ def policy_price_stability_module(params: Parameters, substep, state_history, pr
             active_psm_pcv_deposit.deposit(
                 amount=mint_redeem_pcv_asset_balance, asset_price=pcv_asset_price
             )
+            # Collect PSM mint fees
+            psm_mint_redeem_fees = psm_mint_fee * fei_minted_redeemed
         else:
             # Redeeming: select first eligible (i.e. with enough balance) active PSM PCV Deposit
             eligible_active_psm_pcv_deposits: PCVDeposit = [
@@ -53,9 +64,12 @@ def policy_price_stability_module(params: Parameters, substep, state_history, pr
                 active_psm_pcv_deposit.withdraw(
                     amount=abs(mint_redeem_pcv_asset_balance), asset_price=pcv_asset_price
                 )
+                # Collect PSM redeem fees
+                psm_mint_redeem_fees = psm_redeem_fee * abs(fei_minted_redeemed)
             else:
                 raise Exception("Insufficient PCV for redemption")
 
         return {
             active_psm_pcv_deposit.key: active_psm_pcv_deposit,
+            "psm_mint_redeem_fees": psm_mint_redeem_fees,
         }

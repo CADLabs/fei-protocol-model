@@ -1,6 +1,6 @@
 # A cadCAD model execution engine / reference implementation
 # https://github.com/CADLabs/radCAD
-radcad==0.9.0
+radcad==0.9.1
 pytest==6.2.2
 ipykernel==5.5.3
 matplotlib==3.3.4
@@ -34,3 +34,5 @@ werkzeug==2.0.3
 pytest-benchmark==3.4.1
 enforce-typing==1.0.0.post1
 networkx==2.6.3
+pandas==1.4.3
+memory_profiler==0.60.0

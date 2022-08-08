@@ -30,7 +30,7 @@ def policy_fei_accounting(params: Parameters, substep, state_history, previous_s
         + fei_savings_user_deposit.balance
         + fei_liquidity_pool_user_deposit.balance
         # Money market user supplied
-        + fei_money_market_user_deposit.balance
+        + fei_money_market_user_deposit.balance * (1 - fei_money_market_utilization)
         # Money market user borrowed
         + fei_money_market_pcv_deposit.balance * fei_money_market_utilization
     )

@@ -31,6 +31,7 @@ def update_from_signal(state_variable, signal_key=None, optional_update=False):
     Args:
         state_variable (str): State Variable key
         signal_key (str, optional): Policy Signal key. Defaults to None.
+        optional_update (bool, optional): If True, only update State Variable if Policy Signal key exists.
     Returns:
         Callable: A generic State Update Function
     """

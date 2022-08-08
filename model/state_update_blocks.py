@@ -11,11 +11,13 @@ import model.parts.money_markets as money_markets
 import model.parts.system_metrics as system_metrics
 import model.parts.fei_savings_deposit as fei_savings_deposit
 import model.parts.fei_capital_allocation as fei_capital_allocation
-import model.parts.price_stability_module as price_stability_module
+import model.parts.peg_stability_module as peg_stability_module
 
 from model.utils import update_from_signal, accumulate_from_signal, update_timestamp
 
 
+# Partial State Update Block keys:
+enabled = "enabled"
 description = "description"
 policies = "policies"
 variables = "variables"
@@ -69,16 +71,19 @@ state_update_blocks = [
             System Metrics
         """,
         policies: {
-            "pcv_metrics": system_metrics.policy_pcv_metrics,
+            "system_metrics": system_metrics.policy_system_metrics,
         },
         variables: {
             key: update_from_signal(key)
             for key in [
+                # PCV System Metrics
                 "stable_backing_ratio",
                 "stable_pcv_ratio",
                 "collateralization_ratio",
-                "protocol_equity",
                 "pcv_yield_rate",
+                # Protocol System Metrics
+                "protocol_equity",
+                "protocol_revenue",
             ]
         },
     },
@@ -121,19 +126,23 @@ state_update_blocks = [
             # **{key: accumulate_from_signal(key) for key in ["liquidity_pool_trading_fees"]},
         },
     },
-    # {
-    #     description: """
-    #         Price Stability Module Minting / Redemption
-    #     """,
-    #     policies: {"price_stability_module": price_stability_module.policy_price_stability_module},
-    #     variables: {
-    #         key: update_from_signal(key, optional_update=True)
-    #         for key in [
-    #             # List of all possible PSM PCV Deposits, with one PSM enabled at a time
-    #             "stable_idle_pcv_deposit",
-    #         ]
-    #     },
-    # },
+    {
+        enabled: True,
+        description: """
+            Peg Stability Module Minting / Redemption
+        """,
+        policies: {"peg_stability_module": peg_stability_module.policy_peg_stability_module},
+        variables: {
+            key: update_from_signal(key, optional_update=True)
+            for key in [
+                "psm_mint_redeem_fees",
+                # List of all possible PSM PCV Deposits, with one PSM enabled at a time
+                "stable_idle_pcv_deposit",
+                "volatile_idle_pcv_deposit",
+                "volatile_yield_bearing_pcv_deposit",
+            ]
+        },
+    },
     {
         description: """"
             FEI-X Money Market
@@ -158,6 +167,7 @@ state_update_blocks = [
         },
     },
     {
+        enabled: True,
         description: """
             PCV Yield Accrual
         """,
@@ -177,15 +187,16 @@ state_update_blocks = [
         },
     },
     {
+        enabled: True,
         description: """
             PCV Yield Management - Withdraw Yield Policy
         """,
         policies: {
             "policy_withdraw_yield": pcv_yield.policy_withdraw_yield,
-            # "policy_reinvest_yield": pcv_yield.policy_reinvest_yield,
+            "policy_reinvest_yield": pcv_yield.policy_reinvest_yield,
         },
         variables: {
-            key: update_from_signal(key)
+            key: update_from_signal(key, optional_update=True)
             for key in [
                 "stable_idle_pcv_deposit",
                 "volatile_idle_pcv_deposit",
@@ -200,7 +211,7 @@ state_update_blocks = [
         """,
         policies: {
             "target_stable_backing": pcv_management.policy_pcv_rebalancing_target_stable_backing,
-            # "target_stable_pcv": pcv_management.policy_pcv_rebalancing_target_stable_pcv,
+            "target_stable_pcv": pcv_management.policy_pcv_rebalancing_target_stable_pcv,
         },
         # NOTE PCV asset value implicitly updated every period even if no rebalancing performed
         variables: {
@@ -272,3 +283,5 @@ state_update_blocks = [
         },
     },
 ]
+
+state_update_blocks = [block for block in state_update_blocks if block.get("enabled", True)]

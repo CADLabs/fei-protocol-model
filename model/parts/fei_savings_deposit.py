@@ -2,15 +2,8 @@
 WIP
 """
 
-import logging
-import typing
 from model.types import (
-    CAMWeights,
-    PCVDeposit,
     UserDeposit,
-    USD,
-    APR,
-    FEI,
 )
 from model.system_parameters import Parameters
 

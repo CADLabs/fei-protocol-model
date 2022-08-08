@@ -19,6 +19,7 @@ from model.types import (
     Callable,
     Deposit,
     PCVDeposit,
+    Percentage,
     UserDeposit,
     Timestep,
     Run,
@@ -234,6 +235,10 @@ class Parameters:
         [lambda _run, _timestep: 0.015]
     )
 
+    # Peg Stability Module
+    psm_mint_fee: List[Percentage] = default([0])
+    psm_redeem_fee: List[Percentage] = default([0.001])  # 10 basis points = 0.1%
+
     # Liquidity Pool
     liquidity_pool_tvl: List[USD] = default([50_000_000])
     """Volatile Asset Liquidity Pool TVL
@@ -283,17 +288,21 @@ class Parameters:
     # PCV Management Strategy
     rebalancing_period: List[Timestep] = default([int(365 / 4)])  # days
     """
-    The duration in days between applying rebalancing strategy
+    The duration in days between applying rebalancing strategy.
     """
 
-    yield_withdrawal_period: List[Timestep] = default([-1])  # days, -1 == disabled
+    yield_withdrawal_period: List[Timestep] = default([None])  # days
     """
-    The duration in days between withdrawing yield to an idle PCV Deposit
+    The duration in days between withdrawing yield to an idle PCV Deposit.
+
+    Set to `None` to disable.
     """
 
-    yield_reinvest_period: List[Timestep] = default([-1])  # days, -1 == disabled
+    yield_reinvest_period: List[Timestep] = default([None])  # days
     """
-    The duration in days between reinvesting yield into the PCV Deposit balance
+    The duration in days between reinvesting yield into the PCV Deposit balance.
+
+    Set to `None` to disable.
     """
 
     target_stable_backing_ratio: List[float] = default([0.8])

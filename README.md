@@ -233,7 +233,11 @@ make test
 
 A notebook exists to perform simulation time profiling of individual State Update Blocks of the model, see [experiments/notebooks/simulation_profiling/simulation_timestep_substep_profiling.ipynb]. Simulation time profiling of PRs is also performed in the GitHub Action pipeline, and included in each PR by a bot. See the Makefile and GitHub Action file for more details.
 
-Memory profiling can also be performed using `memory-profiler`.
+Memory profiling can also be performed using the `memory-profiler` Python package:
+
+```bash
+make profile-memory target="tests/test_notebook_memory.py 1_sanity_checks.ipynb"
+```
 
 ## Change Log
 

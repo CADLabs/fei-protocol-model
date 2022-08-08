@@ -35,7 +35,7 @@ def run(executable=experiment):
     except:
         parameters = executable.model.params
 
-    df = post_process(df, parameters=parameters)
+    df = post_process(df.copy(), parameters=parameters)
 
     post_processing_duration = time.time() - start_time - experiment_duration
     logging.info(f"Post-processing complete in {post_processing_duration} seconds")

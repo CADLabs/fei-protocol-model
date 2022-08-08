@@ -1,6 +1,7 @@
 """FEI Capital Allocation  Model
 """
 
+from typing import Dict, List
 from model.system_parameters import Parameters
 import model.parts.liquidity_pools as liquidity_pools
 from scipy.stats import dirichlet
@@ -53,24 +54,46 @@ def policy_endogenous_weight_update(params: Parameters, substep, state_history, 
 
     # State Variables
     timestep = previous_state["timestep"]
+    volatile_asset_risk_metric = previous_state["volatile_asset_risk_metric"]
 
-    # Calculate target weights: weight = yield / risk
     # Calculate moving average of yield vector
-    yield_vector = np.array(
-        [
-            sum(
-                [
-                    state[-1][key].yield_rate
-                    for state in state_history[-moving_average_window:timestep]
-                ]
-            )
-            / moving_average_window
-            or previous_state[key].yield_rate
-            for key in fei_deposit_variables
-        ]
+    yield_history_map: Dict[str, List] = {
+        key: [state[-1][key].yield_rate for state in state_history[-moving_average_window:timestep]]
+        for key in fei_deposit_variables
+    }
+    yield_history: List[List] = yield_history_map.values()
+    yield_map = {
+        key: sum(yield_history) / moving_average_window or previous_state[key].yield_rate
+        for key, yield_history in yield_history_map.items()
+    }
+    yield_vector = np.array(list(yield_map.values()))
+
+    # Calculate yield volatility risk
+    yield_std = np.array([np.std(x) for x in yield_history])
+    yield_mean = np.array([np.mean(x) for x in yield_history])
+    yield_risk = yield_std / (yield_mean + 1e-18)
+
+    # Calculate volatile asset risk
+    volatile_asset_risk = {key: 0 for key in fei_deposit_variables}
+    volatile_asset_risk_override = {
+        "fei_liquidity_pool_user_deposit": volatile_asset_risk_metric,
+        "fei_money_market_user_deposit": volatile_asset_risk_metric,
+    }
+    volatile_asset_risk_intersection = (
+        volatile_asset_risk.keys() & volatile_asset_risk_override.keys()
     )
-    # NOTE Currently assumes no difference in risk preference between deposits
-    risk_vector = np.array([1 for _ in yield_vector])
+    volatile_asset_risk.update(
+        {
+            update_key: volatile_asset_risk_override[update_key]
+            for update_key in volatile_asset_risk_intersection
+        }
+    )
+    volatile_asset_risk = np.array(list(volatile_asset_risk.values()))
+
+    # Calculate risk vector
+    risk_vector = 1 + volatile_asset_risk + yield_risk
+
+    # Calculate target weights: weight = yield / (1 + risk)
     target_weights = yield_vector / risk_vector
     normalised_target_weights = target_weights / target_weights.sum()
 

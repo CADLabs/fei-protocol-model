@@ -60,3 +60,7 @@ benchmark-test:
 
 benchmark-default:
 	python -m pytest benchmarks/benchmark_default_experiment.py --benchmark-only --benchmark-json output.json
+
+profile-memory:
+	mprof run --include-children --multiprocess $(target)
+	mprof plot

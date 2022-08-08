@@ -85,7 +85,7 @@ def policy_constant_function_market_maker(
     )
     price_ratio = state_history[0][0]["volatile_asset_price"] / volatile_asset_price
     impermanent_loss = 2 * math.sqrt(price_ratio) / (1 + price_ratio) - 1
-    effective_yield_rate: APR = trading_fees / liquidity_pool_tvl * 365 / dt
+    yield_rate: APR = trading_fees / liquidity_pool_tvl * 365 / dt
 
     # Update PCV Deposit LP balance
     volatile_liquidity_pool_pcv_deposit.set_balance(
@@ -104,6 +104,7 @@ def policy_constant_function_market_maker(
     )
 
     # Update Deposit LP yield rates
+    effective_yield_rate = max(0, yield_rate - abs(impermanent_loss))
     volatile_liquidity_pool_pcv_deposit.yield_rate = effective_yield_rate
     fei_liquidity_pool_pcv_deposit.yield_rate = effective_yield_rate
     volatile_liquidity_pool_user_deposit.yield_rate = effective_yield_rate
@@ -170,7 +171,9 @@ def update_fei_liquidity(
             reserve_balance=total_volatile_asset_balance,
             supply_balance=total_fei_balance,
             voucher_balance=liquidity_pool_liquidity_tokens,
-            tokens=abs(user_fei_balance_delta),
+            tokens=abs(user_fei_balance_delta)
+            * liquidity_pool_liquidity_tokens
+            / total_fei_balance,
         )
         assert dr <= 0
         assert ds <= 0

@@ -6,6 +6,7 @@ from model.types import (
     UserDeposit,
 )
 from model.system_parameters import Parameters
+import model.parts.liquidity_pools as liquidity_pools
 
 
 def policy_yield_accrual(params: Parameters, substep, state_history, previous_state):
@@ -35,8 +36,9 @@ def policy_yield_accrual(params: Parameters, substep, state_history, previous_st
     fei_price = previous_state["fei_price"]
 
     # Calculate protocol's share of the total liquidity pool trading fees
-    protocol_liquidity_share = fei_liquidity_pool_pcv_deposit.balance / (
-        fei_liquidity_pool_pcv_deposit.balance + fei_liquidity_pool_user_deposit.balance
+    protocol_liquidity_share = (
+        fei_liquidity_pool_pcv_deposit.balance
+        / liquidity_pools.get_total_fei_balance(previous_state)
     )
     protocol_liquidity_pool_trading_fees = protocol_liquidity_share * liquidity_pool_trading_fees
 
@@ -87,6 +89,10 @@ def policy_withdraw_yield(params: Parameters, substep, state_history, previous_s
     stable_asset_price = previous_state["stable_asset_price"]
     volatile_asset_price = previous_state["volatile_asset_price"]
 
+    # Check if yield_withdrawal_period defined and policy should be executed
+    if not yield_withdrawal_period:
+        return {}
+
     # State Update
     timestep_equals_withdrawal_period = timestep % yield_withdrawal_period / dt == 0
     if timestep_equals_withdrawal_period:  # Periodic yield withdrawal
@@ -128,6 +134,10 @@ def policy_reinvest_yield(params: Parameters, substep, state_history, previous_s
     ]
     stable_asset_price = previous_state["stable_asset_price"]
     volatile_asset_price = previous_state["volatile_asset_price"]
+
+    # Check if yield_reinvest_period defined and policy should be executed
+    if not yield_reinvest_period:
+        return {}
 
     # State Update
     timestep_equals_reinvest_period = timestep % yield_reinvest_period / dt == 0

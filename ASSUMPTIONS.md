@@ -18,13 +18,13 @@ During the requirements specification project phase, a number of basic assumptio
 
 Additionally, a number of mechanism specific assumptions were made which are listed below:
 
-## [State Variables][model/state_variables.py]
+## [State Variables](model/state_variables.py)
 
 Illustrative parameterisation and initial state sourced from https://dune.com/llama/Fei-Protocol, https://app.fei.money/ as of 22 June 2022.
 
 See [Fei Protocol Model Initial State / Base Case](https://docs.google.com/spreadsheets/d/1LgqKEGRWaooWR6uD5X-vsOx2HBunfcGKJ58mX5rp7Z8) for accounting.
 
-## [System Parameters][model/system_parameters.py]
+## [System Parameters](model/system_parameters.py)
 
 Illustrative parameterisation and initial state sourced from https://dune.com/llama/Fei-Protocol, https://app.fei.money/ as of 22 June 2022.
 

@@ -2,7 +2,19 @@
 
 [![Python package](https://github.com/CADLabs/fei-protocol-model/actions/workflows/python.yml/badge.svg)](https://github.com/CADLabs/fei-protocol-model/actions/workflows/python.yml)
 
-See the [CADLabs Ethereum Economic Model](https://github.com/CADLabs/ethereum-economic-model) for an example [radCAD](https://github.com/CADLabs/radCAD) modelling & simulation project based on this template.
+A modular dynamical-systems model of Fei Protocol's Protocol-controlled Value (PCV) Monetary Policy and proposed FEI Savings Rate mechanism, based on the open-source Python library [radCAD](https://github.com/CADLabs/radCAD).
+
+This code repo is based on the [CADLabs Ethereum Economic Model](https://github.com/CADLabs/ethereum-economic-model) [radCAD](https://github.com/CADLabs/radCAD) modelling & simulation project template.
+
+See the [Ethereum Economic Model README notebook](https://github.com/CADLabs/ethereum-economic-model/blob/main/experiments/notebooks/0_README.ipynb) for a good introduction to the radCAD experiment and modelling workflow.
+
+Excerpts from [experiments/notebooks/1_sanity_checks.ipynb](experiments/notebooks/sanity_checks.ipynb):
+
+![Sanity Checks](docs/charts/sanity_checks.png)
+
+![FEI Capital Allocation](docs/charts/fei_capital_allocation.png)
+
+![Total FEI Supply](docs/charts/total_fei_supply.png)
 
 ## Table of Contents
 
@@ -14,6 +26,7 @@ See the [CADLabs Ethereum Economic Model](https://github.com/CADLabs/ethereum-ec
   * [Differential Model Specification](#Differential-Model-Specification)
 * [Environment Setup](#Environment-Setup)
 * [Simulation Experiments](#Simulation-Experiments)
+* [Model Extension Roadmap](#Model-Extension-Roadmap)
 * [Tests](#Tests)
 * [Change Log](#Change-Log)
 * [Acknowledgements](#Acknowledgements)
@@ -24,28 +37,46 @@ See the [CADLabs Ethereum Economic Model](https://github.com/CADLabs/ethereum-ec
 
 ## Introduction
 
-...
+The Fei Protocol Model was developed to support public policy making and management of protocol risk and health.
+
+The objectives for the model for each stakeholder group identified during requirements specification were:
+
+**Stakeholder group 1: Fei Protocol Policy Makers**
+- Inform public policy and decision making by evaluating simulated protocol health,
+risk, resilience e.g. Contractionary Monetary Policy
+- Inform effective management of PCV under different scenarios and failure modes
+- Evaluate and sustainably increase demand for FEI
+
+**Stakeholder group 2: Fei Holders**
+- Obtain transparency and confidence as to the mechanics and resilience of the
+system behind PCV management
+
+**Stakeholder group 3: Tribe DAO**
+- Better understand the levers impacting PCV management
+
+From these requirements, three System Goals were developed:
+- **Goal 1:** Sustainably increase demand for FEI
+- **Goal 2:** Manage PCV risk
+- **Goal 3:** Optimise PCV capital efficiency
+
+Finally, the model aimed to achieve the following outcomes:
+- Ability to make model-informed design decisions, illuminating complex relationships
+and downstream effects
+- Ability to support effective PCV management under different scenarios and failure
+modes
+- Ability to simulate FEI demand with different FEI Savings Rates under different
+market conditions
+
+A number of [assumptions](ASSUMPTIONS.md) were made in the scoping and development of the model, and any suggested extensions outside the scope of the MVP modelling effort have been proposed in the [modelling roadmap](ROADMAP.md). The following is a list of features currently implemented in the model:
 
 ### Model Features
 
-Currently the model includes the following features:
-* [PCV Deposit Class](model/types.py) with standard methods and assertions for safe operation and a familiar interface
-* [PCV movements](model/parts/pcv_management.py) between PCV Deposit instances including a basic rebalancing strategy targeting a stable PCV ratio
-* [PCV Deposit yield accrual](model/parts/pcv_yield.py) and management
-* [Liquidity Pool subsystem](model/parts/liquidity_pools.py) that sources and sinks FEI directly between the pool and PSM, ready to be integrated with more granular strategies such as capital allocation of user-circulating FEI
-* [Money Market subsystem](model/parts/money_markets.py) with placeholder dynamics, ready to be integrated
-* Ability to initialise and perform parameter sweeps of Initial State using radCAD System Parameters
-* [Jupyter notebooks](#simulation-experiments) exploring each part of the model as well as generic data analysis and model validation
-* Supports [state-space analysis](https://en.wikipedia.org/wiki/State-space_representation) of volatile asset price processes using both stochastic processes where that makes sense (e.g. certain risk analyses) or price trajectories, and [phase-space analysis](https://en.wikipedia.org/wiki/Phase_space) using parameter sweeps/grids (e.g. between volatile asset price levels and PCV management strategies)
-
-### Next Steps
-
-In the next phase of development the focus will be on the following:
-* [ ] Development of Fei Protocol risk metrics and analyses specified in the ["Fei Protocol Ecosystem Risk" GitHub doc](docs/research/fei_protocol_ecosystem_risk.md) synced from [HackMD](https://hackmd.io/@CADLabs/r1xWhwl59)
-* [ ] Implementation and integration of WIP FEI Savings Deposit Bayesian model
-* [ ] Testing and validation of WIP FEI Savings Deposit Bayesian model
-* [ ] Formalisation of FEI Demand metric
-* [ ] Development of set of experiments to deliver on the ultimate goal of the model, as a useful tool for the Fei team and community in illuminating complexity in the system, and developing, testing, and deploying various PCV management strategies during the FIP process
+* Ability to implement [PCV Management](model/parts/pcv_management.py) policies using a [PCV Deposit Class](model/types.py) with a familiar interface and standard methods for PCV movement and [yield accrual](model/parts/pcv_yield.py)
+* A model of [User-circulating FEI Capital Allocation](model/parts/fei_capital_allocation.py) that describes the aggregate movements of user-circulating FEI within the Fei Protocol ecosystem [User Deposits](model/types.py) based on yield and risk weighted user preferences
+* A generic [FEI-Volatile Liquidity Pool](model/parts/liquidity_pools.py) to model the dynamic of market condition dependent imbalances causing sourcing and sinking of FEI in the system
+* A generic [Money Market](model/parts/money_markets.py) to model the FEI Savings Rate competing yield opportunity that exists for the FEI token
+* Various [System Metrics and KPIs](model/parts/system_metrics.py) including PCV at Risk used to evaluate the performance of the system
+* Various [Jupyter notebooks](#simulation-experiments) exploring relevant FIP monetary policy inspired analyses
 
 ### Directory Structure
 
@@ -67,14 +98,16 @@ The model is composed of several structural modules in the [model/parts/](model/
 | Module | Description |
 | --- | --- |
 | [accounting.py](model/parts/accounting.py) | Assorted accounting of aggregate State Variables such as Protocol Owned FEI, User-circulating FEI, etc. |
-| [system_metrics.py](model/parts/system_metrics.py) | Assorted system metrics |
-| [fei_savings_deposit.py](model/parts/fei_savings_deposit.py) | [Placeholder] Implementation of the FEI Savings Deposit |
+| [fei_capital_allocation.py](model/parts/fei_capital_allocation.py) | Implementation of a model enconding user-circulating FEI movements |
+| [fei_savings_deposit.py](model/parts/fei_savings_deposit.py) | Implementation of the FEI Savings Deposit |
 | [liquidity_pools.py](model/parts/liquidity_pools.py) | Implementation of a generic Uniswap style FEI-Volatile Liquidity Pool |
 | [money_markets.py](model/parts/money_markets.py) | Implementation of a generic Aave/Compound style Money Market |
 | [pcv_management.py](model/parts/pcv_management.py) | Implementation of PCV management processes and strategies |
 | [pcv_yield.py](model/parts/pcv_yield.py) | Implementation of PCV yield processes and strategies |
+| [peg_stability_module.py](model/parts/peg_stability_module.py) | Implementation of a Fei Peg Stability Module for minting and redemption |
 | [price_processes.py](model/parts/price_processes.py) | State update functions for drawing samples from misc. projected or stochastic asset price processes |
-| [user_circulating_fei.py](model/parts/user_circulating_fei.py) | [Placeholder] Implementation of user-circulating FEI processes and accounting |
+| [system_metrics.py](model/parts/system_metrics.py) | Assorted system metrics |
+| [uniswap.py](model/parts/uniswap.py) | Uniswap style Constant Function Market Maker functions |
 
 #### Configuration Modules
 
@@ -93,13 +126,15 @@ The model is configured using several configuration modules in the [model/](mode
 
 ### Model Assumptions
 
-...
-
-[ASSUMPTIONS.md](ASSUMPTIONS.md)
+For a comprehensive list of modelling assumptions made see [ASSUMPTIONS.md](ASSUMPTIONS.md).
 
 ### Differential Model Specification
 
-The [Differential Model Specification (WIP)](https://lucid.app/lucidchart/3d7d90e2-582d-4054-9176-5019943965c5/edit) depicts the model's overall structure across System States, System Inputs, System Parameters, State Update Logic and System Metrics.
+The [Differential Model Specification](https://lucid.app/lucidchart/3d7d90e2-582d-4054-9176-5019943965c5/edit) depicts the model's overall structure across System States, System Inputs, System Parameters, State Update Logic and System Metrics.
+
+In addition to the LucidChart link above, a copy of the diagram has been included below, and there is a [PDF version](docs/diagrams/differential_specification_diagram_v4.pdf).
+
+![Differential Specification Diagram](docs/diagrams/differential_specification_diagram_v4.png)
 
 ## Environment Setup
 
@@ -171,47 +206,81 @@ The [experiments/](experiments/) directory contains modules for configuring and 
 
 The [experiments/notebooks/](experiments/notebooks/) directory contains Jupyter notebooks exploring each part of the model as well as generic data analysis and model validation.
 
-#### Sanity Checks
+### 1. Sanity Checks
 
-See [experiments/notebooks/sanity_checks.ipynb](experiments/notebooks/sanity_checks.ipynb)
+See [experiments/notebooks/1_sanity_checks.ipynb](experiments/notebooks/sanity_checks.ipynb)
 
-The purpose of this notebook is to provide a set of standard sanity checks to validate the model as it developed, across different volatile asset price trajectories.
+The purpose of this notebook is to perform a set of sanity checks that validate the expected key system dynamics, as well as the relationships between different key state variables. These analyses should also serve as an educational explanatory tool for less intuitive system dynamics and as an introduction to the model.
 
-#### Walkthrough
+#### Analysis 1: System Dynamics Over Volatile Asset Price Trajectories
 
-See [experiments/notebooks/walkthrough.ipynb](experiments/notebooks/walkthrough.ipynb)
+The purpose of this analysis is to illustrate and validate the driving influence of the Volatile Asset price on key system dynamics.
 
-The purpose of this notebook was to demonstrate the state of the model during a previous worksession.
+#### Analysis 2.1: State Variable Relationships
 
-#### Exploratory Data Analysis
+The purpose of this analysis is to illustrate and validate the relationships between and distribution of key system state variables using the model's default experiment initial state and system parameters.
 
-See [experiments/notebooks/exploratory_data_analysis.ipynb](experiments/notebooks/exploratory_data_analysis.ipynb)
+#### Analysis 2.2: State Variable Correlation
 
-The purpose of this notebook is to perform Exploratory Data Analysis of real Fei data sets using `checkthechain`. This notebook currently has Storm's original analysis and is on-hold until further exploration is needed and the `ctc` issues are resolved.
+The purpose of this analysis is to illustrate and validate the correlation between key system state variables.
 
-#### Liquidity Pools Notebook
+#### Analysis 3: Liquidity Pool Dynamics
+
+The purpose of this analysis is to illustrate and validate the effect of a step change in the Volatile Asset price on the liquidity pool imbalance, resulting minting and redemption, and capital allocation.
+
+### 2. FEI Savings Rate Analyses
+
+See [experiments/notebooks/2_fei_savings_rate.ipynb](experiments/notebooks/fei_savings_rate.ipynb)
+
+TODO Update summary here and in notebooks
+
+### 3. Protocol Controlled Value
+
+See [experiments/notebooks/3_protocol_controlled_value.ipynb](experiments/notebooks/protocol_controlled_value.ipynb)
+
+The purpose of this notebook is to illustrate and evaluate the effect of a target Stable Backing Ratio and Contractionary Monetary Policy applied to Liquidity Pool protocol-owned liquidity on key system dynamics and KPIs.
+
+#### Analysis 1: FEI Volatile Liquidity Pool Leverage
+
+This analysis serves to answer the what-if question: What leverage effect does protocol-owned liquidity have on total FEI supply and collateralization of the protocol in different market trends?
+
+#### Analysis 2: PCV at Risk for Stable Backing Ratio Targets
+
+The analysis serves to answer the what-if question: What effect does a PCV management strategy targetting a Stable Backing Ratio have on PCV at Risk and collateralization of the protocol? We'll statistically evaluate the efficacy of different policy settings.
+
+### Historical Datasets
+
+See [experiments/notebooks/historical_datasets.ipynb](experiments/notebooks/historical_datasets.ipynb)
+
+The purpose of this notebook is to perform Exploratory Data Analysis of real Fei Protocol datasets using `checkthechain`.
+
+### Liquidity Pools Notebook
 
 See [experiments/notebooks/liquidity_pools_notebook.ipynb](experiments/notebooks/liquidity_pools_notebook.ipynb)
 
 The purpose of this notebook is to illustrate the operation of the generic FEI-Volatile Liquidity Pool subsystem.
 
-#### Money Markets Notebook
+### Money Markets Notebook
 
 See [experiments/notebooks/money_markets_notebook.ipynb](experiments/notebooks/money_markets_notebook.ipynb)
 
 The purpose of this notebook is to illustrate the operation of the generic Money Market subsystem.
 
-#### PCV Management Notebook
+### PCV Management Notebook
 
 See [experiments/notebooks/pcv_management_notebook.ipynb](experiments/notebooks/pcv_management_notebook.ipynb)
 
 The purpose of this notebook is to illustrate PCV management strategies.
 
-#### PCV Yield Notebook
+### PCV Yield Notebook
 
 See [experiments/notebooks/pcv_yield_notebook.ipynb](experiments/notebooks/pcv_yield_notebook.ipynb)
 
 The purpose of this notebook is to illustrate PCV yield accrual and management.
+
+## Model Extension Roadmap
+
+The modular nature of the model makes structural and experiment-level extensions straightforward. The [Model Extension Roadmap](ROADMAP.md) provides some inspiration.
 
 ## Tests
 

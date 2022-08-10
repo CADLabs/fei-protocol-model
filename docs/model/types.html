@@ -1,0 +1,1031 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>model.types API documentation</title>
+<meta name="description" content="Types
+Various Python types used in the model" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>model.types</code></h1>
+</header>
+<section id="section-intro">
+<h1 id="types">Types</h1>
+<p>Various Python types used in the model</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;# Types
+Various Python types used in the model
+&#34;&#34;&#34;
+
+import numpy as np
+import sys
+import copy
+
+# See https://docs.python.org/3/library/dataclasses.html
+from dataclasses import dataclass
+from enforce_typing import enforce_types
+from typing import Union, List, Dict
+from abc import ABCMeta, abstractmethod
+
+# If Python version is greater than equal to 3.8, import from typing module
+# Else also import from typing_extensions module
+if sys.version_info &gt;= (3, 8):
+    from typing import TypedDict, List, Callable, NamedTuple
+else:
+    from typing import List, NamedTuple
+    from typing_extensions import TypedDict, Callable
+
+
+# Generic types
+Uninitialized = np.nan
+Percentage = float
+APR = float
+
+# Simulation types
+Timestep = int
+Run = int
+StateVariableKey = str
+
+# Assets
+USD = Union[int, float]
+FEI = Union[int, float]
+UNI = Union[int, float]
+VolatileAssetUnits = Union[int, float]
+StableAssetUnits = Union[int, float]
+
+# Weights
+CAMWeights = List[FEI]
+CAMDeltas = Dict[str, FEI]
+
+
+@enforce_types
+@dataclass(frozen=False)
+class Deposit(metaclass=ABCMeta):
+    &#34;&#34;&#34;## Generic Deposit
+    A generic Deposit class used for PCV and User Deposits.
+
+    Private variables with prefix _ should only be set directly in model configuration (e.g. initial state)
+    and be set using appropriate methods during runtime. This ensures the right assertions are made, and makes
+    it easy to check where &#34;unsafe&#34; updates are made.
+    &#34;&#34;&#34;
+
+    asset: str
+    &#34;&#34;&#34;Asset held in the deposit e.g. &#39;ETH&#39;&#34;&#34;&#34;
+    deposit_location: str
+    &#34;&#34;&#34;Location of Deposit (used for State Variable naming) e.g. &#39;liquidity_pool&#39;, &#39;money_market&#39;, &#39;idle&#39;, &#39;yield_bearing&#39;&#34;&#34;&#34;
+    _balance: Union[FEI, StableAssetUnits, VolatileAssetUnits] = 0.0
+    # Asset value must be initialized using appropriate method with asset price argument
+    _asset_value: USD = Uninitialized
+    _yield_accrued: Union[FEI, StableAssetUnits, VolatileAssetUnits] = 0.0
+    # Yield value must be initialized using appropriate method with asset price argument
+    _yield_value: USD = Uninitialized
+    _yield_rate: APR = 0.0
+
+    @property
+    def key(self) -&gt; str:
+        return &#34;_&#34;.join([self.asset, self.deposit_location, self._deposit_type])
+
+    @property
+    @abstractmethod
+    def _deposit_type(self) -&gt; str:
+        &#34;&#34;&#34;Private variable, type of Deposit (used for State Variable naming) e.g. &#39;pcv_deposit&#39; or &#39;user_deposit&#39;&#34;&#34;&#34;
+        pass
+
+    def __add__(self, other):
+        &#34;&#34;&#34;
+        Add two Deposits of the same type (subclass) and asset together. Returns a new Deposit instance.
+        &#34;&#34;&#34;
+
+        assert (
+            self._deposit_type == other._deposit_type
+        ), &#34;Can&#39;t add two unlike Deposit instances together&#34;
+        assert self.asset == other.asset, &#34;Can&#39;t add two unlike Deposit instances together&#34;
+
+        from_asset_price = other.asset_value / other.balance if other.balance else 0
+        to_asset_price = self.asset_value / self.balance if self.balance else 0
+
+        assert (
+            from_asset_price == to_asset_price
+        ), &#34;Can&#39;t add two Deposit instances with different implicit asset prices&#34;
+        assert (
+            self.yield_rate == other.yield_rate
+        ), &#34;Can&#39;t add two Deposit instances with different yield rates&#34;
+
+        return self.__class__(
+            asset=self.asset,
+            deposit_location=self.deposit_location,
+            _balance=self.balance + other.balance,
+            _asset_value=self.asset_value + other.asset_value,
+            _yield_accrued=self.yield_accrued + other.yield_accrued,
+            _yield_value=self.yield_value + other.yield_value,
+            _yield_rate=self.yield_rate,
+        )
+
+    def deposit(self, amount, asset_price: USD):
+        &#34;&#34;&#34;
+        Deposit an amount, in asset units, into Deposit balance,
+        and update the asset value.
+        &#34;&#34;&#34;
+        assert amount &gt;= 0, &#34;Amount must be a positive value&#34;
+        assert asset_price &gt;= 0, &#34;Asset price must be a positive value&#34;
+
+        self._balance += amount
+        self._asset_value = self._balance * asset_price
+
+        return self
+
+    def withdraw(self, amount, asset_price: USD):
+        &#34;&#34;&#34;
+        Withdraw an amount, in asset units, from the Deposit balance,
+        and update the asset value.
+        &#34;&#34;&#34;
+        assert amount &gt;= 0, &#34;Amount must be a positive value&#34;
+        assert amount &lt;= self.balance, &#34;Amount must be less than balance&#34;
+        assert asset_price &gt;= 0, &#34;Asset price must be a positive value&#34;
+
+        self._balance -= amount
+        self._asset_value = self._balance * asset_price
+
+        return self
+
+    def transfer(self, to, amount, from_asset_price=None, to_asset_price=None):
+        &#34;&#34;&#34;
+        Transfer an amount from the balance of one Deposit to the balance of another.
+
+        If either asset_price is not passed as an arugment, it is calculated from the respective Deposit balance and asset_value.
+        &#34;&#34;&#34;
+        if not from_asset_price:
+            from_asset_price = self.asset_value / self.balance if self.balance else to_asset_price
+        if not to_asset_price:
+            to_asset_price = to.asset_value / to.balance if to.balance else from_asset_price
+
+        self.withdraw(amount, from_asset_price)
+        to.deposit(
+            amount * from_asset_price / to_asset_price if to_asset_price else amount, to_asset_price
+        )
+
+        return self, to
+
+    def set_balance(self, balance, asset_price: USD):
+        &#34;&#34;&#34;
+        Directly set the balance for the Deposit,
+        and update the asset value.
+        &#34;&#34;&#34;
+        assert balance &gt;= 0, &#34;Balance must be a positive value&#34;
+        assert asset_price &gt;= 0, &#34;Asset price must be a positive value&#34;
+
+        self._balance = balance
+        self._asset_value = self._balance * asset_price
+
+        return self
+
+    def accrue_yield(self, period_in_days: int, asset_price: USD):
+        &#34;&#34;&#34;
+        Accrue yield on balance to yield_accrued based on yield_rate with simple interest.
+
+        Args:
+            period_in_days (int):   Requires period_in_days to convert annualized yield_rate to period yield rate
+            asset_price (float):    Requires asset_price to update the yield_value
+
+        Returns:
+            The yield accrued in the current timestep
+        &#34;&#34;&#34;
+        assert asset_price &gt;= 0, &#34;Asset price must be a positive value&#34;
+        assert period_in_days &gt;= 0, &#34;Period in days must be a positive value&#34;
+
+        delta_yield_accrued = self._balance * (self._yield_rate * period_in_days / 365)
+        self._yield_accrued += delta_yield_accrued
+        self._yield_value = self._yield_accrued * asset_price
+
+        return delta_yield_accrued
+
+    def accrue_yield_compounded(self, period_in_days, asset_price: USD):
+        &#34;&#34;&#34;
+        Accrue yield on balance to yield_accrued based on yield_rate with compound interest.
+
+        Args:
+            period_in_days (int):   Requires period_in_days to convert annualized yield_rate to period yield rate
+            asset_price (float):    Requires asset_price to update the yield_value
+
+        Returns:
+            The PCVDeposit instance
+        &#34;&#34;&#34;
+        assert asset_price &gt;= 0, &#34;Asset price must be a positive value&#34;
+        assert period_in_days &gt;= 0, &#34;Period in days must be a positive value&#34;
+
+        self.accrue_yield(period_in_days, asset_price)
+        self.transfer_yield(self, self._yield_accrued, asset_price)
+
+        assert self._yield_accrued == 0
+        assert self._yield_value == 0
+
+        return self
+
+    def transfer_yield(self, to, amount, asset_price: USD):
+        &#34;&#34;&#34;
+        Transfer an amount from the yield_accrued of one Deposit to the balance of another (can include own balance).
+        &#34;&#34;&#34;
+        assert amount &lt;= self._yield_accrued, &#34;Transfer amount greater than yield accrued&#34;
+        assert amount &gt;= 0, &#34;Amount must be a positive value&#34;
+        assert asset_price &gt;= 0, &#34;Asset price must be a positive value&#34;
+
+        self._yield_accrued -= amount
+        to.deposit(amount, asset_price)
+        self._yield_value = self._yield_accrued * asset_price
+
+        return self, to
+
+    def update_asset_value(self, asset_price: USD):
+        &#34;&#34;&#34;
+        Update the asset value based on the current asset price.
+        &#34;&#34;&#34;
+        self._asset_value = self._balance * asset_price
+
+        return self
+
+    @property
+    def balance(self):
+        &#34;&#34;&#34;Balance in asset units&#34;&#34;&#34;
+        return self._balance
+
+    @property
+    def asset_value(self):
+        &#34;&#34;&#34;Value of balance in USD&#34;&#34;&#34;
+        return self._asset_value
+
+    @property
+    def yield_accrued(self):
+        &#34;&#34;&#34;Yield accrued on balance (simple or compound interest) in asset units&#34;&#34;&#34;
+        return self._yield_accrued
+
+    @property
+    def yield_value(self):
+        &#34;&#34;&#34;Value of yield accrued in USD&#34;&#34;&#34;
+        return self._yield_value
+
+    @property
+    def yield_rate(self):
+        &#34;&#34;&#34;Annualized yield rate (as APR or simple interest rate without compounding)&#34;&#34;&#34;
+        return self._yield_rate
+
+    @yield_rate.setter
+    def yield_rate(self, new_yield_rate):
+        assert new_yield_rate &gt;= 0, new_yield_rate
+        self._yield_rate = new_yield_rate
+
+
+@enforce_types
+@dataclass(frozen=False)
+class PCVDeposit(Deposit):
+    &#34;&#34;&#34;## PCV Deposit
+
+    Inherits from Deposit class.
+    &#34;&#34;&#34;
+
+    _deposit_type = &#34;pcv_deposit&#34;
+    &#34;&#34;&#34;Implements abstract attribute from Deposit class&#34;&#34;&#34;
+
+
+@enforce_types
+@dataclass(frozen=False)
+class UserDeposit(Deposit):
+    &#34;&#34;&#34;## User Deposit
+
+    Inherits from Deposit class.
+    &#34;&#34;&#34;
+
+    _deposit_type = &#34;user_deposit&#34;
+    &#34;&#34;&#34;Implements abstract attribute from Deposit class&#34;&#34;&#34;</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="model.types.Deposit"><code class="flex name class">
+<span>class <span class="ident">Deposit</span></span>
+<span>(</span><span>asset: str, deposit_location: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="generic-deposit">Generic Deposit</h2>
+<p>A generic Deposit class used for PCV and User Deposits.</p>
+<p>Private variables with prefix _ should only be set directly in model configuration (e.g. initial state)
+and be set using appropriate methods during runtime. This ensures the right assertions are made, and makes
+it easy to check where "unsafe" updates are made.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@enforce_types
+@dataclass(frozen=False)
+class Deposit(metaclass=ABCMeta):
+    &#34;&#34;&#34;## Generic Deposit
+    A generic Deposit class used for PCV and User Deposits.
+
+    Private variables with prefix _ should only be set directly in model configuration (e.g. initial state)
+    and be set using appropriate methods during runtime. This ensures the right assertions are made, and makes
+    it easy to check where &#34;unsafe&#34; updates are made.
+    &#34;&#34;&#34;
+
+    asset: str
+    &#34;&#34;&#34;Asset held in the deposit e.g. &#39;ETH&#39;&#34;&#34;&#34;
+    deposit_location: str
+    &#34;&#34;&#34;Location of Deposit (used for State Variable naming) e.g. &#39;liquidity_pool&#39;, &#39;money_market&#39;, &#39;idle&#39;, &#39;yield_bearing&#39;&#34;&#34;&#34;
+    _balance: Union[FEI, StableAssetUnits, VolatileAssetUnits] = 0.0
+    # Asset value must be initialized using appropriate method with asset price argument
+    _asset_value: USD = Uninitialized
+    _yield_accrued: Union[FEI, StableAssetUnits, VolatileAssetUnits] = 0.0
+    # Yield value must be initialized using appropriate method with asset price argument
+    _yield_value: USD = Uninitialized
+    _yield_rate: APR = 0.0
+
+    @property
+    def key(self) -&gt; str:
+        return &#34;_&#34;.join([self.asset, self.deposit_location, self._deposit_type])
+
+    @property
+    @abstractmethod
+    def _deposit_type(self) -&gt; str:
+        &#34;&#34;&#34;Private variable, type of Deposit (used for State Variable naming) e.g. &#39;pcv_deposit&#39; or &#39;user_deposit&#39;&#34;&#34;&#34;
+        pass
+
+    def __add__(self, other):
+        &#34;&#34;&#34;
+        Add two Deposits of the same type (subclass) and asset together. Returns a new Deposit instance.
+        &#34;&#34;&#34;
+
+        assert (
+            self._deposit_type == other._deposit_type
+        ), &#34;Can&#39;t add two unlike Deposit instances together&#34;
+        assert self.asset == other.asset, &#34;Can&#39;t add two unlike Deposit instances together&#34;
+
+        from_asset_price = other.asset_value / other.balance if other.balance else 0
+        to_asset_price = self.asset_value / self.balance if self.balance else 0
+
+        assert (
+            from_asset_price == to_asset_price
+        ), &#34;Can&#39;t add two Deposit instances with different implicit asset prices&#34;
+        assert (
+            self.yield_rate == other.yield_rate
+        ), &#34;Can&#39;t add two Deposit instances with different yield rates&#34;
+
+        return self.__class__(
+            asset=self.asset,
+            deposit_location=self.deposit_location,
+            _balance=self.balance + other.balance,
+            _asset_value=self.asset_value + other.asset_value,
+            _yield_accrued=self.yield_accrued + other.yield_accrued,
+            _yield_value=self.yield_value + other.yield_value,
+            _yield_rate=self.yield_rate,
+        )
+
+    def deposit(self, amount, asset_price: USD):
+        &#34;&#34;&#34;
+        Deposit an amount, in asset units, into Deposit balance,
+        and update the asset value.
+        &#34;&#34;&#34;
+        assert amount &gt;= 0, &#34;Amount must be a positive value&#34;
+        assert asset_price &gt;= 0, &#34;Asset price must be a positive value&#34;
+
+        self._balance += amount
+        self._asset_value = self._balance * asset_price
+
+        return self
+
+    def withdraw(self, amount, asset_price: USD):
+        &#34;&#34;&#34;
+        Withdraw an amount, in asset units, from the Deposit balance,
+        and update the asset value.
+        &#34;&#34;&#34;
+        assert amount &gt;= 0, &#34;Amount must be a positive value&#34;
+        assert amount &lt;= self.balance, &#34;Amount must be less than balance&#34;
+        assert asset_price &gt;= 0, &#34;Asset price must be a positive value&#34;
+
+        self._balance -= amount
+        self._asset_value = self._balance * asset_price
+
+        return self
+
+    def transfer(self, to, amount, from_asset_price=None, to_asset_price=None):
+        &#34;&#34;&#34;
+        Transfer an amount from the balance of one Deposit to the balance of another.
+
+        If either asset_price is not passed as an arugment, it is calculated from the respective Deposit balance and asset_value.
+        &#34;&#34;&#34;
+        if not from_asset_price:
+            from_asset_price = self.asset_value / self.balance if self.balance else to_asset_price
+        if not to_asset_price:
+            to_asset_price = to.asset_value / to.balance if to.balance else from_asset_price
+
+        self.withdraw(amount, from_asset_price)
+        to.deposit(
+            amount * from_asset_price / to_asset_price if to_asset_price else amount, to_asset_price
+        )
+
+        return self, to
+
+    def set_balance(self, balance, asset_price: USD):
+        &#34;&#34;&#34;
+        Directly set the balance for the Deposit,
+        and update the asset value.
+        &#34;&#34;&#34;
+        assert balance &gt;= 0, &#34;Balance must be a positive value&#34;
+        assert asset_price &gt;= 0, &#34;Asset price must be a positive value&#34;
+
+        self._balance = balance
+        self._asset_value = self._balance * asset_price
+
+        return self
+
+    def accrue_yield(self, period_in_days: int, asset_price: USD):
+        &#34;&#34;&#34;
+        Accrue yield on balance to yield_accrued based on yield_rate with simple interest.
+
+        Args:
+            period_in_days (int):   Requires period_in_days to convert annualized yield_rate to period yield rate
+            asset_price (float):    Requires asset_price to update the yield_value
+
+        Returns:
+            The yield accrued in the current timestep
+        &#34;&#34;&#34;
+        assert asset_price &gt;= 0, &#34;Asset price must be a positive value&#34;
+        assert period_in_days &gt;= 0, &#34;Period in days must be a positive value&#34;
+
+        delta_yield_accrued = self._balance * (self._yield_rate * period_in_days / 365)
+        self._yield_accrued += delta_yield_accrued
+        self._yield_value = self._yield_accrued * asset_price
+
+        return delta_yield_accrued
+
+    def accrue_yield_compounded(self, period_in_days, asset_price: USD):
+        &#34;&#34;&#34;
+        Accrue yield on balance to yield_accrued based on yield_rate with compound interest.
+
+        Args:
+            period_in_days (int):   Requires period_in_days to convert annualized yield_rate to period yield rate
+            asset_price (float):    Requires asset_price to update the yield_value
+
+        Returns:
+            The PCVDeposit instance
+        &#34;&#34;&#34;
+        assert asset_price &gt;= 0, &#34;Asset price must be a positive value&#34;
+        assert period_in_days &gt;= 0, &#34;Period in days must be a positive value&#34;
+
+        self.accrue_yield(period_in_days, asset_price)
+        self.transfer_yield(self, self._yield_accrued, asset_price)
+
+        assert self._yield_accrued == 0
+        assert self._yield_value == 0
+
+        return self
+
+    def transfer_yield(self, to, amount, asset_price: USD):
+        &#34;&#34;&#34;
+        Transfer an amount from the yield_accrued of one Deposit to the balance of another (can include own balance).
+        &#34;&#34;&#34;
+        assert amount &lt;= self._yield_accrued, &#34;Transfer amount greater than yield accrued&#34;
+        assert amount &gt;= 0, &#34;Amount must be a positive value&#34;
+        assert asset_price &gt;= 0, &#34;Asset price must be a positive value&#34;
+
+        self._yield_accrued -= amount
+        to.deposit(amount, asset_price)
+        self._yield_value = self._yield_accrued * asset_price
+
+        return self, to
+
+    def update_asset_value(self, asset_price: USD):
+        &#34;&#34;&#34;
+        Update the asset value based on the current asset price.
+        &#34;&#34;&#34;
+        self._asset_value = self._balance * asset_price
+
+        return self
+
+    @property
+    def balance(self):
+        &#34;&#34;&#34;Balance in asset units&#34;&#34;&#34;
+        return self._balance
+
+    @property
+    def asset_value(self):
+        &#34;&#34;&#34;Value of balance in USD&#34;&#34;&#34;
+        return self._asset_value
+
+    @property
+    def yield_accrued(self):
+        &#34;&#34;&#34;Yield accrued on balance (simple or compound interest) in asset units&#34;&#34;&#34;
+        return self._yield_accrued
+
+    @property
+    def yield_value(self):
+        &#34;&#34;&#34;Value of yield accrued in USD&#34;&#34;&#34;
+        return self._yield_value
+
+    @property
+    def yield_rate(self):
+        &#34;&#34;&#34;Annualized yield rate (as APR or simple interest rate without compounding)&#34;&#34;&#34;
+        return self._yield_rate
+
+    @yield_rate.setter
+    def yield_rate(self, new_yield_rate):
+        assert new_yield_rate &gt;= 0, new_yield_rate
+        self._yield_rate = new_yield_rate</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="model.types.PCVDeposit" href="#model.types.PCVDeposit">PCVDeposit</a></li>
+<li><a title="model.types.UserDeposit" href="#model.types.UserDeposit">UserDeposit</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="model.types.Deposit.asset"><code class="name">var <span class="ident">asset</span> : str</code></dt>
+<dd>
+<div class="desc"><p>Asset held in the deposit e.g. 'ETH'</p></div>
+</dd>
+<dt id="model.types.Deposit.deposit_location"><code class="name">var <span class="ident">deposit_location</span> : str</code></dt>
+<dd>
+<div class="desc"><p>Location of Deposit (used for State Variable naming) e.g. 'liquidity_pool', 'money_market', 'idle', 'yield_bearing'</p></div>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="model.types.Deposit.asset_value"><code class="name">var <span class="ident">asset_value</span></code></dt>
+<dd>
+<div class="desc"><p>Value of balance in USD</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def asset_value(self):
+    &#34;&#34;&#34;Value of balance in USD&#34;&#34;&#34;
+    return self._asset_value</code></pre>
+</details>
+</dd>
+<dt id="model.types.Deposit.balance"><code class="name">var <span class="ident">balance</span></code></dt>
+<dd>
+<div class="desc"><p>Balance in asset units</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def balance(self):
+    &#34;&#34;&#34;Balance in asset units&#34;&#34;&#34;
+    return self._balance</code></pre>
+</details>
+</dd>
+<dt id="model.types.Deposit.key"><code class="name">var <span class="ident">key</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def key(self) -&gt; str:
+    return &#34;_&#34;.join([self.asset, self.deposit_location, self._deposit_type])</code></pre>
+</details>
+</dd>
+<dt id="model.types.Deposit.yield_accrued"><code class="name">var <span class="ident">yield_accrued</span></code></dt>
+<dd>
+<div class="desc"><p>Yield accrued on balance (simple or compound interest) in asset units</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def yield_accrued(self):
+    &#34;&#34;&#34;Yield accrued on balance (simple or compound interest) in asset units&#34;&#34;&#34;
+    return self._yield_accrued</code></pre>
+</details>
+</dd>
+<dt id="model.types.Deposit.yield_rate"><code class="name">var <span class="ident">yield_rate</span></code></dt>
+<dd>
+<div class="desc"><p>Annualized yield rate (as APR or simple interest rate without compounding)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def yield_rate(self):
+    &#34;&#34;&#34;Annualized yield rate (as APR or simple interest rate without compounding)&#34;&#34;&#34;
+    return self._yield_rate</code></pre>
+</details>
+</dd>
+<dt id="model.types.Deposit.yield_value"><code class="name">var <span class="ident">yield_value</span></code></dt>
+<dd>
+<div class="desc"><p>Value of yield accrued in USD</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def yield_value(self):
+    &#34;&#34;&#34;Value of yield accrued in USD&#34;&#34;&#34;
+    return self._yield_value</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="model.types.Deposit.accrue_yield"><code class="name flex">
+<span>def <span class="ident">accrue_yield</span></span>(<span>self, period_in_days: int, asset_price: Union[int, float])</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Accrue yield on balance to yield_accrued based on yield_rate with simple interest.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>period_in_days</code></strong> :&ensp;<code>int</code></dt>
+<dd>Requires period_in_days to convert annualized yield_rate to period yield rate</dd>
+<dt><strong><code>asset_price</code></strong> :&ensp;<code>float</code></dt>
+<dd>Requires asset_price to update the yield_value</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>The yield accrued in the current timestep</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def accrue_yield(self, period_in_days: int, asset_price: USD):
+    &#34;&#34;&#34;
+    Accrue yield on balance to yield_accrued based on yield_rate with simple interest.
+
+    Args:
+        period_in_days (int):   Requires period_in_days to convert annualized yield_rate to period yield rate
+        asset_price (float):    Requires asset_price to update the yield_value
+
+    Returns:
+        The yield accrued in the current timestep
+    &#34;&#34;&#34;
+    assert asset_price &gt;= 0, &#34;Asset price must be a positive value&#34;
+    assert period_in_days &gt;= 0, &#34;Period in days must be a positive value&#34;
+
+    delta_yield_accrued = self._balance * (self._yield_rate * period_in_days / 365)
+    self._yield_accrued += delta_yield_accrued
+    self._yield_value = self._yield_accrued * asset_price
+
+    return delta_yield_accrued</code></pre>
+</details>
+</dd>
+<dt id="model.types.Deposit.accrue_yield_compounded"><code class="name flex">
+<span>def <span class="ident">accrue_yield_compounded</span></span>(<span>self, period_in_days, asset_price: Union[int, float])</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Accrue yield on balance to yield_accrued based on yield_rate with compound interest.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>period_in_days</code></strong> :&ensp;<code>int</code></dt>
+<dd>Requires period_in_days to convert annualized yield_rate to period yield rate</dd>
+<dt><strong><code>asset_price</code></strong> :&ensp;<code>float</code></dt>
+<dd>Requires asset_price to update the yield_value</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>The PCVDeposit instance</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def accrue_yield_compounded(self, period_in_days, asset_price: USD):
+    &#34;&#34;&#34;
+    Accrue yield on balance to yield_accrued based on yield_rate with compound interest.
+
+    Args:
+        period_in_days (int):   Requires period_in_days to convert annualized yield_rate to period yield rate
+        asset_price (float):    Requires asset_price to update the yield_value
+
+    Returns:
+        The PCVDeposit instance
+    &#34;&#34;&#34;
+    assert asset_price &gt;= 0, &#34;Asset price must be a positive value&#34;
+    assert period_in_days &gt;= 0, &#34;Period in days must be a positive value&#34;
+
+    self.accrue_yield(period_in_days, asset_price)
+    self.transfer_yield(self, self._yield_accrued, asset_price)
+
+    assert self._yield_accrued == 0
+    assert self._yield_value == 0
+
+    return self</code></pre>
+</details>
+</dd>
+<dt id="model.types.Deposit.deposit"><code class="name flex">
+<span>def <span class="ident">deposit</span></span>(<span>self, amount, asset_price: Union[int, float])</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Deposit an amount, in asset units, into Deposit balance,
+and update the asset value.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def deposit(self, amount, asset_price: USD):
+    &#34;&#34;&#34;
+    Deposit an amount, in asset units, into Deposit balance,
+    and update the asset value.
+    &#34;&#34;&#34;
+    assert amount &gt;= 0, &#34;Amount must be a positive value&#34;
+    assert asset_price &gt;= 0, &#34;Asset price must be a positive value&#34;
+
+    self._balance += amount
+    self._asset_value = self._balance * asset_price
+
+    return self</code></pre>
+</details>
+</dd>
+<dt id="model.types.Deposit.set_balance"><code class="name flex">
+<span>def <span class="ident">set_balance</span></span>(<span>self, balance, asset_price: Union[int, float])</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Directly set the balance for the Deposit,
+and update the asset value.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_balance(self, balance, asset_price: USD):
+    &#34;&#34;&#34;
+    Directly set the balance for the Deposit,
+    and update the asset value.
+    &#34;&#34;&#34;
+    assert balance &gt;= 0, &#34;Balance must be a positive value&#34;
+    assert asset_price &gt;= 0, &#34;Asset price must be a positive value&#34;
+
+    self._balance = balance
+    self._asset_value = self._balance * asset_price
+
+    return self</code></pre>
+</details>
+</dd>
+<dt id="model.types.Deposit.transfer"><code class="name flex">
+<span>def <span class="ident">transfer</span></span>(<span>self, to, amount, from_asset_price=None, to_asset_price=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Transfer an amount from the balance of one Deposit to the balance of another.</p>
+<p>If either asset_price is not passed as an arugment, it is calculated from the respective Deposit balance and asset_value.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def transfer(self, to, amount, from_asset_price=None, to_asset_price=None):
+    &#34;&#34;&#34;
+    Transfer an amount from the balance of one Deposit to the balance of another.
+
+    If either asset_price is not passed as an arugment, it is calculated from the respective Deposit balance and asset_value.
+    &#34;&#34;&#34;
+    if not from_asset_price:
+        from_asset_price = self.asset_value / self.balance if self.balance else to_asset_price
+    if not to_asset_price:
+        to_asset_price = to.asset_value / to.balance if to.balance else from_asset_price
+
+    self.withdraw(amount, from_asset_price)
+    to.deposit(
+        amount * from_asset_price / to_asset_price if to_asset_price else amount, to_asset_price
+    )
+
+    return self, to</code></pre>
+</details>
+</dd>
+<dt id="model.types.Deposit.transfer_yield"><code class="name flex">
+<span>def <span class="ident">transfer_yield</span></span>(<span>self, to, amount, asset_price: Union[int, float])</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Transfer an amount from the yield_accrued of one Deposit to the balance of another (can include own balance).</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def transfer_yield(self, to, amount, asset_price: USD):
+    &#34;&#34;&#34;
+    Transfer an amount from the yield_accrued of one Deposit to the balance of another (can include own balance).
+    &#34;&#34;&#34;
+    assert amount &lt;= self._yield_accrued, &#34;Transfer amount greater than yield accrued&#34;
+    assert amount &gt;= 0, &#34;Amount must be a positive value&#34;
+    assert asset_price &gt;= 0, &#34;Asset price must be a positive value&#34;
+
+    self._yield_accrued -= amount
+    to.deposit(amount, asset_price)
+    self._yield_value = self._yield_accrued * asset_price
+
+    return self, to</code></pre>
+</details>
+</dd>
+<dt id="model.types.Deposit.update_asset_value"><code class="name flex">
+<span>def <span class="ident">update_asset_value</span></span>(<span>self, asset_price: Union[int, float])</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Update the asset value based on the current asset price.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update_asset_value(self, asset_price: USD):
+    &#34;&#34;&#34;
+    Update the asset value based on the current asset price.
+    &#34;&#34;&#34;
+    self._asset_value = self._balance * asset_price
+
+    return self</code></pre>
+</details>
+</dd>
+<dt id="model.types.Deposit.withdraw"><code class="name flex">
+<span>def <span class="ident">withdraw</span></span>(<span>self, amount, asset_price: Union[int, float])</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Withdraw an amount, in asset units, from the Deposit balance,
+and update the asset value.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def withdraw(self, amount, asset_price: USD):
+    &#34;&#34;&#34;
+    Withdraw an amount, in asset units, from the Deposit balance,
+    and update the asset value.
+    &#34;&#34;&#34;
+    assert amount &gt;= 0, &#34;Amount must be a positive value&#34;
+    assert amount &lt;= self.balance, &#34;Amount must be less than balance&#34;
+    assert asset_price &gt;= 0, &#34;Asset price must be a positive value&#34;
+
+    self._balance -= amount
+    self._asset_value = self._balance * asset_price
+
+    return self</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="model.types.PCVDeposit"><code class="flex name class">
+<span>class <span class="ident">PCVDeposit</span></span>
+<span>(</span><span>asset: str, deposit_location: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="pcv-deposit">PCV Deposit</h2>
+<p>Inherits from Deposit class.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@enforce_types
+@dataclass(frozen=False)
+class PCVDeposit(Deposit):
+    &#34;&#34;&#34;## PCV Deposit
+
+    Inherits from Deposit class.
+    &#34;&#34;&#34;
+
+    _deposit_type = &#34;pcv_deposit&#34;
+    &#34;&#34;&#34;Implements abstract attribute from Deposit class&#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="model.types.Deposit" href="#model.types.Deposit">Deposit</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="model.types.Deposit" href="#model.types.Deposit">Deposit</a></b></code>:
+<ul class="hlist">
+<li><code><a title="model.types.Deposit.accrue_yield" href="#model.types.Deposit.accrue_yield">accrue_yield</a></code></li>
+<li><code><a title="model.types.Deposit.accrue_yield_compounded" href="#model.types.Deposit.accrue_yield_compounded">accrue_yield_compounded</a></code></li>
+<li><code><a title="model.types.Deposit.asset" href="#model.types.Deposit.asset">asset</a></code></li>
+<li><code><a title="model.types.Deposit.asset_value" href="#model.types.Deposit.asset_value">asset_value</a></code></li>
+<li><code><a title="model.types.Deposit.balance" href="#model.types.Deposit.balance">balance</a></code></li>
+<li><code><a title="model.types.Deposit.deposit" href="#model.types.Deposit.deposit">deposit</a></code></li>
+<li><code><a title="model.types.Deposit.deposit_location" href="#model.types.Deposit.deposit_location">deposit_location</a></code></li>
+<li><code><a title="model.types.Deposit.set_balance" href="#model.types.Deposit.set_balance">set_balance</a></code></li>
+<li><code><a title="model.types.Deposit.transfer" href="#model.types.Deposit.transfer">transfer</a></code></li>
+<li><code><a title="model.types.Deposit.transfer_yield" href="#model.types.Deposit.transfer_yield">transfer_yield</a></code></li>
+<li><code><a title="model.types.Deposit.update_asset_value" href="#model.types.Deposit.update_asset_value">update_asset_value</a></code></li>
+<li><code><a title="model.types.Deposit.withdraw" href="#model.types.Deposit.withdraw">withdraw</a></code></li>
+<li><code><a title="model.types.Deposit.yield_accrued" href="#model.types.Deposit.yield_accrued">yield_accrued</a></code></li>
+<li><code><a title="model.types.Deposit.yield_rate" href="#model.types.Deposit.yield_rate">yield_rate</a></code></li>
+<li><code><a title="model.types.Deposit.yield_value" href="#model.types.Deposit.yield_value">yield_value</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="model.types.UserDeposit"><code class="flex name class">
+<span>class <span class="ident">UserDeposit</span></span>
+<span>(</span><span>asset: str, deposit_location: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="user-deposit">User Deposit</h2>
+<p>Inherits from Deposit class.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@enforce_types
+@dataclass(frozen=False)
+class UserDeposit(Deposit):
+    &#34;&#34;&#34;## User Deposit
+
+    Inherits from Deposit class.
+    &#34;&#34;&#34;
+
+    _deposit_type = &#34;user_deposit&#34;
+    &#34;&#34;&#34;Implements abstract attribute from Deposit class&#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="model.types.Deposit" href="#model.types.Deposit">Deposit</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="model.types.Deposit" href="#model.types.Deposit">Deposit</a></b></code>:
+<ul class="hlist">
+<li><code><a title="model.types.Deposit.accrue_yield" href="#model.types.Deposit.accrue_yield">accrue_yield</a></code></li>
+<li><code><a title="model.types.Deposit.accrue_yield_compounded" href="#model.types.Deposit.accrue_yield_compounded">accrue_yield_compounded</a></code></li>
+<li><code><a title="model.types.Deposit.asset" href="#model.types.Deposit.asset">asset</a></code></li>
+<li><code><a title="model.types.Deposit.asset_value" href="#model.types.Deposit.asset_value">asset_value</a></code></li>
+<li><code><a title="model.types.Deposit.balance" href="#model.types.Deposit.balance">balance</a></code></li>
+<li><code><a title="model.types.Deposit.deposit" href="#model.types.Deposit.deposit">deposit</a></code></li>
+<li><code><a title="model.types.Deposit.deposit_location" href="#model.types.Deposit.deposit_location">deposit_location</a></code></li>
+<li><code><a title="model.types.Deposit.set_balance" href="#model.types.Deposit.set_balance">set_balance</a></code></li>
+<li><code><a title="model.types.Deposit.transfer" href="#model.types.Deposit.transfer">transfer</a></code></li>
+<li><code><a title="model.types.Deposit.transfer_yield" href="#model.types.Deposit.transfer_yield">transfer_yield</a></code></li>
+<li><code><a title="model.types.Deposit.update_asset_value" href="#model.types.Deposit.update_asset_value">update_asset_value</a></code></li>
+<li><code><a title="model.types.Deposit.withdraw" href="#model.types.Deposit.withdraw">withdraw</a></code></li>
+<li><code><a title="model.types.Deposit.yield_accrued" href="#model.types.Deposit.yield_accrued">yield_accrued</a></code></li>
+<li><code><a title="model.types.Deposit.yield_rate" href="#model.types.Deposit.yield_rate">yield_rate</a></code></li>
+<li><code><a title="model.types.Deposit.yield_value" href="#model.types.Deposit.yield_value">yield_value</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul>
+<li><a href="#types">Types</a></li>
+</ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="model" href="index.html">model</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="model.types.Deposit" href="#model.types.Deposit">Deposit</a></code></h4>
+<ul class="">
+<li><code><a title="model.types.Deposit.accrue_yield" href="#model.types.Deposit.accrue_yield">accrue_yield</a></code></li>
+<li><code><a title="model.types.Deposit.accrue_yield_compounded" href="#model.types.Deposit.accrue_yield_compounded">accrue_yield_compounded</a></code></li>
+<li><code><a title="model.types.Deposit.asset" href="#model.types.Deposit.asset">asset</a></code></li>
+<li><code><a title="model.types.Deposit.asset_value" href="#model.types.Deposit.asset_value">asset_value</a></code></li>
+<li><code><a title="model.types.Deposit.balance" href="#model.types.Deposit.balance">balance</a></code></li>
+<li><code><a title="model.types.Deposit.deposit" href="#model.types.Deposit.deposit">deposit</a></code></li>
+<li><code><a title="model.types.Deposit.deposit_location" href="#model.types.Deposit.deposit_location">deposit_location</a></code></li>
+<li><code><a title="model.types.Deposit.key" href="#model.types.Deposit.key">key</a></code></li>
+<li><code><a title="model.types.Deposit.set_balance" href="#model.types.Deposit.set_balance">set_balance</a></code></li>
+<li><code><a title="model.types.Deposit.transfer" href="#model.types.Deposit.transfer">transfer</a></code></li>
+<li><code><a title="model.types.Deposit.transfer_yield" href="#model.types.Deposit.transfer_yield">transfer_yield</a></code></li>
+<li><code><a title="model.types.Deposit.update_asset_value" href="#model.types.Deposit.update_asset_value">update_asset_value</a></code></li>
+<li><code><a title="model.types.Deposit.withdraw" href="#model.types.Deposit.withdraw">withdraw</a></code></li>
+<li><code><a title="model.types.Deposit.yield_accrued" href="#model.types.Deposit.yield_accrued">yield_accrued</a></code></li>
+<li><code><a title="model.types.Deposit.yield_rate" href="#model.types.Deposit.yield_rate">yield_rate</a></code></li>
+<li><code><a title="model.types.Deposit.yield_value" href="#model.types.Deposit.yield_value">yield_value</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="model.types.PCVDeposit" href="#model.types.PCVDeposit">PCVDeposit</a></code></h4>
+</li>
+<li>
+<h4><code><a title="model.types.UserDeposit" href="#model.types.UserDeposit">UserDeposit</a></code></h4>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>

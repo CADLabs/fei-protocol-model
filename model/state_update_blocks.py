@@ -1,4 +1,4 @@
-"""
+"""# State Update Blocks
 cadCAD model State Update Block structure, composed of Policy and State Update Functions
 """
 
@@ -13,10 +13,10 @@ import model.parts.fei_savings_deposit as fei_savings_deposit
 import model.parts.fei_capital_allocation as fei_capital_allocation
 import model.parts.peg_stability_module as peg_stability_module
 
-from model.utils import update_from_signal, accumulate_from_signal, update_timestamp
+from model.utils import update_from_signal, update_timestamp
 
 
-# Partial State Update Block keys:
+# State Update Block keys for convenience:
 enabled = "enabled"
 description = "description"
 policies = "policies"
@@ -179,8 +179,6 @@ state_update_blocks = [
             for key in [
                 "stable_yield_bearing_pcv_deposit",
                 "volatile_yield_bearing_pcv_deposit",
-                # TODO Decide if and where we accrue User Deposit yield
-                # "fei_money_market_user_deposit": update_from_signal("fei_money_market_user_deposit"),
                 "fei_money_market_pcv_deposit",
                 "pcv_yield",
             ]
@@ -192,6 +190,7 @@ state_update_blocks = [
             PCV Yield Management - Withdraw Yield Policy
         """,
         policies: {
+            # NOTE Only one Policy should be enabled at a time using the relevant System Parameters
             "policy_withdraw_yield": pcv_yield.policy_withdraw_yield,
             "policy_reinvest_yield": pcv_yield.policy_reinvest_yield,
         },
@@ -210,6 +209,7 @@ state_update_blocks = [
             PCV Rebalancing
         """,
         policies: {
+            # NOTE Only one Policy should be enabled at a time using the relevant System Parameters
             "target_stable_backing": pcv_management.policy_pcv_rebalancing_target_stable_backing,
             "target_stable_pcv": pcv_management.policy_pcv_rebalancing_target_stable_pcv,
         },
@@ -244,8 +244,8 @@ state_update_blocks = [
         """,
         policies: {
             # Perform weight updates using exogenous dirichlet stochastic process:
-            # "capital_allocation_exogenous_weight_update": fei_capital_allocation.policy_exogenous_weight_update,
-            "capital_allocation_endogenous_weight_update": fei_capital_allocation.policy_endogenous_weight_update,
+            # "capital_allocation_exogenous_weight_update": fei_capital_allocation.policy_fei_capital_allocation_exogenous_weight_update,
+            "capital_allocation_endogenous_weight_update": fei_capital_allocation.policy_fei_capital_allocation_endogenous_weight_update,
         },
         variables: {key: update_from_signal(key) for key in ["capital_allocation_target_weights"]},
     },
@@ -254,7 +254,7 @@ state_update_blocks = [
             User-circulating FEI Capital Allocation Model Deposit Rebalancing
         """,
         policies: {
-            "capital_allocation_deposit_rebalance": fei_capital_allocation.policy_deposit_rebalance,
+            "capital_allocation_deposit_rebalance": fei_capital_allocation.policy_fei_capital_allocation_rebalancing,
         },
         variables: {
             **{

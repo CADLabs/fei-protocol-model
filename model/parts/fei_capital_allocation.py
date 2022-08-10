@@ -1,4 +1,19 @@
-"""FEI Capital Allocation  Model
+"""# User-circulating FEI Capital Allocation Model (CAM) Module
+The Capital Allocation Model describes the aggregate movements of user-circulating FEI within the Fei Protocol ecosystem,
+between any Deposit or location where users could choose to allocate their FEI.
+
+These locations include:
+- FEI Savings Deposit
+- Competing yield opportunities (currently a generic money market in the model)
+- Liquidity pools (including liquidity provision and FEI released into the user-circulating FEI supply from volatile asset liquidity pool imbalances)
+- Simply holding FEI
+
+These capital movements are computed based on a yield and risk weighted target allocation for each location.
+At each timestep of the simulation, the actual allocation is rebalanced towards the target allocation, with some degree of uncertainty and delay.
+
+Additionally, in a next step to further formulate FEI demand, the model will describe the minting and redemption of FEI to feed into the capital allocation.
+
+PCV and protocol-owned FEI movements are independent of the Capital Allocation Model and managed directly via governance-implemented protocol policies.
 """
 
 from typing import Dict, List
@@ -14,9 +29,11 @@ import copy
 pp = pprint.PrettyPrinter(indent=4)
 
 
-def policy_exogenous_weight_update(params: Parameters, substep, state_history, previous_state):
-    """User-circulating FEI Capital Allocation Exogenous Weight Computation Policy
-    TODO Implementation / validation of edge case behaviour WIP
+def policy_fei_capital_allocation_exogenous_weight_update(
+    params: Parameters, substep, state_history, previous_state
+):
+    """## User-circulating FEI Capital Allocation Exogenous Weight Computation Policy
+    Exogenous, stochastic Dirichlet distribution driven Capital Allocation policy.
     """
     # Parameters
     dt = params["dt"]
@@ -35,7 +52,7 @@ def policy_exogenous_weight_update(params: Parameters, substep, state_history, p
 
     # Calculate target weights: stochastic, exogenous weights
     # https://en.wikipedia.org/wiki/Dirichlet_distribution
-    # TODO Take random_state from simulation seed
+    # TODO Take `random_state`` from simulation seed
     perturbation = dirichlet.rvs(alpha, size=1, random_state=timestep)[0]
     rebalance_rate = np.sqrt(dt / rebalance_duration)
     target_weights = rebalance_rate * perturbation + np.array(current_weights)
@@ -46,8 +63,12 @@ def policy_exogenous_weight_update(params: Parameters, substep, state_history, p
     }
 
 
-def policy_endogenous_weight_update(params: Parameters, substep, state_history, previous_state):
-    """User-circulating FEI Capital Allocation Endogenous Weight Computation Policy"""
+def policy_fei_capital_allocation_endogenous_weight_update(
+    params: Parameters, substep, state_history, previous_state
+):
+    """## User-circulating FEI Capital Allocation Endogenous Weight Computation Policy
+    Endogenous yield and risk weighted target Capital Allocation policy.
+    """
     # Parameters
     fei_deposit_variables = params["capital_allocation_fei_deposit_variables"]
     moving_average_window = params["capital_allocation_yield_rate_moving_average_window"]
@@ -102,12 +123,20 @@ def policy_endogenous_weight_update(params: Parameters, substep, state_history, 
     }
 
 
-def array_sum_threshold_check(array, total, thresh):
-    return np.abs(sum(array) - total) < thresh
+def array_sum_threshold_check(array, total, threshold):
+    """## Array Sum Threshold Check
+    A function to check that the sum of a Numpy `array` is less than some `total` value within some `threshold`
+    """
+    return np.abs(sum(array) - total) < threshold
 
 
-def policy_deposit_rebalance(params: Parameters, substep, state_history, previous_state):
-    """User-circulating FEI Capital Allocation Rebalance Policy"""
+def policy_fei_capital_allocation_rebalancing(
+    params: Parameters, substep, state_history, previous_state
+):
+    """## User-circulating FEI Capital Allocation Rebalancing Policy
+    A Policy that takes the target Capital Allocation weights calculated in `policy_fei_capital_allocation_endogenous_weight_update(...)`,
+    calculates the current Capital Allocation weights, and performs the necessary rebalancing operations to try meet the target.
+    """
     # Parameters
     dt = params["dt"]
     rebalance_duration = params["capital_allocation_rebalance_duration"]
@@ -130,7 +159,10 @@ def policy_deposit_rebalance(params: Parameters, substep, state_history, previou
     # Calculate deltas for rebalancing
     rebalance_rate = np.sqrt(dt / rebalance_duration)
 
-    rebalance_matrix, total_fei_deposit_balance_change = compute_rebalance_matrix(
+    (
+        rebalance_matrix,
+        total_fei_deposit_balance_change,
+    ) = compute_capital_allocation_rebalance_matrix(
         target_weights, current_weights, total_fei, rebalance_rate
     )
 
@@ -183,12 +215,16 @@ def policy_deposit_rebalance(params: Parameters, substep, state_history, previou
     }
 
 
-def compute_rebalance_matrix(
+def compute_capital_allocation_rebalance_matrix(
     target_fei_allocation,
     current_fei_allocation,
     total_fei,
     rebalance_rate=1,
 ):
+    """## Compute Capital Allocation Rebalance Matrix
+    A function that computes the User Deposit rebalancing operations necessary to
+    meet the target Capital Allocation.
+    """
     # Calculate delta matrix - amounts to rebalance and to disaggregate
     allocation_pct_change = target_fei_allocation - current_fei_allocation
     total_fei_deposit_balance_change = rebalance_rate * allocation_pct_change * total_fei
@@ -206,12 +242,15 @@ def compute_rebalance_matrix(
         atol=1e-3,
     ), "Linear algebra solution is above imprecision tolerance"
 
-    rebalance_matrix = populate_delta_triu(deltas, number_of_deposits)
+    rebalance_matrix = populate_delta_triangular_matrix(deltas, number_of_deposits)
 
     return rebalance_matrix, total_fei_deposit_balance_change
 
 
-def populate_delta_triu(d, w_size):
+def populate_delta_triangular_matrix(d, w_size):
+    """## Populate Delta Triangular Matrix
+    A function that populates a lower triangular matrix, sometimes referred to as a `triu` function.
+    """
     D = np.zeros((w_size, w_size))
 
     k = 0
@@ -225,10 +264,14 @@ def populate_delta_triu(d, w_size):
 
 
 def generate_constrained_incidence_matrix(n_deposits):
+    """## Generate Constrained Incidence Matrix
+    A function that calculates the incidence matrix for the graph of User Deposits,
+    in order to be able to calculate the transactions needed to rebalance towards the target Capital Allocation.
+    """
     G = nx.complete_graph(n_deposits)
     A = (nx.incidence_matrix(G, oriented=True).toarray() * -1).astype(int)
 
-    # NOTE: fixes networkx rendition of 2-deposit adjacency matrix generation
+    # NOTE Fixes NetworkX rendition of 2-deposit adjacency matrix generation
     if A.shape[1] == 1:
         A = np.hstack([A, np.zeros((2, 1))])
 

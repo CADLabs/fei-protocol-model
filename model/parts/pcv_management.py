@@ -1,4 +1,5 @@
-"""PCV Management
+"""# PCV Management Module
+Implementation of PCV Management policies, for example rebalancing towards a target Stable Backing Ratio.
 """
 
 import logging
@@ -14,7 +15,7 @@ from model.system_parameters import Parameters
 def policy_pcv_rebalancing_target_stable_pcv(
     params: Parameters, substep, state_history, previous_state
 ):
-    """PCV Rebalancing: Target Stable PCV Policy
+    """## PCV Rebalancing: Target Stable PCV Policy
     The following PCV rebalancing policy targets a specific stable PCV ratio,
     i.e. the % of PCV value that is backed by stable assets.
 
@@ -130,7 +131,7 @@ def policy_pcv_rebalancing_target_stable_pcv(
 def policy_pcv_rebalancing_target_stable_backing(
     params: Parameters, substep, state_history, previous_state
 ):
-    """PCV Rebalancing: Target Stable Backing Policy
+    """## PCV Rebalancing: Target Stable Backing Policy
     The following PCV rebalancing policy targets a specific stable backing ratio,
     i.e. the % of user-circulating FEI that is backed by stable assets.
 
@@ -236,7 +237,7 @@ def pcv_deposit_rebalancing_strategy(
     total_stable_asset_balance_change,
     total_volatile_asset_balance_change,
 ):
-    """PCV Deposit Rebalancing Strategy
+    """## PCV Deposit Rebalancing Strategy
 
     See "PCV Rebalancing: Target Stable PCV Policy"
 
@@ -286,7 +287,7 @@ def pcv_deposit_rebalancing_strategy(
                 balance_change -= transfer_balance
             # Check if balance remainder
             if balance_change > 0:
-                # TODO Additional constraints on movements and DCAing will be introduced in future,
+                # NOTE Additional constraints on movements based on trade efficiency will be introduced in future,
                 # for now we catch the edge case for further analysis
                 logging.debug("Not enough balance across all sell side deposits to rebalance!")
     # PCV movement from stable to volatile

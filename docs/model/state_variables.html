@@ -1,0 +1,670 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>model.state_variables API documentation</title>
+<meta name="description" content="State Variables
+Definition of State Variables, their types, and default values …" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>model.state_variables</code></h1>
+</header>
+<section id="section-intro">
+<h1 id="state-variables">State Variables</h1>
+<p>Definition of State Variables, their types, and default values.</p>
+<p>By using a dataclass to represent the State Variables:
+* We can use types for Python type hints
+* Set default values
+* Ensure that all State Variables are initialized</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;# State Variables
+Definition of State Variables, their types, and default values.
+
+By using a dataclass to represent the State Variables:
+* We can use types for Python type hints
+* Set default values
+* Ensure that all State Variables are initialized
+&#34;&#34;&#34;
+
+from dataclasses import dataclass, field
+from datetime import datetime
+from typing import List
+import numpy as np
+from model.types import (
+    UNI,
+    StateVariableKey,
+    Uninitialized,
+    Percentage,
+    APR,
+    USD,
+    FEI,
+    VolatileAssetUnits,
+    StableAssetUnits,
+)
+from model.utils import default
+
+
+@dataclass
+class StateVariables:
+    &#34;&#34;&#34;## State Variables
+    Each State Variable is defined as:
+    state variable key: state variable type = default state variable value
+
+    For default value assumptions, see the ASSUMPTIONS.md document.
+    &#34;&#34;&#34;
+
+    # Simulation
+    timestamp: datetime = None
+    &#34;&#34;&#34;The timestamp for each timestep as a Python `datetime` object, starting from `date_start` Parameter.&#34;&#34;&#34;
+
+    # FEI Supply
+    total_fei_supply: FEI = Uninitialized
+    &#34;&#34;&#34;
+    The total FEI supply including both protocol-owned and user-circulating FEI.
+
+    Updated in `model.parts.accounting`.
+    &#34;&#34;&#34;
+
+    total_protocol_owned_fei: FEI = Uninitialized
+    &#34;&#34;&#34;
+    The total protocol-owned FEI supply.
+
+    Updated in `model.parts.accounting`.
+    &#34;&#34;&#34;
+
+    total_user_circulating_fei: FEI = Uninitialized
+    &#34;&#34;&#34;
+    The total user-circulating FEI supply.
+
+    Updated in `model.parts.accounting`.
+    &#34;&#34;&#34;
+
+    fei_minted_redeemed: FEI = 0.0
+    &#34;&#34;&#34;
+    The net amount of FEI minted (+ve) or redeemed (-ve) at each timestep
+    for the purpose of Liquidity Pool rebalancing. 
+
+    Updated in `model.parts.liquidity_pools`.
+    &#34;&#34;&#34;
+
+    active_psm_pcv_deposit_keys: List[StateVariableKey] = default(
+        [
+            # In order of priority:
+            &#34;stable_idle_pcv_deposit&#34;,
+            &#34;volatile_idle_pcv_deposit&#34;,
+            &#34;volatile_yield_bearing_pcv_deposit&#34;,
+        ]
+    )
+    &#34;&#34;&#34;
+    A list of PCV Deposit State Variable keys actively used by the PSM for minting and redemption.
+    PCV Deposits are in order of priority - i.e. if one PCV Deposit is depleted, the next PCV Deposit is tried,
+    and if no PCV Deposit balance is available for redemption, the simulation will fail.
+
+    This list can be set by a Policy, for example setting to Volatile Asset PCV Deposits to only redeem for ETH in a market downturn.
+    &#34;&#34;&#34;
+
+    psm_mint_redeem_fees: USD = Uninitialized
+    &#34;&#34;&#34;
+    The PSM mint and redeem fees collected at each timestep.
+
+    Updated in `model.parts.peg_stability_module`.
+    &#34;&#34;&#34;
+
+    # Price Processes
+    fei_price: USD = 1.0
+    &#34;&#34;&#34;The FEI token initial price, updated by `fei_price_process` System Parameter in `model.parts.price_processes`.&#34;&#34;&#34;
+    volatile_asset_price: USD = 2_000
+    &#34;&#34;&#34;The Volatile Asset initial price, update by `volatile_asset_process` System Parameter in `model.parts.price_processes`.&#34;&#34;&#34;
+    stable_asset_price: USD = 1.0
+    &#34;&#34;&#34;The Stable Asset initial price, update by `stable_asset_process` System Parameter in `model.parts.price_processes`.&#34;&#34;&#34;
+    volatile_asset_price_mean: float = 0.0
+    &#34;&#34;&#34;The Volatile Asset price mean used for calculation of `volatile_asset_risk_metric` State Variable.&#34;&#34;&#34;
+
+    volatile_asset_risk_metric: float = Uninitialized
+    &#34;&#34;&#34;
+    The Volatile Asset Risk Metric, based on the price trend: price slope / average price.
+
+    Updated in `model.parts.money_markets`.
+    &#34;&#34;&#34;
+
+    volatile_asset_risk_metric_min: float = 0.0
+    &#34;&#34;&#34;
+    The Volatile Asset Risk Metric simulation minimum used for calculation of `volatile_asset_risk_metric` State Variable.
+
+    Updated in `model.parts.money_markets`.
+    &#34;&#34;&#34;
+
+    volatile_asset_risk_metric_max: float = 0.0
+    &#34;&#34;&#34;
+    The Volatile Asset Risk Metric simulation maximum used for calculation of `volatile_asset_risk_metric` State Variable.
+
+    Updated in `model.parts.money_markets`.
+    &#34;&#34;&#34;
+
+    # Liquidity Pools
+    # NOTE Total liquidity pool metrics including both protocol- and user-supplied liquidity
+    liquidity_pool_invariant: float = Uninitialized
+    &#34;&#34;&#34;The Uniswap style Liquidity Pool Constant Product invariant&#34;&#34;&#34;
+    liquidity_pool_tvl: USD = Uninitialized
+    &#34;&#34;&#34;The Liquidity Pool Total Value Locked (TVL)&#34;&#34;&#34;
+    liquidity_pool_fei_source_sink: FEI = 0.0
+    &#34;&#34;&#34;The user-circulating FEI sourced from or sinked to the Liquidity Pool due to rebalancing&#34;&#34;&#34;
+    liquidity_pool_impermanent_loss: Percentage = 0.0
+    &#34;&#34;&#34;The total Liquidity Pool impermanent loss as a percentage of provided liquidity&#34;&#34;&#34;
+    liquidity_pool_trading_fees: USD = 0.0
+    &#34;&#34;&#34;The Liquidity Pool trading fees collected at each timestep&#34;&#34;&#34;
+    liquidity_pool_liquidity_tokens: UNI = 0.0
+    &#34;&#34;&#34;The total Liquidity Pool pool tokens, initialised as being equal to the initial Liquidity Pool FEI balance&#34;&#34;&#34;
+    total_liquidity_pool_trading_fees: USD = 0.0
+    &#34;&#34;&#34;The accumulated total Liquidity Pool trading fees from start of simulation&#34;&#34;&#34;
+
+    # Money Markets
+    fei_money_market_borrowed: FEI = Uninitialized
+    &#34;&#34;&#34;The amount of FEI borrowed from the Money Market&#34;&#34;&#34;
+    fei_money_market_utilization: Percentage = Uninitialized
+    &#34;&#34;&#34;The Money Market utilisation rate or percentage of FEI supplied that has been borrowed&#34;&#34;&#34;
+    fei_money_market_borrow_rate: APR = 0.0
+    &#34;&#34;&#34;The FEI Money Market annualised borrow interest rate, as a function of Money Market utilization.&#34;&#34;&#34;
+    fei_money_market_supply_rate: APR = 0.0
+    &#34;&#34;&#34;The FEI Money Market annualised supply interest rate, as a function of Money Market utilization.&#34;&#34;&#34;
+
+    # FEI Savings Deposit
+    fei_savings_rate: APR = Uninitialized
+    &#34;&#34;&#34;The FEI Savings Rate, updated by `fei_savings_rate_process` System Parameter in `model.parts.fei_savings_deposit`.&#34;&#34;&#34;
+
+    # PCV Aggregates
+    total_pcv: USD = Uninitialized
+    &#34;&#34;&#34;The total USD value of PCV&#34;&#34;&#34;
+    total_stable_asset_pcv_balance: StableAssetUnits = Uninitialized
+    &#34;&#34;&#34;The total balance of Stable Asset PCV&#34;&#34;&#34;
+    total_volatile_asset_pcv_balance: VolatileAssetUnits = Uninitialized
+    &#34;&#34;&#34;The total balance of Volatile Asset PCV&#34;&#34;&#34;
+    total_stable_asset_pcv: USD = Uninitialized
+    &#34;&#34;&#34;The total USD value of Stable Asset PCV&#34;&#34;&#34;
+    total_volatile_asset_pcv: USD = Uninitialized
+    &#34;&#34;&#34;The total USD value of Volatile Asset PCV&#34;&#34;&#34;
+
+    # PCV Metrics
+    stable_backing_ratio: Percentage = Uninitialized
+    &#34;&#34;&#34;The percentage of user-circulating FEI backed by stable assets&#34;&#34;&#34;
+    stable_pcv_ratio: Percentage = Uninitialized
+    &#34;&#34;&#34;The percentage of PCV backed by stable assets&#34;&#34;&#34;
+    collateralization_ratio: Percentage = Uninitialized
+    &#34;&#34;&#34;The percentage collateralization of the total FEI supply&#34;&#34;&#34;
+    pcv_yield: USD = Uninitialized
+    &#34;&#34;&#34;The per-timestep PCV yield accrued&#34;&#34;&#34;
+    pcv_yield_rate: Percentage = Uninitialized
+    &#34;&#34;&#34;The annualised per-timestep PCV yield rate&#34;&#34;&#34;
+    protocol_equity: USD = Uninitialized
+    &#34;&#34;&#34;The total PCV value less the value of user-circulating FEI supply&#34;&#34;&#34;
+    protocol_revenue: USD = Uninitialized
+    &#34;&#34;&#34;The per-timestep protocol revenue including PCV yield and PSM mint/redeem fees&#34;&#34;&#34;
+
+    # User-circulating FEI Capital Allocation Model
+    capital_allocation_target_weights: np.ndarray = default(np.array([]))
+    &#34;&#34;&#34;A variable used to keep track of the target Capital Allocation of user-circulating FEI&#34;&#34;&#34;
+    capital_allocation_rebalance_matrix: np.ndarray = default(np.array([]))
+    &#34;&#34;&#34;A variable used to debug Capital Allocation rebalancing&#34;&#34;&#34;
+    capital_allocation_rebalance_remainder: np.ndarray = default(np.array([]))
+    &#34;&#34;&#34;A variable used to debug any FEI remainder that could not be allocated as part of Capital Allocation rebalancing&#34;&#34;&#34;
+
+
+initial_state = StateVariables().__dict__</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="model.state_variables.StateVariables"><code class="flex name class">
+<span>class <span class="ident">StateVariables</span></span>
+<span>(</span><span>timestamp: datetime.datetime = None, total_fei_supply: Union[int, float] = nan, total_protocol_owned_fei: Union[int, float] = nan, total_user_circulating_fei: Union[int, float] = nan, fei_minted_redeemed: Union[int, float] = 0.0, active_psm_pcv_deposit_keys: List[str] = &lt;factory&gt;, psm_mint_redeem_fees: Union[int, float] = nan, fei_price: Union[int, float] = 1.0, volatile_asset_price: Union[int, float] = 2000, stable_asset_price: Union[int, float] = 1.0, volatile_asset_price_mean: float = 0.0, volatile_asset_risk_metric: float = nan, volatile_asset_risk_metric_min: float = 0.0, volatile_asset_risk_metric_max: float = 0.0, liquidity_pool_invariant: float = nan, liquidity_pool_tvl: Union[int, float] = nan, liquidity_pool_fei_source_sink: Union[int, float] = 0.0, liquidity_pool_impermanent_loss: float = 0.0, liquidity_pool_trading_fees: Union[int, float] = 0.0, liquidity_pool_liquidity_tokens: Union[int, float] = 0.0, total_liquidity_pool_trading_fees: Union[int, float] = 0.0, fei_money_market_borrowed: Union[int, float] = nan, fei_money_market_utilization: float = nan, fei_money_market_borrow_rate: float = 0.0, fei_money_market_supply_rate: float = 0.0, fei_savings_rate: float = nan, total_pcv: Union[int, float] = nan, total_stable_asset_pcv_balance: Union[int, float] = nan, total_volatile_asset_pcv_balance: Union[int, float] = nan, total_stable_asset_pcv: Union[int, float] = nan, total_volatile_asset_pcv: Union[int, float] = nan, stable_backing_ratio: float = nan, stable_pcv_ratio: float = nan, collateralization_ratio: float = nan, pcv_yield: Union[int, float] = nan, pcv_yield_rate: float = nan, protocol_equity: Union[int, float] = nan, protocol_revenue: Union[int, float] = nan, capital_allocation_target_weights: numpy.ndarray = &lt;factory&gt;, capital_allocation_rebalance_matrix: numpy.ndarray = &lt;factory&gt;, capital_allocation_rebalance_remainder: numpy.ndarray = &lt;factory&gt;)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="state-variables">State Variables</h2>
+<p>Each State Variable is defined as:
+state variable key: state variable type = default state variable value</p>
+<p>For default value assumptions, see the ASSUMPTIONS.md document.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class StateVariables:
+    &#34;&#34;&#34;## State Variables
+    Each State Variable is defined as:
+    state variable key: state variable type = default state variable value
+
+    For default value assumptions, see the ASSUMPTIONS.md document.
+    &#34;&#34;&#34;
+
+    # Simulation
+    timestamp: datetime = None
+    &#34;&#34;&#34;The timestamp for each timestep as a Python `datetime` object, starting from `date_start` Parameter.&#34;&#34;&#34;
+
+    # FEI Supply
+    total_fei_supply: FEI = Uninitialized
+    &#34;&#34;&#34;
+    The total FEI supply including both protocol-owned and user-circulating FEI.
+
+    Updated in `model.parts.accounting`.
+    &#34;&#34;&#34;
+
+    total_protocol_owned_fei: FEI = Uninitialized
+    &#34;&#34;&#34;
+    The total protocol-owned FEI supply.
+
+    Updated in `model.parts.accounting`.
+    &#34;&#34;&#34;
+
+    total_user_circulating_fei: FEI = Uninitialized
+    &#34;&#34;&#34;
+    The total user-circulating FEI supply.
+
+    Updated in `model.parts.accounting`.
+    &#34;&#34;&#34;
+
+    fei_minted_redeemed: FEI = 0.0
+    &#34;&#34;&#34;
+    The net amount of FEI minted (+ve) or redeemed (-ve) at each timestep
+    for the purpose of Liquidity Pool rebalancing. 
+
+    Updated in `model.parts.liquidity_pools`.
+    &#34;&#34;&#34;
+
+    active_psm_pcv_deposit_keys: List[StateVariableKey] = default(
+        [
+            # In order of priority:
+            &#34;stable_idle_pcv_deposit&#34;,
+            &#34;volatile_idle_pcv_deposit&#34;,
+            &#34;volatile_yield_bearing_pcv_deposit&#34;,
+        ]
+    )
+    &#34;&#34;&#34;
+    A list of PCV Deposit State Variable keys actively used by the PSM for minting and redemption.
+    PCV Deposits are in order of priority - i.e. if one PCV Deposit is depleted, the next PCV Deposit is tried,
+    and if no PCV Deposit balance is available for redemption, the simulation will fail.
+
+    This list can be set by a Policy, for example setting to Volatile Asset PCV Deposits to only redeem for ETH in a market downturn.
+    &#34;&#34;&#34;
+
+    psm_mint_redeem_fees: USD = Uninitialized
+    &#34;&#34;&#34;
+    The PSM mint and redeem fees collected at each timestep.
+
+    Updated in `model.parts.peg_stability_module`.
+    &#34;&#34;&#34;
+
+    # Price Processes
+    fei_price: USD = 1.0
+    &#34;&#34;&#34;The FEI token initial price, updated by `fei_price_process` System Parameter in `model.parts.price_processes`.&#34;&#34;&#34;
+    volatile_asset_price: USD = 2_000
+    &#34;&#34;&#34;The Volatile Asset initial price, update by `volatile_asset_process` System Parameter in `model.parts.price_processes`.&#34;&#34;&#34;
+    stable_asset_price: USD = 1.0
+    &#34;&#34;&#34;The Stable Asset initial price, update by `stable_asset_process` System Parameter in `model.parts.price_processes`.&#34;&#34;&#34;
+    volatile_asset_price_mean: float = 0.0
+    &#34;&#34;&#34;The Volatile Asset price mean used for calculation of `volatile_asset_risk_metric` State Variable.&#34;&#34;&#34;
+
+    volatile_asset_risk_metric: float = Uninitialized
+    &#34;&#34;&#34;
+    The Volatile Asset Risk Metric, based on the price trend: price slope / average price.
+
+    Updated in `model.parts.money_markets`.
+    &#34;&#34;&#34;
+
+    volatile_asset_risk_metric_min: float = 0.0
+    &#34;&#34;&#34;
+    The Volatile Asset Risk Metric simulation minimum used for calculation of `volatile_asset_risk_metric` State Variable.
+
+    Updated in `model.parts.money_markets`.
+    &#34;&#34;&#34;
+
+    volatile_asset_risk_metric_max: float = 0.0
+    &#34;&#34;&#34;
+    The Volatile Asset Risk Metric simulation maximum used for calculation of `volatile_asset_risk_metric` State Variable.
+
+    Updated in `model.parts.money_markets`.
+    &#34;&#34;&#34;
+
+    # Liquidity Pools
+    # NOTE Total liquidity pool metrics including both protocol- and user-supplied liquidity
+    liquidity_pool_invariant: float = Uninitialized
+    &#34;&#34;&#34;The Uniswap style Liquidity Pool Constant Product invariant&#34;&#34;&#34;
+    liquidity_pool_tvl: USD = Uninitialized
+    &#34;&#34;&#34;The Liquidity Pool Total Value Locked (TVL)&#34;&#34;&#34;
+    liquidity_pool_fei_source_sink: FEI = 0.0
+    &#34;&#34;&#34;The user-circulating FEI sourced from or sinked to the Liquidity Pool due to rebalancing&#34;&#34;&#34;
+    liquidity_pool_impermanent_loss: Percentage = 0.0
+    &#34;&#34;&#34;The total Liquidity Pool impermanent loss as a percentage of provided liquidity&#34;&#34;&#34;
+    liquidity_pool_trading_fees: USD = 0.0
+    &#34;&#34;&#34;The Liquidity Pool trading fees collected at each timestep&#34;&#34;&#34;
+    liquidity_pool_liquidity_tokens: UNI = 0.0
+    &#34;&#34;&#34;The total Liquidity Pool pool tokens, initialised as being equal to the initial Liquidity Pool FEI balance&#34;&#34;&#34;
+    total_liquidity_pool_trading_fees: USD = 0.0
+    &#34;&#34;&#34;The accumulated total Liquidity Pool trading fees from start of simulation&#34;&#34;&#34;
+
+    # Money Markets
+    fei_money_market_borrowed: FEI = Uninitialized
+    &#34;&#34;&#34;The amount of FEI borrowed from the Money Market&#34;&#34;&#34;
+    fei_money_market_utilization: Percentage = Uninitialized
+    &#34;&#34;&#34;The Money Market utilisation rate or percentage of FEI supplied that has been borrowed&#34;&#34;&#34;
+    fei_money_market_borrow_rate: APR = 0.0
+    &#34;&#34;&#34;The FEI Money Market annualised borrow interest rate, as a function of Money Market utilization.&#34;&#34;&#34;
+    fei_money_market_supply_rate: APR = 0.0
+    &#34;&#34;&#34;The FEI Money Market annualised supply interest rate, as a function of Money Market utilization.&#34;&#34;&#34;
+
+    # FEI Savings Deposit
+    fei_savings_rate: APR = Uninitialized
+    &#34;&#34;&#34;The FEI Savings Rate, updated by `fei_savings_rate_process` System Parameter in `model.parts.fei_savings_deposit`.&#34;&#34;&#34;
+
+    # PCV Aggregates
+    total_pcv: USD = Uninitialized
+    &#34;&#34;&#34;The total USD value of PCV&#34;&#34;&#34;
+    total_stable_asset_pcv_balance: StableAssetUnits = Uninitialized
+    &#34;&#34;&#34;The total balance of Stable Asset PCV&#34;&#34;&#34;
+    total_volatile_asset_pcv_balance: VolatileAssetUnits = Uninitialized
+    &#34;&#34;&#34;The total balance of Volatile Asset PCV&#34;&#34;&#34;
+    total_stable_asset_pcv: USD = Uninitialized
+    &#34;&#34;&#34;The total USD value of Stable Asset PCV&#34;&#34;&#34;
+    total_volatile_asset_pcv: USD = Uninitialized
+    &#34;&#34;&#34;The total USD value of Volatile Asset PCV&#34;&#34;&#34;
+
+    # PCV Metrics
+    stable_backing_ratio: Percentage = Uninitialized
+    &#34;&#34;&#34;The percentage of user-circulating FEI backed by stable assets&#34;&#34;&#34;
+    stable_pcv_ratio: Percentage = Uninitialized
+    &#34;&#34;&#34;The percentage of PCV backed by stable assets&#34;&#34;&#34;
+    collateralization_ratio: Percentage = Uninitialized
+    &#34;&#34;&#34;The percentage collateralization of the total FEI supply&#34;&#34;&#34;
+    pcv_yield: USD = Uninitialized
+    &#34;&#34;&#34;The per-timestep PCV yield accrued&#34;&#34;&#34;
+    pcv_yield_rate: Percentage = Uninitialized
+    &#34;&#34;&#34;The annualised per-timestep PCV yield rate&#34;&#34;&#34;
+    protocol_equity: USD = Uninitialized
+    &#34;&#34;&#34;The total PCV value less the value of user-circulating FEI supply&#34;&#34;&#34;
+    protocol_revenue: USD = Uninitialized
+    &#34;&#34;&#34;The per-timestep protocol revenue including PCV yield and PSM mint/redeem fees&#34;&#34;&#34;
+
+    # User-circulating FEI Capital Allocation Model
+    capital_allocation_target_weights: np.ndarray = default(np.array([]))
+    &#34;&#34;&#34;A variable used to keep track of the target Capital Allocation of user-circulating FEI&#34;&#34;&#34;
+    capital_allocation_rebalance_matrix: np.ndarray = default(np.array([]))
+    &#34;&#34;&#34;A variable used to debug Capital Allocation rebalancing&#34;&#34;&#34;
+    capital_allocation_rebalance_remainder: np.ndarray = default(np.array([]))
+    &#34;&#34;&#34;A variable used to debug any FEI remainder that could not be allocated as part of Capital Allocation rebalancing&#34;&#34;&#34;</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="model.state_variables.StateVariables.active_psm_pcv_deposit_keys"><code class="name">var <span class="ident">active_psm_pcv_deposit_keys</span> : List[str]</code></dt>
+<dd>
+<div class="desc"><p>A list of PCV Deposit State Variable keys actively used by the PSM for minting and redemption.
+PCV Deposits are in order of priority - i.e. if one PCV Deposit is depleted, the next PCV Deposit is tried,
+and if no PCV Deposit balance is available for redemption, the simulation will fail.</p>
+<p>This list can be set by a Policy, for example setting to Volatile Asset PCV Deposits to only redeem for ETH in a market downturn.</p></div>
+</dd>
+<dt id="model.state_variables.StateVariables.capital_allocation_rebalance_matrix"><code class="name">var <span class="ident">capital_allocation_rebalance_matrix</span> : numpy.ndarray</code></dt>
+<dd>
+<div class="desc"><p>A variable used to debug Capital Allocation rebalancing</p></div>
+</dd>
+<dt id="model.state_variables.StateVariables.capital_allocation_rebalance_remainder"><code class="name">var <span class="ident">capital_allocation_rebalance_remainder</span> : numpy.ndarray</code></dt>
+<dd>
+<div class="desc"><p>A variable used to debug any FEI remainder that could not be allocated as part of Capital Allocation rebalancing</p></div>
+</dd>
+<dt id="model.state_variables.StateVariables.capital_allocation_target_weights"><code class="name">var <span class="ident">capital_allocation_target_weights</span> : numpy.ndarray</code></dt>
+<dd>
+<div class="desc"><p>A variable used to keep track of the target Capital Allocation of user-circulating FEI</p></div>
+</dd>
+<dt id="model.state_variables.StateVariables.collateralization_ratio"><code class="name">var <span class="ident">collateralization_ratio</span> : float</code></dt>
+<dd>
+<div class="desc"><p>The percentage collateralization of the total FEI supply</p></div>
+</dd>
+<dt id="model.state_variables.StateVariables.fei_minted_redeemed"><code class="name">var <span class="ident">fei_minted_redeemed</span> : Union[int, float]</code></dt>
+<dd>
+<div class="desc"><p>The net amount of FEI minted (+ve) or redeemed (-ve) at each timestep
+for the purpose of Liquidity Pool rebalancing. </p>
+<p>Updated in <code><a title="model.parts.liquidity_pools" href="parts/liquidity_pools.html">model.parts.liquidity_pools</a></code>.</p></div>
+</dd>
+<dt id="model.state_variables.StateVariables.fei_money_market_borrow_rate"><code class="name">var <span class="ident">fei_money_market_borrow_rate</span> : float</code></dt>
+<dd>
+<div class="desc"><p>The FEI Money Market annualised borrow interest rate, as a function of Money Market utilization.</p></div>
+</dd>
+<dt id="model.state_variables.StateVariables.fei_money_market_borrowed"><code class="name">var <span class="ident">fei_money_market_borrowed</span> : Union[int, float]</code></dt>
+<dd>
+<div class="desc"><p>The amount of FEI borrowed from the Money Market</p></div>
+</dd>
+<dt id="model.state_variables.StateVariables.fei_money_market_supply_rate"><code class="name">var <span class="ident">fei_money_market_supply_rate</span> : float</code></dt>
+<dd>
+<div class="desc"><p>The FEI Money Market annualised supply interest rate, as a function of Money Market utilization.</p></div>
+</dd>
+<dt id="model.state_variables.StateVariables.fei_money_market_utilization"><code class="name">var <span class="ident">fei_money_market_utilization</span> : float</code></dt>
+<dd>
+<div class="desc"><p>The Money Market utilisation rate or percentage of FEI supplied that has been borrowed</p></div>
+</dd>
+<dt id="model.state_variables.StateVariables.fei_price"><code class="name">var <span class="ident">fei_price</span> : Union[int, float]</code></dt>
+<dd>
+<div class="desc"><p>The FEI token initial price, updated by <code>fei_price_process</code> System Parameter in <code><a title="model.parts.price_processes" href="parts/price_processes.html">model.parts.price_processes</a></code>.</p></div>
+</dd>
+<dt id="model.state_variables.StateVariables.fei_savings_rate"><code class="name">var <span class="ident">fei_savings_rate</span> : float</code></dt>
+<dd>
+<div class="desc"><p>The FEI Savings Rate, updated by <code>fei_savings_rate_process</code> System Parameter in <code><a title="model.parts.fei_savings_deposit" href="parts/fei_savings_deposit.html">model.parts.fei_savings_deposit</a></code>.</p></div>
+</dd>
+<dt id="model.state_variables.StateVariables.liquidity_pool_fei_source_sink"><code class="name">var <span class="ident">liquidity_pool_fei_source_sink</span> : Union[int, float]</code></dt>
+<dd>
+<div class="desc"><p>The user-circulating FEI sourced from or sinked to the Liquidity Pool due to rebalancing</p></div>
+</dd>
+<dt id="model.state_variables.StateVariables.liquidity_pool_impermanent_loss"><code class="name">var <span class="ident">liquidity_pool_impermanent_loss</span> : float</code></dt>
+<dd>
+<div class="desc"><p>The total Liquidity Pool impermanent loss as a percentage of provided liquidity</p></div>
+</dd>
+<dt id="model.state_variables.StateVariables.liquidity_pool_invariant"><code class="name">var <span class="ident">liquidity_pool_invariant</span> : float</code></dt>
+<dd>
+<div class="desc"><p>The Uniswap style Liquidity Pool Constant Product invariant</p></div>
+</dd>
+<dt id="model.state_variables.StateVariables.liquidity_pool_liquidity_tokens"><code class="name">var <span class="ident">liquidity_pool_liquidity_tokens</span> : Union[int, float]</code></dt>
+<dd>
+<div class="desc"><p>The total Liquidity Pool pool tokens, initialised as being equal to the initial Liquidity Pool FEI balance</p></div>
+</dd>
+<dt id="model.state_variables.StateVariables.liquidity_pool_trading_fees"><code class="name">var <span class="ident">liquidity_pool_trading_fees</span> : Union[int, float]</code></dt>
+<dd>
+<div class="desc"><p>The Liquidity Pool trading fees collected at each timestep</p></div>
+</dd>
+<dt id="model.state_variables.StateVariables.liquidity_pool_tvl"><code class="name">var <span class="ident">liquidity_pool_tvl</span> : Union[int, float]</code></dt>
+<dd>
+<div class="desc"><p>The Liquidity Pool Total Value Locked (TVL)</p></div>
+</dd>
+<dt id="model.state_variables.StateVariables.pcv_yield"><code class="name">var <span class="ident">pcv_yield</span> : Union[int, float]</code></dt>
+<dd>
+<div class="desc"><p>The per-timestep PCV yield accrued</p></div>
+</dd>
+<dt id="model.state_variables.StateVariables.pcv_yield_rate"><code class="name">var <span class="ident">pcv_yield_rate</span> : float</code></dt>
+<dd>
+<div class="desc"><p>The annualised per-timestep PCV yield rate</p></div>
+</dd>
+<dt id="model.state_variables.StateVariables.protocol_equity"><code class="name">var <span class="ident">protocol_equity</span> : Union[int, float]</code></dt>
+<dd>
+<div class="desc"><p>The total PCV value less the value of user-circulating FEI supply</p></div>
+</dd>
+<dt id="model.state_variables.StateVariables.protocol_revenue"><code class="name">var <span class="ident">protocol_revenue</span> : Union[int, float]</code></dt>
+<dd>
+<div class="desc"><p>The per-timestep protocol revenue including PCV yield and PSM mint/redeem fees</p></div>
+</dd>
+<dt id="model.state_variables.StateVariables.psm_mint_redeem_fees"><code class="name">var <span class="ident">psm_mint_redeem_fees</span> : Union[int, float]</code></dt>
+<dd>
+<div class="desc"><p>The PSM mint and redeem fees collected at each timestep.</p>
+<p>Updated in <code><a title="model.parts.peg_stability_module" href="parts/peg_stability_module.html">model.parts.peg_stability_module</a></code>.</p></div>
+</dd>
+<dt id="model.state_variables.StateVariables.stable_asset_price"><code class="name">var <span class="ident">stable_asset_price</span> : Union[int, float]</code></dt>
+<dd>
+<div class="desc"><p>The Stable Asset initial price, update by <code>stable_asset_process</code> System Parameter in <code><a title="model.parts.price_processes" href="parts/price_processes.html">model.parts.price_processes</a></code>.</p></div>
+</dd>
+<dt id="model.state_variables.StateVariables.stable_backing_ratio"><code class="name">var <span class="ident">stable_backing_ratio</span> : float</code></dt>
+<dd>
+<div class="desc"><p>The percentage of user-circulating FEI backed by stable assets</p></div>
+</dd>
+<dt id="model.state_variables.StateVariables.stable_pcv_ratio"><code class="name">var <span class="ident">stable_pcv_ratio</span> : float</code></dt>
+<dd>
+<div class="desc"><p>The percentage of PCV backed by stable assets</p></div>
+</dd>
+<dt id="model.state_variables.StateVariables.timestamp"><code class="name">var <span class="ident">timestamp</span> : datetime.datetime</code></dt>
+<dd>
+<div class="desc"><p>The timestamp for each timestep as a Python <code>datetime</code> object, starting from <code>date_start</code> Parameter.</p></div>
+</dd>
+<dt id="model.state_variables.StateVariables.total_fei_supply"><code class="name">var <span class="ident">total_fei_supply</span> : Union[int, float]</code></dt>
+<dd>
+<div class="desc"><p>The total FEI supply including both protocol-owned and user-circulating FEI.</p>
+<p>Updated in <code><a title="model.parts.accounting" href="parts/accounting.html">model.parts.accounting</a></code>.</p></div>
+</dd>
+<dt id="model.state_variables.StateVariables.total_liquidity_pool_trading_fees"><code class="name">var <span class="ident">total_liquidity_pool_trading_fees</span> : Union[int, float]</code></dt>
+<dd>
+<div class="desc"><p>The accumulated total Liquidity Pool trading fees from start of simulation</p></div>
+</dd>
+<dt id="model.state_variables.StateVariables.total_pcv"><code class="name">var <span class="ident">total_pcv</span> : Union[int, float]</code></dt>
+<dd>
+<div class="desc"><p>The total USD value of PCV</p></div>
+</dd>
+<dt id="model.state_variables.StateVariables.total_protocol_owned_fei"><code class="name">var <span class="ident">total_protocol_owned_fei</span> : Union[int, float]</code></dt>
+<dd>
+<div class="desc"><p>The total protocol-owned FEI supply.</p>
+<p>Updated in <code><a title="model.parts.accounting" href="parts/accounting.html">model.parts.accounting</a></code>.</p></div>
+</dd>
+<dt id="model.state_variables.StateVariables.total_stable_asset_pcv"><code class="name">var <span class="ident">total_stable_asset_pcv</span> : Union[int, float]</code></dt>
+<dd>
+<div class="desc"><p>The total USD value of Stable Asset PCV</p></div>
+</dd>
+<dt id="model.state_variables.StateVariables.total_stable_asset_pcv_balance"><code class="name">var <span class="ident">total_stable_asset_pcv_balance</span> : Union[int, float]</code></dt>
+<dd>
+<div class="desc"><p>The total balance of Stable Asset PCV</p></div>
+</dd>
+<dt id="model.state_variables.StateVariables.total_user_circulating_fei"><code class="name">var <span class="ident">total_user_circulating_fei</span> : Union[int, float]</code></dt>
+<dd>
+<div class="desc"><p>The total user-circulating FEI supply.</p>
+<p>Updated in <code><a title="model.parts.accounting" href="parts/accounting.html">model.parts.accounting</a></code>.</p></div>
+</dd>
+<dt id="model.state_variables.StateVariables.total_volatile_asset_pcv"><code class="name">var <span class="ident">total_volatile_asset_pcv</span> : Union[int, float]</code></dt>
+<dd>
+<div class="desc"><p>The total USD value of Volatile Asset PCV</p></div>
+</dd>
+<dt id="model.state_variables.StateVariables.total_volatile_asset_pcv_balance"><code class="name">var <span class="ident">total_volatile_asset_pcv_balance</span> : Union[int, float]</code></dt>
+<dd>
+<div class="desc"><p>The total balance of Volatile Asset PCV</p></div>
+</dd>
+<dt id="model.state_variables.StateVariables.volatile_asset_price"><code class="name">var <span class="ident">volatile_asset_price</span> : Union[int, float]</code></dt>
+<dd>
+<div class="desc"><p>The Volatile Asset initial price, update by <code>volatile_asset_process</code> System Parameter in <code><a title="model.parts.price_processes" href="parts/price_processes.html">model.parts.price_processes</a></code>.</p></div>
+</dd>
+<dt id="model.state_variables.StateVariables.volatile_asset_price_mean"><code class="name">var <span class="ident">volatile_asset_price_mean</span> : float</code></dt>
+<dd>
+<div class="desc"><p>The Volatile Asset price mean used for calculation of <code>volatile_asset_risk_metric</code> State Variable.</p></div>
+</dd>
+<dt id="model.state_variables.StateVariables.volatile_asset_risk_metric"><code class="name">var <span class="ident">volatile_asset_risk_metric</span> : float</code></dt>
+<dd>
+<div class="desc"><p>The Volatile Asset Risk Metric, based on the price trend: price slope / average price.</p>
+<p>Updated in <code><a title="model.parts.money_markets" href="parts/money_markets.html">model.parts.money_markets</a></code>.</p></div>
+</dd>
+<dt id="model.state_variables.StateVariables.volatile_asset_risk_metric_max"><code class="name">var <span class="ident">volatile_asset_risk_metric_max</span> : float</code></dt>
+<dd>
+<div class="desc"><p>The Volatile Asset Risk Metric simulation maximum used for calculation of <code>volatile_asset_risk_metric</code> State Variable.</p>
+<p>Updated in <code><a title="model.parts.money_markets" href="parts/money_markets.html">model.parts.money_markets</a></code>.</p></div>
+</dd>
+<dt id="model.state_variables.StateVariables.volatile_asset_risk_metric_min"><code class="name">var <span class="ident">volatile_asset_risk_metric_min</span> : float</code></dt>
+<dd>
+<div class="desc"><p>The Volatile Asset Risk Metric simulation minimum used for calculation of <code>volatile_asset_risk_metric</code> State Variable.</p>
+<p>Updated in <code><a title="model.parts.money_markets" href="parts/money_markets.html">model.parts.money_markets</a></code>.</p></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul>
+<li><a href="#state-variables">State Variables</a></li>
+</ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="model" href="index.html">model</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="model.state_variables.StateVariables" href="#model.state_variables.StateVariables">StateVariables</a></code></h4>
+<ul class="">
+<li><code><a title="model.state_variables.StateVariables.active_psm_pcv_deposit_keys" href="#model.state_variables.StateVariables.active_psm_pcv_deposit_keys">active_psm_pcv_deposit_keys</a></code></li>
+<li><code><a title="model.state_variables.StateVariables.capital_allocation_rebalance_matrix" href="#model.state_variables.StateVariables.capital_allocation_rebalance_matrix">capital_allocation_rebalance_matrix</a></code></li>
+<li><code><a title="model.state_variables.StateVariables.capital_allocation_rebalance_remainder" href="#model.state_variables.StateVariables.capital_allocation_rebalance_remainder">capital_allocation_rebalance_remainder</a></code></li>
+<li><code><a title="model.state_variables.StateVariables.capital_allocation_target_weights" href="#model.state_variables.StateVariables.capital_allocation_target_weights">capital_allocation_target_weights</a></code></li>
+<li><code><a title="model.state_variables.StateVariables.collateralization_ratio" href="#model.state_variables.StateVariables.collateralization_ratio">collateralization_ratio</a></code></li>
+<li><code><a title="model.state_variables.StateVariables.fei_minted_redeemed" href="#model.state_variables.StateVariables.fei_minted_redeemed">fei_minted_redeemed</a></code></li>
+<li><code><a title="model.state_variables.StateVariables.fei_money_market_borrow_rate" href="#model.state_variables.StateVariables.fei_money_market_borrow_rate">fei_money_market_borrow_rate</a></code></li>
+<li><code><a title="model.state_variables.StateVariables.fei_money_market_borrowed" href="#model.state_variables.StateVariables.fei_money_market_borrowed">fei_money_market_borrowed</a></code></li>
+<li><code><a title="model.state_variables.StateVariables.fei_money_market_supply_rate" href="#model.state_variables.StateVariables.fei_money_market_supply_rate">fei_money_market_supply_rate</a></code></li>
+<li><code><a title="model.state_variables.StateVariables.fei_money_market_utilization" href="#model.state_variables.StateVariables.fei_money_market_utilization">fei_money_market_utilization</a></code></li>
+<li><code><a title="model.state_variables.StateVariables.fei_price" href="#model.state_variables.StateVariables.fei_price">fei_price</a></code></li>
+<li><code><a title="model.state_variables.StateVariables.fei_savings_rate" href="#model.state_variables.StateVariables.fei_savings_rate">fei_savings_rate</a></code></li>
+<li><code><a title="model.state_variables.StateVariables.liquidity_pool_fei_source_sink" href="#model.state_variables.StateVariables.liquidity_pool_fei_source_sink">liquidity_pool_fei_source_sink</a></code></li>
+<li><code><a title="model.state_variables.StateVariables.liquidity_pool_impermanent_loss" href="#model.state_variables.StateVariables.liquidity_pool_impermanent_loss">liquidity_pool_impermanent_loss</a></code></li>
+<li><code><a title="model.state_variables.StateVariables.liquidity_pool_invariant" href="#model.state_variables.StateVariables.liquidity_pool_invariant">liquidity_pool_invariant</a></code></li>
+<li><code><a title="model.state_variables.StateVariables.liquidity_pool_liquidity_tokens" href="#model.state_variables.StateVariables.liquidity_pool_liquidity_tokens">liquidity_pool_liquidity_tokens</a></code></li>
+<li><code><a title="model.state_variables.StateVariables.liquidity_pool_trading_fees" href="#model.state_variables.StateVariables.liquidity_pool_trading_fees">liquidity_pool_trading_fees</a></code></li>
+<li><code><a title="model.state_variables.StateVariables.liquidity_pool_tvl" href="#model.state_variables.StateVariables.liquidity_pool_tvl">liquidity_pool_tvl</a></code></li>
+<li><code><a title="model.state_variables.StateVariables.pcv_yield" href="#model.state_variables.StateVariables.pcv_yield">pcv_yield</a></code></li>
+<li><code><a title="model.state_variables.StateVariables.pcv_yield_rate" href="#model.state_variables.StateVariables.pcv_yield_rate">pcv_yield_rate</a></code></li>
+<li><code><a title="model.state_variables.StateVariables.protocol_equity" href="#model.state_variables.StateVariables.protocol_equity">protocol_equity</a></code></li>
+<li><code><a title="model.state_variables.StateVariables.protocol_revenue" href="#model.state_variables.StateVariables.protocol_revenue">protocol_revenue</a></code></li>
+<li><code><a title="model.state_variables.StateVariables.psm_mint_redeem_fees" href="#model.state_variables.StateVariables.psm_mint_redeem_fees">psm_mint_redeem_fees</a></code></li>
+<li><code><a title="model.state_variables.StateVariables.stable_asset_price" href="#model.state_variables.StateVariables.stable_asset_price">stable_asset_price</a></code></li>
+<li><code><a title="model.state_variables.StateVariables.stable_backing_ratio" href="#model.state_variables.StateVariables.stable_backing_ratio">stable_backing_ratio</a></code></li>
+<li><code><a title="model.state_variables.StateVariables.stable_pcv_ratio" href="#model.state_variables.StateVariables.stable_pcv_ratio">stable_pcv_ratio</a></code></li>
+<li><code><a title="model.state_variables.StateVariables.timestamp" href="#model.state_variables.StateVariables.timestamp">timestamp</a></code></li>
+<li><code><a title="model.state_variables.StateVariables.total_fei_supply" href="#model.state_variables.StateVariables.total_fei_supply">total_fei_supply</a></code></li>
+<li><code><a title="model.state_variables.StateVariables.total_liquidity_pool_trading_fees" href="#model.state_variables.StateVariables.total_liquidity_pool_trading_fees">total_liquidity_pool_trading_fees</a></code></li>
+<li><code><a title="model.state_variables.StateVariables.total_pcv" href="#model.state_variables.StateVariables.total_pcv">total_pcv</a></code></li>
+<li><code><a title="model.state_variables.StateVariables.total_protocol_owned_fei" href="#model.state_variables.StateVariables.total_protocol_owned_fei">total_protocol_owned_fei</a></code></li>
+<li><code><a title="model.state_variables.StateVariables.total_stable_asset_pcv" href="#model.state_variables.StateVariables.total_stable_asset_pcv">total_stable_asset_pcv</a></code></li>
+<li><code><a title="model.state_variables.StateVariables.total_stable_asset_pcv_balance" href="#model.state_variables.StateVariables.total_stable_asset_pcv_balance">total_stable_asset_pcv_balance</a></code></li>
+<li><code><a title="model.state_variables.StateVariables.total_user_circulating_fei" href="#model.state_variables.StateVariables.total_user_circulating_fei">total_user_circulating_fei</a></code></li>
+<li><code><a title="model.state_variables.StateVariables.total_volatile_asset_pcv" href="#model.state_variables.StateVariables.total_volatile_asset_pcv">total_volatile_asset_pcv</a></code></li>
+<li><code><a title="model.state_variables.StateVariables.total_volatile_asset_pcv_balance" href="#model.state_variables.StateVariables.total_volatile_asset_pcv_balance">total_volatile_asset_pcv_balance</a></code></li>
+<li><code><a title="model.state_variables.StateVariables.volatile_asset_price" href="#model.state_variables.StateVariables.volatile_asset_price">volatile_asset_price</a></code></li>
+<li><code><a title="model.state_variables.StateVariables.volatile_asset_price_mean" href="#model.state_variables.StateVariables.volatile_asset_price_mean">volatile_asset_price_mean</a></code></li>
+<li><code><a title="model.state_variables.StateVariables.volatile_asset_risk_metric" href="#model.state_variables.StateVariables.volatile_asset_risk_metric">volatile_asset_risk_metric</a></code></li>
+<li><code><a title="model.state_variables.StateVariables.volatile_asset_risk_metric_max" href="#model.state_variables.StateVariables.volatile_asset_risk_metric_max">volatile_asset_risk_metric_max</a></code></li>
+<li><code><a title="model.state_variables.StateVariables.volatile_asset_risk_metric_min" href="#model.state_variables.StateVariables.volatile_asset_risk_metric_min">volatile_asset_risk_metric_min</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,776 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>model.parts.pcv_management API documentation</title>
+<meta name="description" content="PCV Management Module
+Implementation of PCV Management policies, for example rebalancing towards a target Stable Backing Ratio." />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>model.parts.pcv_management</code></h1>
+</header>
+<section id="section-intro">
+<h1 id="pcv-management-module">PCV Management Module</h1>
+<p>Implementation of PCV Management policies, for example rebalancing towards a target Stable Backing Ratio.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;# PCV Management Module
+Implementation of PCV Management policies, for example rebalancing towards a target Stable Backing Ratio.
+&#34;&#34;&#34;
+
+import logging
+import numpy as np
+from model.system_parameters import Parameters
+from model.types import (
+    PCVDeposit,
+    USD,
+)
+from model.system_parameters import Parameters
+
+
+def policy_pcv_rebalancing_target_stable_pcv(
+    params: Parameters, substep, state_history, previous_state
+):
+    &#34;&#34;&#34;## PCV Rebalancing: Target Stable PCV Policy
+    The following PCV rebalancing policy targets a specific stable PCV ratio,
+    i.e. the % of PCV value that is backed by stable assets.
+
+    To meet the target allocation between stable and volatile assets,
+    PCV rebalancing is first attempted from idle PCV deposits.
+
+    If there is insufficient capital in idle PCV deposits to allocate to meet the stable PCV target,
+    movements are made in tranches/priority first from yield-bearing PCV,
+    followed by any other PCV included in the rebalancing strategy.
+
+    Rebalancing is performed periodically according to the rebalancing_period parameter,
+    when the target_stable_pcv_ratio parameter is below OR above the target,
+    according to the target_rebalancing_condition parameter.
+
+    # Rebalancing Parameters
+    rebalancing_period: the duration in days between applying rebalancing strategy
+
+    target_stable_pcv_ratio: the target % of PCV value that is backed by stable assets
+
+    target_rebalancing_condition: rebalance towards target stable PCV ratio if less than (lt, &lt;) or greater than (gt, &gt;) target,
+    if market conditions are good the strategy can increase volatile asset exposure,
+    and if market conditions are bad the strategy can reduce volatile asset exposure.
+    &#34;&#34;&#34;
+    # Params
+    dt = params[&#34;dt&#34;]
+    rebalancing_period = params[&#34;rebalancing_period&#34;]
+    target_stable_pcv_ratio = params[&#34;target_stable_pcv_ratio&#34;]
+    target_rebalancing_condition = params[&#34;target_rebalancing_condition&#34;]
+
+    # Previous State
+    timestep = previous_state[&#34;timestep&#34;]
+    total_pcv = previous_state[&#34;total_pcv&#34;]
+    stable_pcv_ratio = previous_state[&#34;stable_pcv_ratio&#34;]
+    volatile_asset_price = previous_state[&#34;volatile_asset_price&#34;]
+    stable_asset_price = previous_state[&#34;stable_asset_price&#34;]
+
+    # Relevant PCV Deposits
+    stable_idle_pcv_deposit: PCVDeposit = previous_state[&#34;stable_idle_pcv_deposit&#34;]
+    stable_yield_bearing_pcv_deposit: PCVDeposit = previous_state[
+        &#34;stable_yield_bearing_pcv_deposit&#34;
+    ]
+    volatile_idle_pcv_deposit: PCVDeposit = previous_state[&#34;volatile_idle_pcv_deposit&#34;]
+    volatile_yield_bearing_pcv_deposit: PCVDeposit = previous_state[
+        &#34;volatile_yield_bearing_pcv_deposit&#34;
+    ]
+
+    # Check if target defined and policy should be executed
+    if not target_stable_pcv_ratio:
+        return {}
+
+    # The stable PCV ratio is the % of PCV value that is backed by stable assets
+    stable_allocation = stable_pcv_ratio
+    volatile_allocation = 1 - stable_pcv_ratio
+
+    # The rebalancing strategy will move PCV assets between stable and volatile deposits,
+    # to TRY make the current allocation meet the target allocation
+    current_allocation = {
+        &#34;stable_asset&#34;: stable_allocation,
+        &#34;volatile_asset&#34;: volatile_allocation,
+    }
+
+    target_allocation = {
+        &#34;stable_asset&#34;: target_stable_pcv_ratio,
+        &#34;volatile_asset&#34;: (1 - target_stable_pcv_ratio),
+    }
+
+    # Calculate rebalancing conditions
+    ratio_less_than_or_greater_than_target = target_rebalancing_condition(
+        current_allocation[&#34;stable_asset&#34;], target_allocation[&#34;stable_asset&#34;]
+    )
+    timestep_equals_rebalancing_period = timestep % rebalancing_period / dt == 0
+
+    if (
+        # Rebalance towards target stable PCV ratio if either less than (lt, &lt;) or greater than (gt, &gt;) target,
+        # according to target_rebalancing_condition parameter.
+        ratio_less_than_or_greater_than_target
+        and timestep_equals_rebalancing_period
+    ):
+        # Calculate required rebalancing between stable and volatile assets to meet the stable PCV ratio target
+        stable_allocation_pct_change = (
+            target_allocation[&#34;stable_asset&#34;] - current_allocation[&#34;stable_asset&#34;]
+        )
+        stable_asset_target_value_change = stable_allocation_pct_change * total_pcv
+        total_stable_asset_balance_change = stable_asset_target_value_change / stable_asset_price
+
+        volatile_allocation_pct_change = (
+            target_allocation[&#34;volatile_asset&#34;] - current_allocation[&#34;volatile_asset&#34;]
+        )
+        volatile_asset_target_value_change = volatile_allocation_pct_change * total_pcv
+        total_volatile_asset_balance_change = (
+            volatile_asset_target_value_change / volatile_asset_price
+        )
+
+        pcv_deposit_rebalancing_strategy(
+            volatile_asset_price=volatile_asset_price,
+            stable_asset_price=stable_asset_price,
+            volatile_idle_pcv_deposit=volatile_idle_pcv_deposit,
+            volatile_yield_bearing_pcv_deposit=volatile_yield_bearing_pcv_deposit,
+            stable_idle_pcv_deposit=stable_idle_pcv_deposit,
+            stable_yield_bearing_pcv_deposit=stable_yield_bearing_pcv_deposit,
+            total_stable_asset_balance_change=total_stable_asset_balance_change,
+            total_volatile_asset_balance_change=total_volatile_asset_balance_change,
+        )
+
+    return {
+        &#34;stable_idle_pcv_deposit&#34;: stable_idle_pcv_deposit,
+        &#34;stable_yield_bearing_pcv_deposit&#34;: stable_yield_bearing_pcv_deposit,
+        &#34;volatile_idle_pcv_deposit&#34;: volatile_idle_pcv_deposit,
+        &#34;volatile_yield_bearing_pcv_deposit&#34;: volatile_yield_bearing_pcv_deposit,
+    }
+
+
+def policy_pcv_rebalancing_target_stable_backing(
+    params: Parameters, substep, state_history, previous_state
+):
+    &#34;&#34;&#34;## PCV Rebalancing: Target Stable Backing Policy
+    The following PCV rebalancing policy targets a specific stable backing ratio,
+    i.e. the % of user-circulating FEI that is backed by stable assets.
+
+    To meet the target allocation of stable backing,
+    PCV rebalancing is first attempted from idle PCV deposits.
+
+    If there is insufficient capital in idle PCV deposits to allocate to meet the stable backing target,
+    movements are made in tranches/priority first from yield-bearing PCV,
+    followed by any other PCV included in the rebalancing strategy.
+
+    Rebalancing is performed periodically according to the rebalancing_period parameter,
+    when the target_stable_backing_ratio parameter is below OR above the target,
+    according to the target_rebalancing_condition parameter.
+
+    # Rebalancing Parameters
+    rebalancing_period: the duration in days between applying rebalancing strategy
+
+    target_stable_backing_ratio: the target % of user-circulating FEI that is backed by stable assets
+
+    target_rebalancing_condition: rebalance towards target stable backing ratio if less than (lt, &lt;) or greater than (gt, &gt;) target,
+    if market conditions are good the strategy can increase volatile asset exposure,
+    and if market conditions are bad the strategy can reduce volatile asset exposure.
+    &#34;&#34;&#34;
+    # Params
+    dt = params[&#34;dt&#34;]
+    rebalancing_period = params[&#34;rebalancing_period&#34;]
+    target_stable_backing_ratio = params[&#34;target_stable_backing_ratio&#34;]
+    target_rebalancing_condition = params[&#34;target_rebalancing_condition&#34;]
+
+    # Previous State
+    timestep = previous_state[&#34;timestep&#34;]
+    stable_backing_ratio = previous_state[&#34;stable_backing_ratio&#34;]
+    volatile_asset_price = previous_state[&#34;volatile_asset_price&#34;]
+    stable_asset_price = previous_state[&#34;stable_asset_price&#34;]
+    total_stable_asset_pcv = previous_state[&#34;total_stable_asset_pcv&#34;]
+    total_user_circulating_fei = previous_state[&#34;total_user_circulating_fei&#34;]
+
+    # Relevant PCV Deposits
+    stable_idle_pcv_deposit: PCVDeposit = previous_state[&#34;stable_idle_pcv_deposit&#34;]
+    stable_yield_bearing_pcv_deposit: PCVDeposit = previous_state[
+        &#34;stable_yield_bearing_pcv_deposit&#34;
+    ]
+    volatile_idle_pcv_deposit: PCVDeposit = previous_state[&#34;volatile_idle_pcv_deposit&#34;]
+    volatile_yield_bearing_pcv_deposit: PCVDeposit = previous_state[
+        &#34;volatile_yield_bearing_pcv_deposit&#34;
+    ]
+
+    # Check if target defined and policy should be executed
+    if not target_stable_backing_ratio:
+        return {}
+
+    # Calculate rebalancing conditions
+    ratio_less_than_or_greater_than_target = target_rebalancing_condition(
+        stable_backing_ratio, target_stable_backing_ratio
+    )
+    timestep_equals_rebalancing_period = timestep % rebalancing_period / dt == 0
+
+    if (
+        # Rebalance towards target stable backing ratio if either less than (lt, &lt;) or greater than (gt, &gt;) target,
+        # according to target_rebalancing_condition parameter.
+        ratio_less_than_or_greater_than_target
+        and timestep_equals_rebalancing_period
+    ):
+        # Calculate required change in total stable asset PCV to meet new target
+        stable_asset_target_value_change = (
+            target_stable_backing_ratio * total_user_circulating_fei
+        ) - total_stable_asset_pcv
+
+        total_stable_asset_balance_change = stable_asset_target_value_change / stable_asset_price
+
+        volatile_asset_target_value_change = -stable_asset_target_value_change
+
+        total_volatile_asset_balance_change = (
+            volatile_asset_target_value_change / volatile_asset_price
+        )
+
+        pcv_deposit_rebalancing_strategy(
+            volatile_asset_price,
+            stable_asset_price,
+            volatile_idle_pcv_deposit,
+            volatile_yield_bearing_pcv_deposit,
+            stable_idle_pcv_deposit,
+            stable_yield_bearing_pcv_deposit,
+            total_stable_asset_balance_change,
+            total_volatile_asset_balance_change,
+        )
+
+    return {
+        &#34;stable_idle_pcv_deposit&#34;: stable_idle_pcv_deposit,
+        &#34;stable_yield_bearing_pcv_deposit&#34;: stable_yield_bearing_pcv_deposit,
+        &#34;volatile_idle_pcv_deposit&#34;: volatile_idle_pcv_deposit,
+        &#34;volatile_yield_bearing_pcv_deposit&#34;: volatile_yield_bearing_pcv_deposit,
+    }
+
+
+def pcv_deposit_rebalancing_strategy(
+    volatile_asset_price: USD,
+    stable_asset_price: USD,
+    volatile_idle_pcv_deposit: PCVDeposit,
+    volatile_yield_bearing_pcv_deposit: PCVDeposit,
+    stable_idle_pcv_deposit: PCVDeposit,
+    stable_yield_bearing_pcv_deposit: PCVDeposit,
+    total_stable_asset_balance_change,
+    total_volatile_asset_balance_change,
+):
+    &#34;&#34;&#34;## PCV Deposit Rebalancing Strategy
+
+    See &#34;PCV Rebalancing: Target Stable PCV Policy&#34;
+
+    Args:
+        volatile_asset_price (USD): The volatile asset price
+        stable_asset_price (USD): The stable asset price
+        volatile_idle_pcv_deposit (PCVDeposit): The idle volatile asset PCV Deposit
+        volatile_yield_bearing_pcv_deposit (PCVDeposit): The yield-bearing volatile asset PCV Deposit
+        stable_idle_pcv_deposit (PCVDeposit): The idle stable asset PCV Deposit
+        stable_yield_bearing_pcv_deposit (PCVDeposit): The yield-bearing stable asset PCV Deposit
+        total_stable_asset_balance_change (_type_): The total stable asset balance change to meet target
+        total_volatile_asset_balance_change (_type_): The total volatile asset balance change to meet target
+    &#34;&#34;&#34;
+    # Rebalancing Strategy
+    # PCV deposits in tranches / order of priority for rebalancing
+    stable_pcv_deposits = [
+        stable_idle_pcv_deposit,
+        stable_yield_bearing_pcv_deposit,
+    ]
+    volatile_pcv_deposits = [
+        volatile_idle_pcv_deposit,  # Try rebalance from idle assets first
+        volatile_yield_bearing_pcv_deposit,  # Followed by any other PCV assets
+    ]
+
+    # PCV movement from volatile to stable
+    if total_stable_asset_balance_change &gt;= 0 and total_volatile_asset_balance_change &lt; 0:
+        balance_change = abs(total_volatile_asset_balance_change)
+        # Try rebalance PCV from deposits in order of priority
+        for deposit in volatile_pcv_deposits:
+            if balance_change:
+                if deposit.yield_rate &gt; 0:
+                    logging.debug(&#34;Cashing out of yield-bearing deposit&#34;)
+                    # Transfer yield to deposit balance
+                    deposit.transfer_yield(
+                        to=deposit,
+                        amount=deposit.yield_accrued,
+                        asset_price=volatile_asset_price,
+                    )
+                transfer_balance = min(balance_change, deposit.balance)
+                # Transfer from stable PCV to volatile idle PCV deposit
+                deposit.transfer(
+                    to=stable_idle_pcv_deposit,
+                    amount=transfer_balance,
+                    from_asset_price=volatile_asset_price,
+                    to_asset_price=stable_asset_price,
+                )
+                balance_change -= transfer_balance
+            # Check if balance remainder
+            if balance_change &gt; 0:
+                # NOTE Additional constraints on movements based on trade efficiency will be introduced in future,
+                # for now we catch the edge case for further analysis
+                logging.debug(&#34;Not enough balance across all sell side deposits to rebalance!&#34;)
+    # PCV movement from stable to volatile
+    else:
+        balance_change = abs(total_stable_asset_balance_change)
+        # Try rebalance PCV from deposits in order of priority
+        for deposit in stable_pcv_deposits:
+            if balance_change:
+                if deposit.yield_rate &gt; 0:
+                    logging.debug(&#34;Cashing out of yield-bearing deposit&#34;)
+                    # Transfer yield to deposit balance
+                    deposit.transfer_yield(
+                        to=deposit,
+                        amount=deposit.yield_accrued,
+                        asset_price=stable_asset_price,
+                    )
+                transfer_balance = min(balance_change, deposit.balance)
+                # Transfer from volatile PCV to stable idle PCV deposit
+                deposit.transfer(
+                    to=volatile_idle_pcv_deposit,
+                    amount=transfer_balance,
+                    from_asset_price=stable_asset_price,
+                    to_asset_price=volatile_asset_price,
+                )
+                balance_change -= transfer_balance
+        # Check if balance remainder
+        if balance_change &gt; 0:
+            logging.debug(&#34;Not enough balance across all sell side deposits to rebalance!&#34;)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="model.parts.pcv_management.pcv_deposit_rebalancing_strategy"><code class="name flex">
+<span>def <span class="ident">pcv_deposit_rebalancing_strategy</span></span>(<span>volatile_asset_price: Union[int, float], stable_asset_price: Union[int, float], volatile_idle_pcv_deposit: <a title="model.types.PCVDeposit" href="../types.html#model.types.PCVDeposit">PCVDeposit</a>, volatile_yield_bearing_pcv_deposit: <a title="model.types.PCVDeposit" href="../types.html#model.types.PCVDeposit">PCVDeposit</a>, stable_idle_pcv_deposit: <a title="model.types.PCVDeposit" href="../types.html#model.types.PCVDeposit">PCVDeposit</a>, stable_yield_bearing_pcv_deposit: <a title="model.types.PCVDeposit" href="../types.html#model.types.PCVDeposit">PCVDeposit</a>, total_stable_asset_balance_change, total_volatile_asset_balance_change)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="pcv-deposit-rebalancing-strategy">PCV Deposit Rebalancing Strategy</h2>
+<p>See "PCV Rebalancing: Target Stable PCV Policy"</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>volatile_asset_price</code></strong> :&ensp;<code>USD</code></dt>
+<dd>The volatile asset price</dd>
+<dt><strong><code>stable_asset_price</code></strong> :&ensp;<code>USD</code></dt>
+<dd>The stable asset price</dd>
+<dt><strong><code>volatile_idle_pcv_deposit</code></strong> :&ensp;<code>PCVDeposit</code></dt>
+<dd>The idle volatile asset PCV Deposit</dd>
+<dt><strong><code>volatile_yield_bearing_pcv_deposit</code></strong> :&ensp;<code>PCVDeposit</code></dt>
+<dd>The yield-bearing volatile asset PCV Deposit</dd>
+<dt><strong><code>stable_idle_pcv_deposit</code></strong> :&ensp;<code>PCVDeposit</code></dt>
+<dd>The idle stable asset PCV Deposit</dd>
+<dt><strong><code>stable_yield_bearing_pcv_deposit</code></strong> :&ensp;<code>PCVDeposit</code></dt>
+<dd>The yield-bearing stable asset PCV Deposit</dd>
+<dt><strong><code>total_stable_asset_balance_change</code></strong> :&ensp;<code>_type_</code></dt>
+<dd>The total stable asset balance change to meet target</dd>
+<dt><strong><code>total_volatile_asset_balance_change</code></strong> :&ensp;<code>_type_</code></dt>
+<dd>The total volatile asset balance change to meet target</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def pcv_deposit_rebalancing_strategy(
+    volatile_asset_price: USD,
+    stable_asset_price: USD,
+    volatile_idle_pcv_deposit: PCVDeposit,
+    volatile_yield_bearing_pcv_deposit: PCVDeposit,
+    stable_idle_pcv_deposit: PCVDeposit,
+    stable_yield_bearing_pcv_deposit: PCVDeposit,
+    total_stable_asset_balance_change,
+    total_volatile_asset_balance_change,
+):
+    &#34;&#34;&#34;## PCV Deposit Rebalancing Strategy
+
+    See &#34;PCV Rebalancing: Target Stable PCV Policy&#34;
+
+    Args:
+        volatile_asset_price (USD): The volatile asset price
+        stable_asset_price (USD): The stable asset price
+        volatile_idle_pcv_deposit (PCVDeposit): The idle volatile asset PCV Deposit
+        volatile_yield_bearing_pcv_deposit (PCVDeposit): The yield-bearing volatile asset PCV Deposit
+        stable_idle_pcv_deposit (PCVDeposit): The idle stable asset PCV Deposit
+        stable_yield_bearing_pcv_deposit (PCVDeposit): The yield-bearing stable asset PCV Deposit
+        total_stable_asset_balance_change (_type_): The total stable asset balance change to meet target
+        total_volatile_asset_balance_change (_type_): The total volatile asset balance change to meet target
+    &#34;&#34;&#34;
+    # Rebalancing Strategy
+    # PCV deposits in tranches / order of priority for rebalancing
+    stable_pcv_deposits = [
+        stable_idle_pcv_deposit,
+        stable_yield_bearing_pcv_deposit,
+    ]
+    volatile_pcv_deposits = [
+        volatile_idle_pcv_deposit,  # Try rebalance from idle assets first
+        volatile_yield_bearing_pcv_deposit,  # Followed by any other PCV assets
+    ]
+
+    # PCV movement from volatile to stable
+    if total_stable_asset_balance_change &gt;= 0 and total_volatile_asset_balance_change &lt; 0:
+        balance_change = abs(total_volatile_asset_balance_change)
+        # Try rebalance PCV from deposits in order of priority
+        for deposit in volatile_pcv_deposits:
+            if balance_change:
+                if deposit.yield_rate &gt; 0:
+                    logging.debug(&#34;Cashing out of yield-bearing deposit&#34;)
+                    # Transfer yield to deposit balance
+                    deposit.transfer_yield(
+                        to=deposit,
+                        amount=deposit.yield_accrued,
+                        asset_price=volatile_asset_price,
+                    )
+                transfer_balance = min(balance_change, deposit.balance)
+                # Transfer from stable PCV to volatile idle PCV deposit
+                deposit.transfer(
+                    to=stable_idle_pcv_deposit,
+                    amount=transfer_balance,
+                    from_asset_price=volatile_asset_price,
+                    to_asset_price=stable_asset_price,
+                )
+                balance_change -= transfer_balance
+            # Check if balance remainder
+            if balance_change &gt; 0:
+                # NOTE Additional constraints on movements based on trade efficiency will be introduced in future,
+                # for now we catch the edge case for further analysis
+                logging.debug(&#34;Not enough balance across all sell side deposits to rebalance!&#34;)
+    # PCV movement from stable to volatile
+    else:
+        balance_change = abs(total_stable_asset_balance_change)
+        # Try rebalance PCV from deposits in order of priority
+        for deposit in stable_pcv_deposits:
+            if balance_change:
+                if deposit.yield_rate &gt; 0:
+                    logging.debug(&#34;Cashing out of yield-bearing deposit&#34;)
+                    # Transfer yield to deposit balance
+                    deposit.transfer_yield(
+                        to=deposit,
+                        amount=deposit.yield_accrued,
+                        asset_price=stable_asset_price,
+                    )
+                transfer_balance = min(balance_change, deposit.balance)
+                # Transfer from volatile PCV to stable idle PCV deposit
+                deposit.transfer(
+                    to=volatile_idle_pcv_deposit,
+                    amount=transfer_balance,
+                    from_asset_price=stable_asset_price,
+                    to_asset_price=volatile_asset_price,
+                )
+                balance_change -= transfer_balance
+        # Check if balance remainder
+        if balance_change &gt; 0:
+            logging.debug(&#34;Not enough balance across all sell side deposits to rebalance!&#34;)</code></pre>
+</details>
+</dd>
+<dt id="model.parts.pcv_management.policy_pcv_rebalancing_target_stable_backing"><code class="name flex">
+<span>def <span class="ident">policy_pcv_rebalancing_target_stable_backing</span></span>(<span>params: <a title="model.system_parameters.Parameters" href="../system_parameters.html#model.system_parameters.Parameters">Parameters</a>, substep, state_history, previous_state)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="pcv-rebalancing-target-stable-backing-policy">PCV Rebalancing: Target Stable Backing Policy</h2>
+<p>The following PCV rebalancing policy targets a specific stable backing ratio,
+i.e. the % of user-circulating FEI that is backed by stable assets.</p>
+<p>To meet the target allocation of stable backing,
+PCV rebalancing is first attempted from idle PCV deposits.</p>
+<p>If there is insufficient capital in idle PCV deposits to allocate to meet the stable backing target,
+movements are made in tranches/priority first from yield-bearing PCV,
+followed by any other PCV included in the rebalancing strategy.</p>
+<p>Rebalancing is performed periodically according to the rebalancing_period parameter,
+when the target_stable_backing_ratio parameter is below OR above the target,
+according to the target_rebalancing_condition parameter.</p>
+<h1 id="rebalancing-parameters">Rebalancing Parameters</h1>
+<p>rebalancing_period: the duration in days between applying rebalancing strategy</p>
+<p>target_stable_backing_ratio: the target % of user-circulating FEI that is backed by stable assets</p>
+<p>target_rebalancing_condition: rebalance towards target stable backing ratio if less than (lt, &lt;) or greater than (gt, &gt;) target,
+if market conditions are good the strategy can increase volatile asset exposure,
+and if market conditions are bad the strategy can reduce volatile asset exposure.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def policy_pcv_rebalancing_target_stable_backing(
+    params: Parameters, substep, state_history, previous_state
+):
+    &#34;&#34;&#34;## PCV Rebalancing: Target Stable Backing Policy
+    The following PCV rebalancing policy targets a specific stable backing ratio,
+    i.e. the % of user-circulating FEI that is backed by stable assets.
+
+    To meet the target allocation of stable backing,
+    PCV rebalancing is first attempted from idle PCV deposits.
+
+    If there is insufficient capital in idle PCV deposits to allocate to meet the stable backing target,
+    movements are made in tranches/priority first from yield-bearing PCV,
+    followed by any other PCV included in the rebalancing strategy.
+
+    Rebalancing is performed periodically according to the rebalancing_period parameter,
+    when the target_stable_backing_ratio parameter is below OR above the target,
+    according to the target_rebalancing_condition parameter.
+
+    # Rebalancing Parameters
+    rebalancing_period: the duration in days between applying rebalancing strategy
+
+    target_stable_backing_ratio: the target % of user-circulating FEI that is backed by stable assets
+
+    target_rebalancing_condition: rebalance towards target stable backing ratio if less than (lt, &lt;) or greater than (gt, &gt;) target,
+    if market conditions are good the strategy can increase volatile asset exposure,
+    and if market conditions are bad the strategy can reduce volatile asset exposure.
+    &#34;&#34;&#34;
+    # Params
+    dt = params[&#34;dt&#34;]
+    rebalancing_period = params[&#34;rebalancing_period&#34;]
+    target_stable_backing_ratio = params[&#34;target_stable_backing_ratio&#34;]
+    target_rebalancing_condition = params[&#34;target_rebalancing_condition&#34;]
+
+    # Previous State
+    timestep = previous_state[&#34;timestep&#34;]
+    stable_backing_ratio = previous_state[&#34;stable_backing_ratio&#34;]
+    volatile_asset_price = previous_state[&#34;volatile_asset_price&#34;]
+    stable_asset_price = previous_state[&#34;stable_asset_price&#34;]
+    total_stable_asset_pcv = previous_state[&#34;total_stable_asset_pcv&#34;]
+    total_user_circulating_fei = previous_state[&#34;total_user_circulating_fei&#34;]
+
+    # Relevant PCV Deposits
+    stable_idle_pcv_deposit: PCVDeposit = previous_state[&#34;stable_idle_pcv_deposit&#34;]
+    stable_yield_bearing_pcv_deposit: PCVDeposit = previous_state[
+        &#34;stable_yield_bearing_pcv_deposit&#34;
+    ]
+    volatile_idle_pcv_deposit: PCVDeposit = previous_state[&#34;volatile_idle_pcv_deposit&#34;]
+    volatile_yield_bearing_pcv_deposit: PCVDeposit = previous_state[
+        &#34;volatile_yield_bearing_pcv_deposit&#34;
+    ]
+
+    # Check if target defined and policy should be executed
+    if not target_stable_backing_ratio:
+        return {}
+
+    # Calculate rebalancing conditions
+    ratio_less_than_or_greater_than_target = target_rebalancing_condition(
+        stable_backing_ratio, target_stable_backing_ratio
+    )
+    timestep_equals_rebalancing_period = timestep % rebalancing_period / dt == 0
+
+    if (
+        # Rebalance towards target stable backing ratio if either less than (lt, &lt;) or greater than (gt, &gt;) target,
+        # according to target_rebalancing_condition parameter.
+        ratio_less_than_or_greater_than_target
+        and timestep_equals_rebalancing_period
+    ):
+        # Calculate required change in total stable asset PCV to meet new target
+        stable_asset_target_value_change = (
+            target_stable_backing_ratio * total_user_circulating_fei
+        ) - total_stable_asset_pcv
+
+        total_stable_asset_balance_change = stable_asset_target_value_change / stable_asset_price
+
+        volatile_asset_target_value_change = -stable_asset_target_value_change
+
+        total_volatile_asset_balance_change = (
+            volatile_asset_target_value_change / volatile_asset_price
+        )
+
+        pcv_deposit_rebalancing_strategy(
+            volatile_asset_price,
+            stable_asset_price,
+            volatile_idle_pcv_deposit,
+            volatile_yield_bearing_pcv_deposit,
+            stable_idle_pcv_deposit,
+            stable_yield_bearing_pcv_deposit,
+            total_stable_asset_balance_change,
+            total_volatile_asset_balance_change,
+        )
+
+    return {
+        &#34;stable_idle_pcv_deposit&#34;: stable_idle_pcv_deposit,
+        &#34;stable_yield_bearing_pcv_deposit&#34;: stable_yield_bearing_pcv_deposit,
+        &#34;volatile_idle_pcv_deposit&#34;: volatile_idle_pcv_deposit,
+        &#34;volatile_yield_bearing_pcv_deposit&#34;: volatile_yield_bearing_pcv_deposit,
+    }</code></pre>
+</details>
+</dd>
+<dt id="model.parts.pcv_management.policy_pcv_rebalancing_target_stable_pcv"><code class="name flex">
+<span>def <span class="ident">policy_pcv_rebalancing_target_stable_pcv</span></span>(<span>params: <a title="model.system_parameters.Parameters" href="../system_parameters.html#model.system_parameters.Parameters">Parameters</a>, substep, state_history, previous_state)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="pcv-rebalancing-target-stable-pcv-policy">PCV Rebalancing: Target Stable PCV Policy</h2>
+<p>The following PCV rebalancing policy targets a specific stable PCV ratio,
+i.e. the % of PCV value that is backed by stable assets.</p>
+<p>To meet the target allocation between stable and volatile assets,
+PCV rebalancing is first attempted from idle PCV deposits.</p>
+<p>If there is insufficient capital in idle PCV deposits to allocate to meet the stable PCV target,
+movements are made in tranches/priority first from yield-bearing PCV,
+followed by any other PCV included in the rebalancing strategy.</p>
+<p>Rebalancing is performed periodically according to the rebalancing_period parameter,
+when the target_stable_pcv_ratio parameter is below OR above the target,
+according to the target_rebalancing_condition parameter.</p>
+<h1 id="rebalancing-parameters">Rebalancing Parameters</h1>
+<p>rebalancing_period: the duration in days between applying rebalancing strategy</p>
+<p>target_stable_pcv_ratio: the target % of PCV value that is backed by stable assets</p>
+<p>target_rebalancing_condition: rebalance towards target stable PCV ratio if less than (lt, &lt;) or greater than (gt, &gt;) target,
+if market conditions are good the strategy can increase volatile asset exposure,
+and if market conditions are bad the strategy can reduce volatile asset exposure.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def policy_pcv_rebalancing_target_stable_pcv(
+    params: Parameters, substep, state_history, previous_state
+):
+    &#34;&#34;&#34;## PCV Rebalancing: Target Stable PCV Policy
+    The following PCV rebalancing policy targets a specific stable PCV ratio,
+    i.e. the % of PCV value that is backed by stable assets.
+
+    To meet the target allocation between stable and volatile assets,
+    PCV rebalancing is first attempted from idle PCV deposits.
+
+    If there is insufficient capital in idle PCV deposits to allocate to meet the stable PCV target,
+    movements are made in tranches/priority first from yield-bearing PCV,
+    followed by any other PCV included in the rebalancing strategy.
+
+    Rebalancing is performed periodically according to the rebalancing_period parameter,
+    when the target_stable_pcv_ratio parameter is below OR above the target,
+    according to the target_rebalancing_condition parameter.
+
+    # Rebalancing Parameters
+    rebalancing_period: the duration in days between applying rebalancing strategy
+
+    target_stable_pcv_ratio: the target % of PCV value that is backed by stable assets
+
+    target_rebalancing_condition: rebalance towards target stable PCV ratio if less than (lt, &lt;) or greater than (gt, &gt;) target,
+    if market conditions are good the strategy can increase volatile asset exposure,
+    and if market conditions are bad the strategy can reduce volatile asset exposure.
+    &#34;&#34;&#34;
+    # Params
+    dt = params[&#34;dt&#34;]
+    rebalancing_period = params[&#34;rebalancing_period&#34;]
+    target_stable_pcv_ratio = params[&#34;target_stable_pcv_ratio&#34;]
+    target_rebalancing_condition = params[&#34;target_rebalancing_condition&#34;]
+
+    # Previous State
+    timestep = previous_state[&#34;timestep&#34;]
+    total_pcv = previous_state[&#34;total_pcv&#34;]
+    stable_pcv_ratio = previous_state[&#34;stable_pcv_ratio&#34;]
+    volatile_asset_price = previous_state[&#34;volatile_asset_price&#34;]
+    stable_asset_price = previous_state[&#34;stable_asset_price&#34;]
+
+    # Relevant PCV Deposits
+    stable_idle_pcv_deposit: PCVDeposit = previous_state[&#34;stable_idle_pcv_deposit&#34;]
+    stable_yield_bearing_pcv_deposit: PCVDeposit = previous_state[
+        &#34;stable_yield_bearing_pcv_deposit&#34;
+    ]
+    volatile_idle_pcv_deposit: PCVDeposit = previous_state[&#34;volatile_idle_pcv_deposit&#34;]
+    volatile_yield_bearing_pcv_deposit: PCVDeposit = previous_state[
+        &#34;volatile_yield_bearing_pcv_deposit&#34;
+    ]
+
+    # Check if target defined and policy should be executed
+    if not target_stable_pcv_ratio:
+        return {}
+
+    # The stable PCV ratio is the % of PCV value that is backed by stable assets
+    stable_allocation = stable_pcv_ratio
+    volatile_allocation = 1 - stable_pcv_ratio
+
+    # The rebalancing strategy will move PCV assets between stable and volatile deposits,
+    # to TRY make the current allocation meet the target allocation
+    current_allocation = {
+        &#34;stable_asset&#34;: stable_allocation,
+        &#34;volatile_asset&#34;: volatile_allocation,
+    }
+
+    target_allocation = {
+        &#34;stable_asset&#34;: target_stable_pcv_ratio,
+        &#34;volatile_asset&#34;: (1 - target_stable_pcv_ratio),
+    }
+
+    # Calculate rebalancing conditions
+    ratio_less_than_or_greater_than_target = target_rebalancing_condition(
+        current_allocation[&#34;stable_asset&#34;], target_allocation[&#34;stable_asset&#34;]
+    )
+    timestep_equals_rebalancing_period = timestep % rebalancing_period / dt == 0
+
+    if (
+        # Rebalance towards target stable PCV ratio if either less than (lt, &lt;) or greater than (gt, &gt;) target,
+        # according to target_rebalancing_condition parameter.
+        ratio_less_than_or_greater_than_target
+        and timestep_equals_rebalancing_period
+    ):
+        # Calculate required rebalancing between stable and volatile assets to meet the stable PCV ratio target
+        stable_allocation_pct_change = (
+            target_allocation[&#34;stable_asset&#34;] - current_allocation[&#34;stable_asset&#34;]
+        )
+        stable_asset_target_value_change = stable_allocation_pct_change * total_pcv
+        total_stable_asset_balance_change = stable_asset_target_value_change / stable_asset_price
+
+        volatile_allocation_pct_change = (
+            target_allocation[&#34;volatile_asset&#34;] - current_allocation[&#34;volatile_asset&#34;]
+        )
+        volatile_asset_target_value_change = volatile_allocation_pct_change * total_pcv
+        total_volatile_asset_balance_change = (
+            volatile_asset_target_value_change / volatile_asset_price
+        )
+
+        pcv_deposit_rebalancing_strategy(
+            volatile_asset_price=volatile_asset_price,
+            stable_asset_price=stable_asset_price,
+            volatile_idle_pcv_deposit=volatile_idle_pcv_deposit,
+            volatile_yield_bearing_pcv_deposit=volatile_yield_bearing_pcv_deposit,
+            stable_idle_pcv_deposit=stable_idle_pcv_deposit,
+            stable_yield_bearing_pcv_deposit=stable_yield_bearing_pcv_deposit,
+            total_stable_asset_balance_change=total_stable_asset_balance_change,
+            total_volatile_asset_balance_change=total_volatile_asset_balance_change,
+        )
+
+    return {
+        &#34;stable_idle_pcv_deposit&#34;: stable_idle_pcv_deposit,
+        &#34;stable_yield_bearing_pcv_deposit&#34;: stable_yield_bearing_pcv_deposit,
+        &#34;volatile_idle_pcv_deposit&#34;: volatile_idle_pcv_deposit,
+        &#34;volatile_yield_bearing_pcv_deposit&#34;: volatile_yield_bearing_pcv_deposit,
+    }</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul>
+<li><a href="#pcv-management-module">PCV Management Module</a></li>
+</ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="model.parts" href="index.html">model.parts</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="model.parts.pcv_management.pcv_deposit_rebalancing_strategy" href="#model.parts.pcv_management.pcv_deposit_rebalancing_strategy">pcv_deposit_rebalancing_strategy</a></code></li>
+<li><code><a title="model.parts.pcv_management.policy_pcv_rebalancing_target_stable_backing" href="#model.parts.pcv_management.policy_pcv_rebalancing_target_stable_backing">policy_pcv_rebalancing_target_stable_backing</a></code></li>
+<li><code><a title="model.parts.pcv_management.policy_pcv_rebalancing_target_stable_pcv" href="#model.parts.pcv_management.policy_pcv_rebalancing_target_stable_pcv">policy_pcv_rebalancing_target_stable_pcv</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>

@@ -1,3 +1,8 @@
+"""# Stochastic Processes Module
+Helper functions to generate stochastic environmental processes
+that are then passed in as System Parameters used by for example the `model.parts.price_processes` module.
+"""
+
 import numpy as np
 import pandas as pd
 from stochastic import processes
@@ -12,7 +17,7 @@ def geometric_brownian_motion_process(
     rng=np.random.default_rng(1),
     **kwargs,
 ):
-    """Configure Geometric Brownian Motion process
+    """## Configure Geometric Brownian Motion process
     > A geometric Brownian motion S_t is the analytic solution to the stochastic differential equation with Wiener process...
 
     See https://stochastic.readthedocs.io/en/latest/continuous.html
@@ -35,7 +40,7 @@ def brownian_motion_process(
     rng=np.random.default_rng(1),
     **kwargs,
 ):
-    """Configure Brownian Motion process
+    """## Configure Brownian Motion process
     > A standard Brownian motion (discretely sampled) has independent and
     identically distributed Gaussian increments with variance equal to
     increment length. Non-standard Brownian motion includes a linear drift
@@ -62,7 +67,7 @@ def gaussian_noise_process(
     rng=np.random.default_rng(1),
     **kwargs,
 ):
-    """Configure Gaussian Noise Process
+    """## Configure Gaussian Noise Process
 
     Gaussian Noise Process
 
@@ -86,7 +91,7 @@ def create_stochastic_process_realizations(
     runs=1,
     **kwargs,
 ):
-    """Create stochastic process realizations
+    """## Create stochastic process realizations
 
     Using the stochastic processes defined in `processes` module, create random number generator (RNG) seeds,
     and use RNG to pre-generate samples for number of simulation timesteps.
@@ -131,6 +136,11 @@ def create_stochastic_process_realizations(
 
 
 def generate_volatile_asset_price_scenarios() -> pd.DataFrame:
+    """## Generate Volatile Asset price scenarios
+    This function generates a set of Volatile Asset price scenarios across: base, bearish, bullish, high and low volatility market conditions.
+
+    NOTE This function is currently not being seeded correctly, which means results are not reproducible.
+    """
     # Price trend scenarios
 
     base_price_trend = create_stochastic_process_realizations(

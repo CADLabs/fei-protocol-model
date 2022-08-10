@@ -1,3 +1,6 @@
+"""# Initialization Module
+"""
+
 import radcad as radcad
 import logging
 from dataclasses import make_dataclass
@@ -10,6 +13,12 @@ from model.types import (
 
 
 def setup_initial_state(context: radcad.Context):
+    """## Initial State Setup
+    A function, used in the radCAD `before_subset` hook in `experiments.default_experiment`,
+    that sets up the Initial State of the model from the relevant System Parameters before each simulation execution.
+
+    This allows one to sweep the Initial State using System Parameters.
+    """
     logging.info("Setting up initial state")
 
     params = context.parameters

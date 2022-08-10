@@ -1,5 +1,5 @@
-"""FEI Savings Deposit
-WIP
+"""# FEI Savings Deposit Module
+Policies and State Update Functions necessary to calculate and set the FEI Savings Rate.
 """
 
 from model.types import (
@@ -14,7 +14,7 @@ def policy_fei_savings_deposit(
     state_history,
     previous_state,
 ):
-    """FEI Savings Deposit Policy
+    """## FEI Savings Deposit Policy
     Fetch the FEI Savings Rate from the `fei_savings_rate_process`.
     """
     # Parameters
@@ -34,7 +34,7 @@ def policy_fei_savings_deposit(
 def update_fei_savings_deposit_yield_rate(
     params: Parameters, substep, state_history, previous_state, policy_input
 ):
-    """Update FEI Savings Deposit Yield Rate
+    """## Update FEI Savings Deposit Yield Rate
     Update the FEI Savings Deposit Yield Rate from the FEI Savings Deposit Policy.
     """
     # Policy Inputs

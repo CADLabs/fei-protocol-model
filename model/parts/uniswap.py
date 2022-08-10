@@ -1,8 +1,19 @@
+"""# Uniswap Module
+Uniswap style Constant Function Market Maker functions for liquidity provision and token trading.
+"""
+
+
+# Liquidity Provision
+
+
 def add_liquidity(reserve_balance, supply_balance, voucher_balance, tokens, value):
     """
     Example:
+
     new_reserve = (1 + alpha) * reserve_balance
+
     new_supply = (1 + alpha) * supply_balance
+
     new_vouchers = (1 + alpha) * voucher_balance
     """
     if voucher_balance <= 0:
@@ -23,8 +34,11 @@ def add_liquidity(reserve_balance, supply_balance, voucher_balance, tokens, valu
 def remove_liquidity(reserve_balance, supply_balance, voucher_balance, tokens):
     """
     Example:
+
     new_reserve = (1 - alpha) * reserve_balance
+
     new_supply = (1 - alpha) * supply_balance
+
     new_vouchers = (1 - alpha) * voucher_balance
     """
     alpha = tokens / voucher_balance
@@ -36,11 +50,17 @@ def remove_liquidity(reserve_balance, supply_balance, voucher_balance, tokens):
     return (dr, ds, dv)
 
 
+# Token trading
+
+
 def get_input_price(dx, x_balance, y_balance, trade_fee=0):
     """
     How much y received for selling dx?
+
     Example:
+
     new_x = (1 + alpha)*x_balance
+
     new_y = y_balance - dy
     """
     rho = trade_fee
@@ -59,8 +79,11 @@ def get_input_price(dx, x_balance, y_balance, trade_fee=0):
 def get_output_price(dy, x_balance, y_balance, trade_fee=0):
     """
     How much x needs to be sold to buy dy?
+
     Example:
+
     new_x = x_balance + dx
+
     new_y = (1 - beta)*y_balance
     """
     rho = trade_fee
@@ -76,12 +99,14 @@ def get_output_price(dy, x_balance, y_balance, trade_fee=0):
     return (_dx, _dy)
 
 
-# Token trading
 def collateral_to_token(value, reserve_balance, supply_balance, trade_fee):
     """
     Trade collateral for token
+
     Example:
+
     new_reserve = reserve_balance + dx
+
     new_supply = supply_balance - dy
     """
     if reserve_balance == 0:
@@ -94,8 +119,11 @@ def collateral_to_token(value, reserve_balance, supply_balance, trade_fee):
 def token_to_collateral(tokens, reserve_balance, supply_balance, trade_fee):
     """
     Trade token for collateral
+
     Example:
+
     new_reserve = reserve_balance - dx
+
     new_supply = supply_balance + dy
     """
     if supply_balance == 0:

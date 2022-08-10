@@ -1,4 +1,5 @@
-"""Accounting
+"""# Accounting Module
+Assorted protocol accounting of FEI supply and Protocol-Controlled Value
 """
 
 from model.types import PCVDeposit, UserDeposit, Percentage
@@ -6,6 +7,9 @@ from model.system_parameters import Parameters
 
 
 def policy_fei_accounting(params: Parameters, substep, state_history, previous_state):
+    """## FEI Accounting Policy
+    Accounting of the total FEI supply composed of Protocol-owned and User-circulating FEI
+    """
     # PCV Deposit State Variables
     fei_idle_pcv_deposit: PCVDeposit = previous_state["fei_idle_pcv_deposit"]
     fei_liquidity_pool_pcv_deposit: PCVDeposit = previous_state["fei_liquidity_pool_pcv_deposit"]
@@ -45,6 +49,9 @@ def policy_fei_accounting(params: Parameters, substep, state_history, previous_s
 
 
 def policy_pcv_accounting(params, substep, state_history, previous_state):
+    """## PCV Accounting Policy
+    Accounting of total Protocol-Controlled Value composed of Stable and Volatile Assets
+    """
     # State Variables: Stable PCV
     stable_idle_pcv_deposit: PCVDeposit = previous_state["stable_idle_pcv_deposit"]
     stable_yield_bearing_pcv_deposit: PCVDeposit = previous_state[

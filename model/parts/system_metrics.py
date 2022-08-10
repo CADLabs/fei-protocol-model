@@ -1,8 +1,12 @@
-"""System Metrics
+"""# System Metrics Module
+Implementation of Policies for the calculation of various System Metrics and KPIs.
 """
 
 
 def policy_system_metrics(params, substep, state_history, previous_state):
+    """## System Metrics Policy
+    Calculation of standard System Metrics such as the Stable Backing Ratio, Collateralization Ratio, etc.
+    """
     # Parameters
     dt = params["dt"]
 

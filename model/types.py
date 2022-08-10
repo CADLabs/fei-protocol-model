@@ -1,4 +1,4 @@
-"""
+"""# Types
 Various Python types used in the model
 """
 
@@ -46,7 +46,7 @@ CAMDeltas = Dict[str, FEI]
 @enforce_types
 @dataclass(frozen=False)
 class Deposit(metaclass=ABCMeta):
-    """Generic Deposit
+    """## Generic Deposit
     A generic Deposit class used for PCV and User Deposits.
 
     Private variables with prefix _ should only be set directly in model configuration (e.g. initial state)
@@ -262,7 +262,7 @@ class Deposit(metaclass=ABCMeta):
 @enforce_types
 @dataclass(frozen=False)
 class PCVDeposit(Deposit):
-    """PCV Deposit
+    """## PCV Deposit
 
     Inherits from Deposit class.
     """
@@ -274,7 +274,7 @@ class PCVDeposit(Deposit):
 @enforce_types
 @dataclass(frozen=False)
 class UserDeposit(Deposit):
-    """User Deposit
+    """## User Deposit
 
     Inherits from Deposit class.
     """

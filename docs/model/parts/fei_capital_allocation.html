@@ -1,0 +1,689 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>model.parts.fei_capital_allocation API documentation</title>
+<meta name="description" content="User-circulating FEI Capital Allocation Model (CAM) Module
+The Capital Allocation Model describes the aggregate movements of user-circulating FEI …" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>model.parts.fei_capital_allocation</code></h1>
+</header>
+<section id="section-intro">
+<h1 id="user-circulating-fei-capital-allocation-model-cam-module">User-circulating FEI Capital Allocation Model (CAM) Module</h1>
+<p>The Capital Allocation Model describes the aggregate movements of user-circulating FEI within the Fei Protocol ecosystem,
+between any Deposit or location where users could choose to allocate their FEI.</p>
+<p>These locations include:
+- FEI Savings Deposit
+- Competing yield opportunities (currently a generic money market in the model)
+- Liquidity pools (including liquidity provision and FEI released into the user-circulating FEI supply from volatile asset liquidity pool imbalances)
+- Simply holding FEI</p>
+<p>These capital movements are computed based on a yield and risk weighted target allocation for each location.
+At each timestep of the simulation, the actual allocation is rebalanced towards the target allocation, with some degree of uncertainty and delay.</p>
+<p>Additionally, in a next step to further formulate FEI demand, the model will describe the minting and redemption of FEI to feed into the capital allocation.</p>
+<p>PCV and protocol-owned FEI movements are independent of the Capital Allocation Model and managed directly via governance-implemented protocol policies.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;# User-circulating FEI Capital Allocation Model (CAM) Module
+The Capital Allocation Model describes the aggregate movements of user-circulating FEI within the Fei Protocol ecosystem,
+between any Deposit or location where users could choose to allocate their FEI.
+
+These locations include:
+- FEI Savings Deposit
+- Competing yield opportunities (currently a generic money market in the model)
+- Liquidity pools (including liquidity provision and FEI released into the user-circulating FEI supply from volatile asset liquidity pool imbalances)
+- Simply holding FEI
+
+These capital movements are computed based on a yield and risk weighted target allocation for each location.
+At each timestep of the simulation, the actual allocation is rebalanced towards the target allocation, with some degree of uncertainty and delay.
+
+Additionally, in a next step to further formulate FEI demand, the model will describe the minting and redemption of FEI to feed into the capital allocation.
+
+PCV and protocol-owned FEI movements are independent of the Capital Allocation Model and managed directly via governance-implemented protocol policies.
+&#34;&#34;&#34;
+
+from typing import Dict, List
+from model.system_parameters import Parameters
+import model.parts.liquidity_pools as liquidity_pools
+from scipy.stats import dirichlet
+import numpy as np
+import pprint
+import networkx as nx
+import logging
+import copy
+
+pp = pprint.PrettyPrinter(indent=4)
+
+
+def policy_fei_capital_allocation_exogenous_weight_update(
+    params: Parameters, substep, state_history, previous_state
+):
+    &#34;&#34;&#34;## User-circulating FEI Capital Allocation Exogenous Weight Computation Policy
+    Exogenous, stochastic Dirichlet distribution driven Capital Allocation policy.
+    &#34;&#34;&#34;
+    # Parameters
+    dt = params[&#34;dt&#34;]
+    alpha = params[&#34;capital_allocation_exogenous_concentration&#34;]
+    rebalance_duration = params[&#34;capital_allocation_rebalance_duration&#34;]
+    fei_deposit_variables = params[&#34;capital_allocation_fei_deposit_variables&#34;]
+
+    # State Variables
+    timestep = previous_state[&#34;timestep&#34;]
+
+    # Calculate current weights
+    fei_deposits = [previous_state[key] for key in fei_deposit_variables]
+    current_deposit_balances = [deposit.balance for deposit in fei_deposits]
+    total_fei = sum(current_deposit_balances)
+    current_weights = [balance / total_fei for balance in current_deposit_balances]
+
+    # Calculate target weights: stochastic, exogenous weights
+    # https://en.wikipedia.org/wiki/Dirichlet_distribution
+    # TODO Take `random_state`` from simulation seed
+    perturbation = dirichlet.rvs(alpha, size=1, random_state=timestep)[0]
+    rebalance_rate = np.sqrt(dt / rebalance_duration)
+    target_weights = rebalance_rate * perturbation + np.array(current_weights)
+    normalised_target_weights = target_weights / target_weights.sum()
+
+    return {
+        &#34;capital_allocation_target_weights&#34;: normalised_target_weights,
+    }
+
+
+def policy_fei_capital_allocation_endogenous_weight_update(
+    params: Parameters, substep, state_history, previous_state
+):
+    &#34;&#34;&#34;## User-circulating FEI Capital Allocation Endogenous Weight Computation Policy
+    Endogenous yield and risk weighted target Capital Allocation policy.
+    &#34;&#34;&#34;
+    # Parameters
+    fei_deposit_variables = params[&#34;capital_allocation_fei_deposit_variables&#34;]
+    moving_average_window = params[&#34;capital_allocation_yield_rate_moving_average_window&#34;]
+
+    # State Variables
+    timestep = previous_state[&#34;timestep&#34;]
+    volatile_asset_risk_metric = previous_state[&#34;volatile_asset_risk_metric&#34;]
+
+    # Calculate moving average of yield vector
+    yield_history_map: Dict[str, List] = {
+        key: [state[-1][key].yield_rate for state in state_history[-moving_average_window:timestep]]
+        for key in fei_deposit_variables
+    }
+    yield_history: List[List] = yield_history_map.values()
+    yield_map = {
+        key: sum(yield_history) / moving_average_window or previous_state[key].yield_rate
+        for key, yield_history in yield_history_map.items()
+    }
+    yield_vector = np.array(list(yield_map.values()))
+
+    # Calculate yield volatility risk
+    yield_std = np.array([np.std(x) for x in yield_history])
+    yield_mean = np.array([np.mean(x) for x in yield_history])
+    yield_risk = yield_std / (yield_mean + 1e-18)
+
+    # Calculate volatile asset risk
+    volatile_asset_risk = {key: 0 for key in fei_deposit_variables}
+    volatile_asset_risk_override = {
+        &#34;fei_liquidity_pool_user_deposit&#34;: volatile_asset_risk_metric,
+        &#34;fei_money_market_user_deposit&#34;: volatile_asset_risk_metric,
+    }
+    volatile_asset_risk_intersection = (
+        volatile_asset_risk.keys() &amp; volatile_asset_risk_override.keys()
+    )
+    volatile_asset_risk.update(
+        {
+            update_key: volatile_asset_risk_override[update_key]
+            for update_key in volatile_asset_risk_intersection
+        }
+    )
+    volatile_asset_risk = np.array(list(volatile_asset_risk.values()))
+
+    # Calculate risk vector
+    risk_vector = 1 + volatile_asset_risk + yield_risk
+
+    # Calculate target weights: weight = yield / (1 + risk)
+    target_weights = yield_vector / risk_vector
+    normalised_target_weights = target_weights / target_weights.sum()
+
+    return {
+        &#34;capital_allocation_target_weights&#34;: normalised_target_weights,
+    }
+
+
+def array_sum_threshold_check(array, total, threshold):
+    &#34;&#34;&#34;## Array Sum Threshold Check
+    A function to check that the sum of a Numpy `array` is less than some `total` value within some `threshold`
+    &#34;&#34;&#34;
+    return np.abs(sum(array) - total) &lt; threshold
+
+
+def policy_fei_capital_allocation_rebalancing(
+    params: Parameters, substep, state_history, previous_state
+):
+    &#34;&#34;&#34;## User-circulating FEI Capital Allocation Rebalancing Policy
+    A Policy that takes the target Capital Allocation weights calculated in `policy_fei_capital_allocation_endogenous_weight_update(...)`,
+    calculates the current Capital Allocation weights, and performs the necessary rebalancing operations to try meet the target.
+    &#34;&#34;&#34;
+    # Parameters
+    dt = params[&#34;dt&#34;]
+    rebalance_duration = params[&#34;capital_allocation_rebalance_duration&#34;]
+    fei_deposit_variables = params[&#34;capital_allocation_fei_deposit_variables&#34;]
+
+    # State Variables
+    target_weights: np.ndarray = previous_state[&#34;capital_allocation_target_weights&#34;]
+    fei_price = previous_state[&#34;fei_price&#34;]
+
+    # Calculate current weights
+    fei_deposits = [copy.deepcopy(previous_state[key]) for key in fei_deposit_variables]
+    current_deposit_balances = np.array([deposit.balance for deposit in fei_deposits])
+    total_fei = sum(current_deposit_balances)
+    current_weights = np.array([balance / total_fei for balance in current_deposit_balances])
+
+    assert array_sum_threshold_check(current_deposit_balances, total_fei, 1e-3), &#34;Summation error&#34;
+    assert array_sum_threshold_check(current_weights, 1, 1e-3), &#34;Percentage calculation error&#34;
+    assert array_sum_threshold_check(current_weights, 1, 1e-3), &#34;Percentage calculation error&#34;
+
+    # Calculate deltas for rebalancing
+    rebalance_rate = np.sqrt(dt / rebalance_duration)
+
+    (
+        rebalance_matrix,
+        total_fei_deposit_balance_change,
+    ) = compute_capital_allocation_rebalance_matrix(
+        target_weights, current_weights, total_fei, rebalance_rate
+    )
+
+    for (row, column), value in filter(lambda x: x != 0, np.ndenumerate(rebalance_matrix)):
+        # Perform balance transfer
+        from_index = column if value &gt; 0 else row
+        to_index = row if value &gt; 0 else column
+
+        transfer_amount = min(abs(value), fei_deposits[from_index].balance)
+
+        fei_deposits[from_index].transfer(
+            to=fei_deposits[to_index],
+            amount=transfer_amount,
+            from_asset_price=fei_price,
+            to_asset_price=fei_price,
+        )
+
+    new_capital_allocation = [deposit.balance for deposit in fei_deposits]
+
+    # Check constraints
+    rebalance_remainder = (
+        current_deposit_balances + total_fei_deposit_balance_change
+    ) - new_capital_allocation
+    rebalance_remainder_tolerance = 0.001  # % of deposit balance
+    rebalance_remainder[np.isclose(rebalance_remainder, 0)] = 0
+    rebalance_remainder_pct = rebalance_remainder / (current_deposit_balances + 1e-9)
+    if np.any(rebalance_remainder_pct &gt; rebalance_remainder_tolerance):
+        log_rebalance_remainder = {
+            deposit.key: rebalance_remainder[index] for index, deposit in enumerate(fei_deposits)
+        }
+        logging.debug(
+            f&#34;Capital allocation rebalancing: movement of {log_rebalance_remainder} FEI unallocated&#34;
+        )
+
+    assert array_sum_threshold_check(new_capital_allocation, total_fei, 1e-3), &#34;Summation error&#34;
+
+    return {
+        &#34;capital_allocation_rebalance_matrix&#34;: rebalance_matrix,
+        &#34;capital_allocation_rebalance_remainder&#34;: rebalance_remainder,
+        # FEI User Deposit updates
+        **{key: fei_deposits[index] for index, key in enumerate(fei_deposit_variables)},
+        **(
+            liquidity_pools.update_fei_liquidity(
+                previous_state,
+                dict(zip(fei_deposit_variables, fei_deposits))[&#34;fei_liquidity_pool_user_deposit&#34;],
+            )
+            if &#34;fei_liquidity_pool_user_deposit&#34; in fei_deposit_variables
+            else {}
+        ),
+    }
+
+
+def compute_capital_allocation_rebalance_matrix(
+    target_fei_allocation,
+    current_fei_allocation,
+    total_fei,
+    rebalance_rate=1,
+):
+    &#34;&#34;&#34;## Compute Capital Allocation Rebalance Matrix
+    A function that computes the User Deposit rebalancing operations necessary to
+    meet the target Capital Allocation.
+    &#34;&#34;&#34;
+    # Calculate delta matrix - amounts to rebalance and to disaggregate
+    allocation_pct_change = target_fei_allocation - current_fei_allocation
+    total_fei_deposit_balance_change = rebalance_rate * allocation_pct_change * total_fei
+
+    number_of_deposits = len(total_fei_deposit_balance_change)
+    deposit_incidence_matrix = generate_constrained_incidence_matrix(number_of_deposits)
+
+    total_balance_changes = np.append(total_fei_deposit_balance_change, np.array(0))
+    # Solve Ax = b st 1Tx == 0 (conservation constraint)
+    deltas = np.linalg.pinv(deposit_incidence_matrix) @ total_balance_changes
+
+    assert np.allclose(
+        np.dot(deposit_incidence_matrix, deltas),
+        total_balance_changes,
+        atol=1e-3,
+    ), &#34;Linear algebra solution is above imprecision tolerance&#34;
+
+    rebalance_matrix = populate_delta_triangular_matrix(deltas, number_of_deposits)
+
+    return rebalance_matrix, total_fei_deposit_balance_change
+
+
+def populate_delta_triangular_matrix(d, w_size):
+    &#34;&#34;&#34;## Populate Delta Triangular Matrix
+    A function that populates a lower triangular matrix, sometimes referred to as a `triu` function.
+    &#34;&#34;&#34;
+    D = np.zeros((w_size, w_size))
+
+    k = 0
+    for i in range(len(D)):
+        for j in range(len(D)):
+            if i &lt; j:
+                D[i][j] = d[k]
+                k += 1
+
+    return D
+
+
+def generate_constrained_incidence_matrix(n_deposits):
+    &#34;&#34;&#34;## Generate Constrained Incidence Matrix
+    A function that calculates the incidence matrix for the graph of User Deposits,
+    in order to be able to calculate the transactions needed to rebalance towards the target Capital Allocation.
+    &#34;&#34;&#34;
+    G = nx.complete_graph(n_deposits)
+    A = (nx.incidence_matrix(G, oriented=True).toarray() * -1).astype(int)
+
+    # NOTE Fixes NetworkX rendition of 2-deposit adjacency matrix generation
+    if A.shape[1] == 1:
+        A = np.hstack([A, np.zeros((2, 1))])
+
+    constrained_incidence_matrix = np.vstack([A, np.ones((1, A.shape[1]))])
+    return constrained_incidence_matrix</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="model.parts.fei_capital_allocation.array_sum_threshold_check"><code class="name flex">
+<span>def <span class="ident">array_sum_threshold_check</span></span>(<span>array, total, threshold)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="array-sum-threshold-check">Array Sum Threshold Check</h2>
+<p>A function to check that the sum of a Numpy <code>array</code> is less than some <code>total</code> value within some <code>threshold</code></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def array_sum_threshold_check(array, total, threshold):
+    &#34;&#34;&#34;## Array Sum Threshold Check
+    A function to check that the sum of a Numpy `array` is less than some `total` value within some `threshold`
+    &#34;&#34;&#34;
+    return np.abs(sum(array) - total) &lt; threshold</code></pre>
+</details>
+</dd>
+<dt id="model.parts.fei_capital_allocation.compute_capital_allocation_rebalance_matrix"><code class="name flex">
+<span>def <span class="ident">compute_capital_allocation_rebalance_matrix</span></span>(<span>target_fei_allocation, current_fei_allocation, total_fei, rebalance_rate=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="compute-capital-allocation-rebalance-matrix">Compute Capital Allocation Rebalance Matrix</h2>
+<p>A function that computes the User Deposit rebalancing operations necessary to
+meet the target Capital Allocation.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def compute_capital_allocation_rebalance_matrix(
+    target_fei_allocation,
+    current_fei_allocation,
+    total_fei,
+    rebalance_rate=1,
+):
+    &#34;&#34;&#34;## Compute Capital Allocation Rebalance Matrix
+    A function that computes the User Deposit rebalancing operations necessary to
+    meet the target Capital Allocation.
+    &#34;&#34;&#34;
+    # Calculate delta matrix - amounts to rebalance and to disaggregate
+    allocation_pct_change = target_fei_allocation - current_fei_allocation
+    total_fei_deposit_balance_change = rebalance_rate * allocation_pct_change * total_fei
+
+    number_of_deposits = len(total_fei_deposit_balance_change)
+    deposit_incidence_matrix = generate_constrained_incidence_matrix(number_of_deposits)
+
+    total_balance_changes = np.append(total_fei_deposit_balance_change, np.array(0))
+    # Solve Ax = b st 1Tx == 0 (conservation constraint)
+    deltas = np.linalg.pinv(deposit_incidence_matrix) @ total_balance_changes
+
+    assert np.allclose(
+        np.dot(deposit_incidence_matrix, deltas),
+        total_balance_changes,
+        atol=1e-3,
+    ), &#34;Linear algebra solution is above imprecision tolerance&#34;
+
+    rebalance_matrix = populate_delta_triangular_matrix(deltas, number_of_deposits)
+
+    return rebalance_matrix, total_fei_deposit_balance_change</code></pre>
+</details>
+</dd>
+<dt id="model.parts.fei_capital_allocation.generate_constrained_incidence_matrix"><code class="name flex">
+<span>def <span class="ident">generate_constrained_incidence_matrix</span></span>(<span>n_deposits)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="generate-constrained-incidence-matrix">Generate Constrained Incidence Matrix</h2>
+<p>A function that calculates the incidence matrix for the graph of User Deposits,
+in order to be able to calculate the transactions needed to rebalance towards the target Capital Allocation.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def generate_constrained_incidence_matrix(n_deposits):
+    &#34;&#34;&#34;## Generate Constrained Incidence Matrix
+    A function that calculates the incidence matrix for the graph of User Deposits,
+    in order to be able to calculate the transactions needed to rebalance towards the target Capital Allocation.
+    &#34;&#34;&#34;
+    G = nx.complete_graph(n_deposits)
+    A = (nx.incidence_matrix(G, oriented=True).toarray() * -1).astype(int)
+
+    # NOTE Fixes NetworkX rendition of 2-deposit adjacency matrix generation
+    if A.shape[1] == 1:
+        A = np.hstack([A, np.zeros((2, 1))])
+
+    constrained_incidence_matrix = np.vstack([A, np.ones((1, A.shape[1]))])
+    return constrained_incidence_matrix</code></pre>
+</details>
+</dd>
+<dt id="model.parts.fei_capital_allocation.policy_fei_capital_allocation_endogenous_weight_update"><code class="name flex">
+<span>def <span class="ident">policy_fei_capital_allocation_endogenous_weight_update</span></span>(<span>params: <a title="model.system_parameters.Parameters" href="../system_parameters.html#model.system_parameters.Parameters">Parameters</a>, substep, state_history, previous_state)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="user-circulating-fei-capital-allocation-endogenous-weight-computation-policy">User-circulating FEI Capital Allocation Endogenous Weight Computation Policy</h2>
+<p>Endogenous yield and risk weighted target Capital Allocation policy.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def policy_fei_capital_allocation_endogenous_weight_update(
+    params: Parameters, substep, state_history, previous_state
+):
+    &#34;&#34;&#34;## User-circulating FEI Capital Allocation Endogenous Weight Computation Policy
+    Endogenous yield and risk weighted target Capital Allocation policy.
+    &#34;&#34;&#34;
+    # Parameters
+    fei_deposit_variables = params[&#34;capital_allocation_fei_deposit_variables&#34;]
+    moving_average_window = params[&#34;capital_allocation_yield_rate_moving_average_window&#34;]
+
+    # State Variables
+    timestep = previous_state[&#34;timestep&#34;]
+    volatile_asset_risk_metric = previous_state[&#34;volatile_asset_risk_metric&#34;]
+
+    # Calculate moving average of yield vector
+    yield_history_map: Dict[str, List] = {
+        key: [state[-1][key].yield_rate for state in state_history[-moving_average_window:timestep]]
+        for key in fei_deposit_variables
+    }
+    yield_history: List[List] = yield_history_map.values()
+    yield_map = {
+        key: sum(yield_history) / moving_average_window or previous_state[key].yield_rate
+        for key, yield_history in yield_history_map.items()
+    }
+    yield_vector = np.array(list(yield_map.values()))
+
+    # Calculate yield volatility risk
+    yield_std = np.array([np.std(x) for x in yield_history])
+    yield_mean = np.array([np.mean(x) for x in yield_history])
+    yield_risk = yield_std / (yield_mean + 1e-18)
+
+    # Calculate volatile asset risk
+    volatile_asset_risk = {key: 0 for key in fei_deposit_variables}
+    volatile_asset_risk_override = {
+        &#34;fei_liquidity_pool_user_deposit&#34;: volatile_asset_risk_metric,
+        &#34;fei_money_market_user_deposit&#34;: volatile_asset_risk_metric,
+    }
+    volatile_asset_risk_intersection = (
+        volatile_asset_risk.keys() &amp; volatile_asset_risk_override.keys()
+    )
+    volatile_asset_risk.update(
+        {
+            update_key: volatile_asset_risk_override[update_key]
+            for update_key in volatile_asset_risk_intersection
+        }
+    )
+    volatile_asset_risk = np.array(list(volatile_asset_risk.values()))
+
+    # Calculate risk vector
+    risk_vector = 1 + volatile_asset_risk + yield_risk
+
+    # Calculate target weights: weight = yield / (1 + risk)
+    target_weights = yield_vector / risk_vector
+    normalised_target_weights = target_weights / target_weights.sum()
+
+    return {
+        &#34;capital_allocation_target_weights&#34;: normalised_target_weights,
+    }</code></pre>
+</details>
+</dd>
+<dt id="model.parts.fei_capital_allocation.policy_fei_capital_allocation_exogenous_weight_update"><code class="name flex">
+<span>def <span class="ident">policy_fei_capital_allocation_exogenous_weight_update</span></span>(<span>params: <a title="model.system_parameters.Parameters" href="../system_parameters.html#model.system_parameters.Parameters">Parameters</a>, substep, state_history, previous_state)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="user-circulating-fei-capital-allocation-exogenous-weight-computation-policy">User-circulating FEI Capital Allocation Exogenous Weight Computation Policy</h2>
+<p>Exogenous, stochastic Dirichlet distribution driven Capital Allocation policy.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def policy_fei_capital_allocation_exogenous_weight_update(
+    params: Parameters, substep, state_history, previous_state
+):
+    &#34;&#34;&#34;## User-circulating FEI Capital Allocation Exogenous Weight Computation Policy
+    Exogenous, stochastic Dirichlet distribution driven Capital Allocation policy.
+    &#34;&#34;&#34;
+    # Parameters
+    dt = params[&#34;dt&#34;]
+    alpha = params[&#34;capital_allocation_exogenous_concentration&#34;]
+    rebalance_duration = params[&#34;capital_allocation_rebalance_duration&#34;]
+    fei_deposit_variables = params[&#34;capital_allocation_fei_deposit_variables&#34;]
+
+    # State Variables
+    timestep = previous_state[&#34;timestep&#34;]
+
+    # Calculate current weights
+    fei_deposits = [previous_state[key] for key in fei_deposit_variables]
+    current_deposit_balances = [deposit.balance for deposit in fei_deposits]
+    total_fei = sum(current_deposit_balances)
+    current_weights = [balance / total_fei for balance in current_deposit_balances]
+
+    # Calculate target weights: stochastic, exogenous weights
+    # https://en.wikipedia.org/wiki/Dirichlet_distribution
+    # TODO Take `random_state`` from simulation seed
+    perturbation = dirichlet.rvs(alpha, size=1, random_state=timestep)[0]
+    rebalance_rate = np.sqrt(dt / rebalance_duration)
+    target_weights = rebalance_rate * perturbation + np.array(current_weights)
+    normalised_target_weights = target_weights / target_weights.sum()
+
+    return {
+        &#34;capital_allocation_target_weights&#34;: normalised_target_weights,
+    }</code></pre>
+</details>
+</dd>
+<dt id="model.parts.fei_capital_allocation.policy_fei_capital_allocation_rebalancing"><code class="name flex">
+<span>def <span class="ident">policy_fei_capital_allocation_rebalancing</span></span>(<span>params: <a title="model.system_parameters.Parameters" href="../system_parameters.html#model.system_parameters.Parameters">Parameters</a>, substep, state_history, previous_state)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="user-circulating-fei-capital-allocation-rebalancing-policy">User-circulating FEI Capital Allocation Rebalancing Policy</h2>
+<p>A Policy that takes the target Capital Allocation weights calculated in <code><a title="model.parts.fei_capital_allocation.policy_fei_capital_allocation_endogenous_weight_update" href="#model.parts.fei_capital_allocation.policy_fei_capital_allocation_endogenous_weight_update">policy_fei_capital_allocation_endogenous_weight_update()</a>(&hellip;)</code>,
+calculates the current Capital Allocation weights, and performs the necessary rebalancing operations to try meet the target.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def policy_fei_capital_allocation_rebalancing(
+    params: Parameters, substep, state_history, previous_state
+):
+    &#34;&#34;&#34;## User-circulating FEI Capital Allocation Rebalancing Policy
+    A Policy that takes the target Capital Allocation weights calculated in `policy_fei_capital_allocation_endogenous_weight_update(...)`,
+    calculates the current Capital Allocation weights, and performs the necessary rebalancing operations to try meet the target.
+    &#34;&#34;&#34;
+    # Parameters
+    dt = params[&#34;dt&#34;]
+    rebalance_duration = params[&#34;capital_allocation_rebalance_duration&#34;]
+    fei_deposit_variables = params[&#34;capital_allocation_fei_deposit_variables&#34;]
+
+    # State Variables
+    target_weights: np.ndarray = previous_state[&#34;capital_allocation_target_weights&#34;]
+    fei_price = previous_state[&#34;fei_price&#34;]
+
+    # Calculate current weights
+    fei_deposits = [copy.deepcopy(previous_state[key]) for key in fei_deposit_variables]
+    current_deposit_balances = np.array([deposit.balance for deposit in fei_deposits])
+    total_fei = sum(current_deposit_balances)
+    current_weights = np.array([balance / total_fei for balance in current_deposit_balances])
+
+    assert array_sum_threshold_check(current_deposit_balances, total_fei, 1e-3), &#34;Summation error&#34;
+    assert array_sum_threshold_check(current_weights, 1, 1e-3), &#34;Percentage calculation error&#34;
+    assert array_sum_threshold_check(current_weights, 1, 1e-3), &#34;Percentage calculation error&#34;
+
+    # Calculate deltas for rebalancing
+    rebalance_rate = np.sqrt(dt / rebalance_duration)
+
+    (
+        rebalance_matrix,
+        total_fei_deposit_balance_change,
+    ) = compute_capital_allocation_rebalance_matrix(
+        target_weights, current_weights, total_fei, rebalance_rate
+    )
+
+    for (row, column), value in filter(lambda x: x != 0, np.ndenumerate(rebalance_matrix)):
+        # Perform balance transfer
+        from_index = column if value &gt; 0 else row
+        to_index = row if value &gt; 0 else column
+
+        transfer_amount = min(abs(value), fei_deposits[from_index].balance)
+
+        fei_deposits[from_index].transfer(
+            to=fei_deposits[to_index],
+            amount=transfer_amount,
+            from_asset_price=fei_price,
+            to_asset_price=fei_price,
+        )
+
+    new_capital_allocation = [deposit.balance for deposit in fei_deposits]
+
+    # Check constraints
+    rebalance_remainder = (
+        current_deposit_balances + total_fei_deposit_balance_change
+    ) - new_capital_allocation
+    rebalance_remainder_tolerance = 0.001  # % of deposit balance
+    rebalance_remainder[np.isclose(rebalance_remainder, 0)] = 0
+    rebalance_remainder_pct = rebalance_remainder / (current_deposit_balances + 1e-9)
+    if np.any(rebalance_remainder_pct &gt; rebalance_remainder_tolerance):
+        log_rebalance_remainder = {
+            deposit.key: rebalance_remainder[index] for index, deposit in enumerate(fei_deposits)
+        }
+        logging.debug(
+            f&#34;Capital allocation rebalancing: movement of {log_rebalance_remainder} FEI unallocated&#34;
+        )
+
+    assert array_sum_threshold_check(new_capital_allocation, total_fei, 1e-3), &#34;Summation error&#34;
+
+    return {
+        &#34;capital_allocation_rebalance_matrix&#34;: rebalance_matrix,
+        &#34;capital_allocation_rebalance_remainder&#34;: rebalance_remainder,
+        # FEI User Deposit updates
+        **{key: fei_deposits[index] for index, key in enumerate(fei_deposit_variables)},
+        **(
+            liquidity_pools.update_fei_liquidity(
+                previous_state,
+                dict(zip(fei_deposit_variables, fei_deposits))[&#34;fei_liquidity_pool_user_deposit&#34;],
+            )
+            if &#34;fei_liquidity_pool_user_deposit&#34; in fei_deposit_variables
+            else {}
+        ),
+    }</code></pre>
+</details>
+</dd>
+<dt id="model.parts.fei_capital_allocation.populate_delta_triangular_matrix"><code class="name flex">
+<span>def <span class="ident">populate_delta_triangular_matrix</span></span>(<span>d, w_size)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="populate-delta-triangular-matrix">Populate Delta Triangular Matrix</h2>
+<p>A function that populates a lower triangular matrix, sometimes referred to as a <code>triu</code> function.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def populate_delta_triangular_matrix(d, w_size):
+    &#34;&#34;&#34;## Populate Delta Triangular Matrix
+    A function that populates a lower triangular matrix, sometimes referred to as a `triu` function.
+    &#34;&#34;&#34;
+    D = np.zeros((w_size, w_size))
+
+    k = 0
+    for i in range(len(D)):
+        for j in range(len(D)):
+            if i &lt; j:
+                D[i][j] = d[k]
+                k += 1
+
+    return D</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul>
+<li><a href="#user-circulating-fei-capital-allocation-model-cam-module">User-circulating FEI Capital Allocation Model (CAM) Module</a></li>
+</ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="model.parts" href="index.html">model.parts</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="model.parts.fei_capital_allocation.array_sum_threshold_check" href="#model.parts.fei_capital_allocation.array_sum_threshold_check">array_sum_threshold_check</a></code></li>
+<li><code><a title="model.parts.fei_capital_allocation.compute_capital_allocation_rebalance_matrix" href="#model.parts.fei_capital_allocation.compute_capital_allocation_rebalance_matrix">compute_capital_allocation_rebalance_matrix</a></code></li>
+<li><code><a title="model.parts.fei_capital_allocation.generate_constrained_incidence_matrix" href="#model.parts.fei_capital_allocation.generate_constrained_incidence_matrix">generate_constrained_incidence_matrix</a></code></li>
+<li><code><a title="model.parts.fei_capital_allocation.policy_fei_capital_allocation_endogenous_weight_update" href="#model.parts.fei_capital_allocation.policy_fei_capital_allocation_endogenous_weight_update">policy_fei_capital_allocation_endogenous_weight_update</a></code></li>
+<li><code><a title="model.parts.fei_capital_allocation.policy_fei_capital_allocation_exogenous_weight_update" href="#model.parts.fei_capital_allocation.policy_fei_capital_allocation_exogenous_weight_update">policy_fei_capital_allocation_exogenous_weight_update</a></code></li>
+<li><code><a title="model.parts.fei_capital_allocation.policy_fei_capital_allocation_rebalancing" href="#model.parts.fei_capital_allocation.policy_fei_capital_allocation_rebalancing">policy_fei_capital_allocation_rebalancing</a></code></li>
+<li><code><a title="model.parts.fei_capital_allocation.populate_delta_triangular_matrix" href="#model.parts.fei_capital_allocation.populate_delta_triangular_matrix">populate_delta_triangular_matrix</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>

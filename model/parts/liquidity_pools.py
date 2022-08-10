@@ -1,4 +1,5 @@
-"""Liquidity Pools
+"""# Liquidity Pools Module
+Implementation of a generic Liquidity Pool to model the dynamic of market condition dependent imbalances causing sourcing and sinking of FEI in the system.
 """
 
 import numpy as np
@@ -14,13 +15,15 @@ from model.types import (
 )
 
 import math
-from decimal import Decimal
 import model.parts.uniswap as uniswap
 
 
 def policy_constant_function_market_maker(
     params: Parameters, substep, state_history, previous_state
 ):
+    """## Constant Function Market Maker (CFMM) Policy
+    An implementation of a Uniswap style Constant Function Market Maker.
+    """
     # Parameters
     dt = params["dt"]
     liquidity_pool_trading_fee = params["liquidity_pool_trading_fee"]
@@ -39,7 +42,6 @@ def policy_constant_function_market_maker(
     volatile_asset_price = previous_state["volatile_asset_price"]
 
     # Liquidity Pool imbalance
-    # TODO Consider refactoring this policy to move re-usable liquidity pool logic into its own function
     target_fei_balance = math.sqrt(k * volatile_asset_price / fei_price)
     target_volatile_asset_balance = math.sqrt(k * fei_price / volatile_asset_price)
 
@@ -130,6 +132,10 @@ def update_fei_liquidity(
     previous_state,
     updated_fei_liquidity_pool_user_deposit: UserDeposit,
 ):
+    """## Update FEI Liquidity
+    A State Update Function that updates the relevant liquidity pool State Variables including the Volatile Asset Liquidity Pool User Deposit balance
+    given a change in the FEI Liquidity Pool User Deposit balance for the purpose of adding or removing liquidity.
+    """
     # State Variables
     liquidity_pool_invariant = previous_state["liquidity_pool_invariant"]
     liquidity_pool_liquidity_tokens = previous_state["liquidity_pool_liquidity_tokens"]
@@ -202,6 +208,10 @@ def update_fei_liquidity(
 
 
 def get_total_fei_balance(state: StateVariables) -> FEI:
+    """## Get Total FEI Liquidity Pool Balance
+    A helper function to calculate the total liquidity pool FEI balance
+    as a combination of User and PCV Deposit balances.
+    """
     return (
         state["fei_liquidity_pool_user_deposit"].balance
         + state["fei_liquidity_pool_pcv_deposit"].balance
@@ -209,6 +219,10 @@ def get_total_fei_balance(state: StateVariables) -> FEI:
 
 
 def get_total_volatile_asset_balance(state: StateVariables) -> VolatileAssetUnits:
+    """## Get Total Volatile Asset Liquidity Pool Balance
+    A helper function to calculate the total liquidity pool Volatile Asset balance
+    as a combination of User and PCV Deposit balances.
+    """
     return (
         state["volatile_liquidity_pool_user_deposit"].balance
         + state["volatile_liquidity_pool_pcv_deposit"].balance

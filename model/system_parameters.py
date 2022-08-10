@@ -1,5 +1,6 @@
-"""
+"""# System Parameters
 Definition of System Parameters, their types, and default values.
+
 By using a dataclass to represent the System Parameters:
 * We can use types for Python type hints
 * Set default values
@@ -33,6 +34,10 @@ from model.constants import (
 )
 
 
+# Used to configure stochastic processes,
+# for simulation monte carlo runs,
+# see experiments/simulation_configuration.py
+# or specific experiment notebook
 monte_carlo_runs = 100
 
 volatile_asset_price_samples = create_stochastic_process_realizations(
@@ -66,7 +71,13 @@ money_market_utilization_rate_samples = create_stochastic_process_realizations(
 
 
 # Configure distribution of PCV Deposits
-# Each distribution must contain the same set of deposits
+# Each distribution must contain the same set of PCV Deposits
+"""
+Illustrative parameterisation of initial state sourced from
+https://dune.com/llama/Fei-Protocol
+https://app.fei.money/
+as of 22 June 2022.
+"""
 pcv_deposit_distribution_sweep = [
     [
         # FEI PCV
@@ -131,13 +142,18 @@ pcv_deposit_distribution_sweep = [
 pcv_deposit_keys = list(pcv_deposit_distribution_sweep[0].keys())
 
 
-# From Dune dashboard
+# From Dune dashboard as of 22 June 2022:
 total_user_circulating_fei = 225_000_000
-# TODO Confirm how much of 30e6 MM supply is user-supplied
 fei_money_market_user_deposit_balance = 30_000_000
 
 # Configure distribution of User Deposits
-# Each distribution must contain the same set of deposits
+# Each distribution must contain the same set of User Deposits
+"""
+Illustrative parameterisation of initial state sourced from
+https://dune.com/llama/Fei-Protocol
+https://app.fei.money/
+as of 22 June 2022.
+"""
 user_deposit_distribution_sweep = [
     [
         # Assume all user-circulating FEI, apart from borrowed FEI, not supplied in money market is idle
@@ -187,10 +203,11 @@ user_deposit_keys = list(user_deposit_distribution_sweep[0].keys())
 
 @dataclass
 class Parameters:
-    """System Parameters
+    """## System Parameters
     Each System Parameter is defined as:
     system parameter key: system parameter type = default system parameter value
     Because lists are mutable, we need to wrap each parameter list in the `default(...)` method.
+
     For default value assumptions, see the ASSUMPTIONS.md document.
     """
 
@@ -201,10 +218,16 @@ class Parameters:
     Used to scale calculations that depend on the number of days that have passed.
     For example, for dt = 100, each timestep equals 100 days.
     By default set to 1 day.
+
+    NOTE Model has not been tested for `DELTA_TIME` != 1, further validation of calculations would be required.
     """
 
     date_start: List[datetime] = default([datetime.now()])
-    """Start date for simulation as Python datetime"""
+    """
+    Start date for simulation as Python datetime
+
+    Used by `model.utils` `update_timestamp(...)` State Update Function.
+    """
 
     # Price Processes
     fei_price_process: List[Callable[[Run, Timestep], USD]] = default([lambda _run, _timestep: 1.0])
@@ -212,7 +235,10 @@ class Parameters:
     A process that returns the FEI spot price at each timestep.
 
     By default set a static price of 1 USD.
+
+    Used in `model.parts.price_processes`.
     """
+
     stable_asset_price_process: List[Callable[[Run, Timestep], USD]] = default(
         [lambda run, timestep: stable_asset_price_samples[run - 1][timestep]]
     )
@@ -220,7 +246,10 @@ class Parameters:
     A process that returns the stable asset spot price at each timestep.
 
     By default set to a Gaussian Noise stochastic process.
+
+    Used in `model.parts.price_processes`.
     """
+
     volatile_asset_price_process: List[Callable[[Run, Timestep], USD]] = default(
         [lambda run, timestep: volatile_asset_price_samples[run - 1][timestep]]
     )
@@ -228,39 +257,58 @@ class Parameters:
     A process that returns the volatile asset spot price at each timestep.
 
     By default set to a Brownian meander stochastic process.
+
+    Used in `model.parts.price_processes`.
     """
 
     # FEI Savings Deposit
     fei_savings_rate_process: List[Callable[[Run, Timestep], APR]] = default(
         [lambda _run, _timestep: 0.015]
     )
+    """
+    A process that returns the FEI Savings Rate at each timestep.
+
+    Used in `model.parts.fei_savings_deposit`.
+    """
 
     # Peg Stability Module
     psm_mint_fee: List[Percentage] = default([0])
+    """
+    The fee collected by the PSM on minting.
+
+    Used in `model.parts.peg_stability_module`.
+    """
+
     psm_redeem_fee: List[Percentage] = default([0.001])  # 10 basis points = 0.1%
+    """
+    The fee collected by the PSM on redemption.
+
+    Used in `model.parts.peg_stability_module`.
+    """
 
     # Liquidity Pool
     liquidity_pool_tvl: List[USD] = default([50_000_000])
-    """Volatile Asset Liquidity Pool TVL
-    The majority of FEI<>WETH liquidity is currently held in a Balancer pool at a 30/70 FEI/ETH ratio.
-    
-    See https://defi.watch/pools/Ethereum/0x90291319f1d4ea3ad4db0dd8fe9e12baf749e84500020000000000000000013c
+    """
+    Volatile Asset Liquidity Pool TVL sourced from
+    https://dune.com/llama/Fei-Protocol
+    https://app.fei.money/
+    as of 22 June 2022.
 
-    Other resources:
-    * https://v2.info.uniswap.org/pair/0x94b0a3d511b6ecdb17ebf877278ab030acb0a878
-    * https://tribe.fei.money/t/fip-70-lets-get-balsy/3752
-    * https://forum.balancer.fi/t/fei-weth-liquidity-and-strenghtening-ties-with-fei/2381
+    This parameter is used to configure the Initial State of the Liquidity Pool PCV Deposit balances in `model/initialization.py`.
+
+    Used in `model.parts.liquidity_pools`.
     """
 
     liquidity_pool_trading_fee: List[float] = default([0.003])
     """
-    The Uniswap style trading fee collected on incoming assets
+    The Uniswap style trading fee collected on incoming assets.
+
+    Used in `model.parts.liquidity_pools`.
     """
 
     # Money Market
     base_rate_per_block: List[float] = default([0])
     # Compound lending market "Compound Jump Rate Model" on-chain parameters, see `model.parts.money_markets` module
-    # TODO [eng] As an extension, consider making key parameters config based
     multiplier_per_block: List[float] = default([23782343987 / wei])
     jump_multiplier_per_block: List[float] = default([518455098934 / wei])
     money_market_kink: List[float] = default([0.8])
@@ -272,53 +320,69 @@ class Parameters:
     # Asset Yield Rates
     stable_asset_yield_rate: List[APR] = default([0.10])
     """
-    The annualized yield (APR) earned by the stable asset yield-bearing PCV Deposit
+    The annualized yield (APR) earned by the stable asset yield-bearing PCV Deposit.
+
+    Used in `model.parts.pcv_yield`.
     """
 
     volatile_asset_yield_rate: List[APR] = default([0.10])
     """
-    The annualized yield (APR) earned by the volatile asset yield-bearing PCV Deposit
+    The annualized yield (APR) earned by the volatile asset yield-bearing PCV Deposit.
+
+    Used in `model.parts.pcv_yield`.
     """
 
     volatile_asset_risk_metric_time_window: List[Timestep] = default([30])
     """
-    The time window used for calculating the Volatile Asset Risk Metric
+    The time window used for calculating the Volatile Asset Risk Metric.
+
+    Used in `model.parts.money_markets`.
     """
 
     # PCV Management Strategy
     rebalancing_period: List[Timestep] = default([int(365 / 4)])  # days
     """
     The duration in days between applying rebalancing strategy.
+
+    Used in `model.parts.pcv_management`.
     """
 
     yield_withdrawal_period: List[Timestep] = default([None])  # days
     """
     The duration in days between withdrawing yield to an idle PCV Deposit.
 
-    Set to `None` to disable.
+    Set to `None` to disable. Only enable one of `yield_withdrawal_period` and `yield_reinvest_period` at a time.
+
+    Used in `model.parts.pcv_yield`.
     """
 
     yield_reinvest_period: List[Timestep] = default([None])  # days
     """
     The duration in days between reinvesting yield into the PCV Deposit balance.
 
-    Set to `None` to disable.
+    Set to `None` to disable. Only enable one of `yield_withdrawal_period` and `yield_reinvest_period` at a time.
+
+    Used in `model.parts.pcv_yield`.
     """
 
     target_stable_backing_ratio: List[float] = default([0.8])
     """
-    The target % of user-circulating FEI that is backed by stable assets
+    The target % of user-circulating FEI that is backed by stable assets.
 
     See https://tribe.fei.money/t/fip-104-fei-pcv-reinforcement-proposal
 
-    Set to `None` to disable.
+    Set to `None` to disable. Only enable one of `target_stable_backing_ratio` and `target_stable_pcv_ratio` at a time.
+
+    Used in `model.parts.pcv_management`.
     """
 
     target_stable_pcv_ratio: List[float] = default([None])
     """
-    The target % of PCV value that is backed by stable assets
+    The target % of PCV value that is backed by stable assets.
 
-    Set to `None` to disable.
+    Set to `None` to disable. Only enable one of `target_stable_backing_ratio` and `target_stable_pcv_ratio` at a time.
+
+    Used in `model.parts.pcv_management`.
     """
 
     target_rebalancing_condition: List[str] = default([lt])
@@ -326,6 +390,8 @@ class Parameters:
     Rebalance towards target stable PCV or backing ratio if less than (lt, <) or greater than (gt, >) target,
     if market conditions are good the strategy can increase volatile asset exposure (gt, >),
     and if market conditions are bad the strategy can reduce volatile asset exposure (lt, <).
+
+    Used in `model.parts.pcv_management`.
     """
 
     # User-circulating FEI Capital Allocation Model
@@ -340,22 +406,30 @@ class Parameters:
         ]
     )
     """
-    FEI Deposit class State Variables rebalanced in Capital Allocation Model.
+    FEI Deposit class State Variables that will be rebalanced as part of Capital Allocation Model.
+
+    Used in `model.parts.fei_capital_allocation`.
     """
 
     capital_allocation_rebalance_duration: Timestep = default([30])
     """
     Rebalance over X number of timesteps towards target user-circulating FEI Capital Allocation.
+
+    Used in `model.parts.fei_capital_allocation`.
     """
 
     capital_allocation_yield_rate_moving_average_window: Timestep = default([3])
     """
-    Calculate moving average of yield rate over window of X number of timesteps
+    Calculate moving average of yield rate over window of X number of timesteps to smooth change in Capital Allocation weights.
+
+    Used in `model.parts.fei_capital_allocation`.
     """
 
     capital_allocation_exogenous_concentration: List[np.ndarray] = default([np.array([1, 1, 1, 1])])
     """
-    Dirichlet distribution concentration parameter for use in Capital Allocation exogenous, stochastic policy
+    Dirichlet distribution concentration parameter for use in Capital Allocation exogenous, stochastic policy.
+
+    Used in `model.parts.fei_capital_allocation`.
     """
 
     # PCV Deposit configuration

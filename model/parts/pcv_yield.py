@@ -1,16 +1,16 @@
-"""PCV Yield
+"""# PCV Yield Module
+Implementation of PCV Yield policies, for example accrual, withdrawal, and reinvestment of PCV yield.
 """
 
 from model.types import (
     PCVDeposit,
-    UserDeposit,
 )
 from model.system_parameters import Parameters
 import model.parts.liquidity_pools as liquidity_pools
 
 
 def policy_yield_accrual(params: Parameters, substep, state_history, previous_state):
-    """Yield Accrual Policy
+    """## Yield Accrual Policy
     Accrue simple interest on yield-bearing PCV Deposits.
     """
     # Parameters
@@ -68,7 +68,7 @@ def policy_yield_accrual(params: Parameters, substep, state_history, previous_st
 
 
 def policy_withdraw_yield(params: Parameters, substep, state_history, previous_state):
-    """Withdraw Yield Policy
+    """## Withdraw Yield Policy
     Withdraw yield into idle PCV Deposit periodically.
     """
 
@@ -116,7 +116,7 @@ def policy_withdraw_yield(params: Parameters, substep, state_history, previous_s
 
 
 def policy_reinvest_yield(params: Parameters, substep, state_history, previous_state):
-    """Reinvest Yield Policy
+    """## Reinvest Yield Policy
     Reinvest yield accrued periodically.
     """
 

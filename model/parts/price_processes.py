@@ -1,4 +1,6 @@
-"""Price Processes
+"""# Price Processes Module
+State update functions for drawing samples from misc. projected or stochastic asset price
+processes configured in System Parameters.
 """
 
 import typing
@@ -12,7 +14,7 @@ from model.system_parameters import Parameters
 def update_fei_price(
     params: Parameters, substep, state_history, previous_state, policy_input
 ) -> typing.Tuple[str, USD]:
-    """Update FEI price
+    """## Update FEI price
     Update the FEI price from the `fei_price_process`.
     """
 
@@ -33,7 +35,7 @@ def update_fei_price(
 def update_stable_asset_price(
     params: Parameters, substep, state_history, previous_state, policy_input
 ) -> typing.Tuple[str, USD]:
-    """Update Stable Asset Price
+    """## Update Stable Asset Price
     Update the stable asset price from the `stable_asset_price_process`.
     """
 

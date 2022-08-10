@@ -1,3 +1,7 @@
+"""# Peg Stability Module
+Implementation of Peg Stability Module related Policies.
+"""
+
 from typing import List
 import logging
 from model.system_parameters import Parameters
@@ -5,7 +9,12 @@ from model.types import FEI, USD, PCVDeposit, StateVariableKey, UserDeposit
 
 
 def policy_peg_stability_module(params: Parameters, substep, state_history, previous_state):
-    """Peg Stability Module Policy
+    """## Peg Stability Module Policy
+    Currently the primary purpose of the Peg Stability Module is for the increase and reduction of PCV due to minting, redemption, and PSM fees.
+
+    The System Parameter `active_psm_pcv_deposit_keys` sets the currently active PCV Deposit for the purpose of minting and redemption.
+    See relevant parameter docstring for more details.
+
     See https://docs.tribedao.xyz/docs/protocol/Mechanism/PegStabilityModule
     """
     # Parameters
@@ -30,8 +39,6 @@ def policy_peg_stability_module(params: Parameters, substep, state_history, prev
         return {}
     else:
         # Perform minting and redemption
-        # NOTE Assumes 100% of FEI minted/redeemed for purpose of liquidity pool rebalancing
-        # TODO Account for minting and redemption fees
         if fei_minted_redeemed >= 0:
             # Minting: select first active PSM PCV Deposit
             active_psm_pcv_deposit: PCVDeposit = active_psm_pcv_deposits[0]

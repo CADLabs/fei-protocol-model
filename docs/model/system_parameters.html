@@ -1,0 +1,1013 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>model.system_parameters API documentation</title>
+<meta name="description" content="System Parameters
+Definition of System Parameters, their types, and default values …" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>model.system_parameters</code></h1>
+</header>
+<section id="section-intro">
+<h1 id="system-parameters">System Parameters</h1>
+<p>Definition of System Parameters, their types, and default values.</p>
+<p>By using a dataclass to represent the System Parameters:
+* We can use types for Python type hints
+* Set default values
+* Ensure that all System Parameters are initialized</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;# System Parameters
+Definition of System Parameters, their types, and default values.
+
+By using a dataclass to represent the System Parameters:
+* We can use types for Python type hints
+* Set default values
+* Ensure that all System Parameters are initialized
+&#34;&#34;&#34;
+
+
+from typing import Dict, List
+import experiments.simulation_configuration as simulation
+
+import numpy as np
+from operator import lt, gt
+from dataclasses import dataclass
+from datetime import datetime
+from model.utils import default
+from model.types import (
+    Callable,
+    Deposit,
+    PCVDeposit,
+    Percentage,
+    UserDeposit,
+    Timestep,
+    Run,
+    List,
+    USD,
+    APR,
+)
+from model.stochastic_processes import create_stochastic_process_realizations
+from model.constants import (
+    wei,
+)
+
+
+# Used to configure stochastic processes,
+# for simulation monte carlo runs,
+# see experiments/simulation_configuration.py
+# or specific experiment notebook
+monte_carlo_runs = 100
+
+volatile_asset_price_samples = create_stochastic_process_realizations(
+    &#34;brownian_motion_process&#34;,
+    timesteps=simulation.TIMESTEPS,
+    dt=simulation.DELTA_TIME,
+    mu=-50,
+    sigma=20,
+    initial_price=2000,
+    runs=monte_carlo_runs,
+)
+
+stable_asset_price_samples = create_stochastic_process_realizations(
+    &#34;gaussian_noise_process&#34;,
+    timesteps=simulation.TIMESTEPS,
+    dt=simulation.DELTA_TIME,
+    mu=1,
+    sigma=0.005,
+    runs=monte_carlo_runs,
+)
+
+money_market_utilization_rate_samples = create_stochastic_process_realizations(
+    &#34;gaussian_noise_process&#34;,
+    timesteps=simulation.TIMESTEPS,
+    dt=simulation.DELTA_TIME,
+    # NOTE Equivalent to money market utilisation rate
+    mu=0.7,
+    sigma=0.05,
+    runs=monte_carlo_runs,
+)
+
+
+# Configure distribution of PCV Deposits
+# Each distribution must contain the same set of PCV Deposits
+&#34;&#34;&#34;
+Illustrative parameterisation of initial state sourced from
+https://dune.com/llama/Fei-Protocol
+https://app.fei.money/
+as of 22 June 2022.
+&#34;&#34;&#34;
+pcv_deposit_distribution_sweep = [
+    [
+        # FEI PCV
+        PCVDeposit(
+            asset=&#34;fei&#34;,
+            deposit_location=&#34;idle&#34;,
+            _balance=170_000_000,
+            _asset_value=170_000_000,
+        ),
+        PCVDeposit(
+            asset=&#34;fei&#34;,
+            deposit_location=&#34;liquidity_pool&#34;,
+            # Initialized in setup_initial_state()
+        ),
+        PCVDeposit(
+            asset=&#34;fei&#34;,
+            deposit_location=&#34;money_market&#34;,
+            _balance=30_000_000,
+            _asset_value=0.0,  # Accounted as asset value of zero for PCV
+        ),
+        # Stable Asset PCV
+        PCVDeposit(
+            asset=&#34;stable&#34;,
+            deposit_location=&#34;idle&#34;,
+            _balance=70_000_000,
+            _asset_value=70_000_000,
+        ),
+        PCVDeposit(
+            asset=&#34;stable&#34;,
+            deposit_location=&#34;yield_bearing&#34;,
+            _balance=70_000_000,
+            _asset_value=70_000_000,
+        ),
+        # Volatile Asset PCV
+        PCVDeposit(
+            asset=&#34;volatile&#34;,
+            deposit_location=&#34;idle&#34;,
+            # Assumes initial volatile asset price of 2000 USD
+            _balance=102_500_000 / 2_000,
+            _asset_value=102_500_000,
+        ),
+        PCVDeposit(
+            asset=&#34;volatile&#34;,
+            deposit_location=&#34;yield_bearing&#34;,
+            _balance=102_500_000 / 2_000,
+            _asset_value=102_500_000,
+        ),
+        PCVDeposit(
+            asset=&#34;volatile&#34;,
+            deposit_location=&#34;liquidity_pool&#34;,
+            # Initialized in setup_initial_state()
+        ),
+    ],
+]
+
+
+# Generate PCV Deposit keys
+pcv_deposit_distribution_sweep = [
+    {deposit.key: deposit for deposit in distribution}
+    for distribution in pcv_deposit_distribution_sweep
+]
+pcv_deposit_keys = list(pcv_deposit_distribution_sweep[0].keys())
+
+
+# From Dune dashboard as of 22 June 2022:
+total_user_circulating_fei = 225_000_000
+fei_money_market_user_deposit_balance = 30_000_000
+
+# Configure distribution of User Deposits
+# Each distribution must contain the same set of User Deposits
+&#34;&#34;&#34;
+Illustrative parameterisation of initial state sourced from
+https://dune.com/llama/Fei-Protocol
+https://app.fei.money/
+as of 22 June 2022.
+&#34;&#34;&#34;
+user_deposit_distribution_sweep = [
+    [
+        # Assume all user-circulating FEI, apart from borrowed FEI, not supplied in money market is idle
+        UserDeposit(
+            asset=&#34;fei&#34;,
+            deposit_location=&#34;idle&#34;,
+            _balance=total_user_circulating_fei - fei_money_market_user_deposit_balance,
+            _asset_value=total_user_circulating_fei - fei_money_market_user_deposit_balance,
+        ),
+        # Assume FEI Savings Deposit starts with no FEI deposited
+        UserDeposit(
+            asset=&#34;fei&#34;,
+            deposit_location=&#34;savings&#34;,
+            _balance=0,
+            _asset_value=0,
+        ),
+        # Assume majority of liquidity provided by protocol
+        UserDeposit(
+            asset=&#34;fei&#34;,
+            deposit_location=&#34;liquidity_pool&#34;,
+            _balance=0,
+            _asset_value=0,
+        ),
+        # Assume majority of liquidity provided by protocol
+        UserDeposit(
+            asset=&#34;volatile&#34;,
+            deposit_location=&#34;liquidity_pool&#34;,
+            _balance=0,
+            _asset_value=0,
+        ),
+        UserDeposit(
+            asset=&#34;fei&#34;,
+            deposit_location=&#34;money_market&#34;,
+            _balance=fei_money_market_user_deposit_balance,
+            _asset_value=fei_money_market_user_deposit_balance,
+        ),
+    ]
+]
+
+# Generate User Deposit keys
+user_deposit_distribution_sweep = [
+    {deposit.key: deposit for deposit in distribution}
+    for distribution in user_deposit_distribution_sweep
+]
+user_deposit_keys = list(user_deposit_distribution_sweep[0].keys())
+
+
+@dataclass
+class Parameters:
+    &#34;&#34;&#34;## System Parameters
+    Each System Parameter is defined as:
+    system parameter key: system parameter type = default system parameter value
+    Because lists are mutable, we need to wrap each parameter list in the `default(...)` method.
+
+    For default value assumptions, see the ASSUMPTIONS.md document.
+    &#34;&#34;&#34;
+
+    # Time parameters
+    dt: List[Timestep] = default([simulation.DELTA_TIME])
+    &#34;&#34;&#34;
+    Simulation timescale / timestep unit of time, in days.
+    Used to scale calculations that depend on the number of days that have passed.
+    For example, for dt = 100, each timestep equals 100 days.
+    By default set to 1 day.
+
+    NOTE Model has not been tested for `DELTA_TIME` != 1, further validation of calculations would be required.
+    &#34;&#34;&#34;
+
+    date_start: List[datetime] = default([datetime.now()])
+    &#34;&#34;&#34;
+    Start date for simulation as Python datetime
+
+    Used by `model.utils` `update_timestamp(...)` State Update Function.
+    &#34;&#34;&#34;
+
+    # Price Processes
+    fei_price_process: List[Callable[[Run, Timestep], USD]] = default([lambda _run, _timestep: 1.0])
+    &#34;&#34;&#34;
+    A process that returns the FEI spot price at each timestep.
+
+    By default set a static price of 1 USD.
+
+    Used in `model.parts.price_processes`.
+    &#34;&#34;&#34;
+
+    stable_asset_price_process: List[Callable[[Run, Timestep], USD]] = default(
+        [lambda run, timestep: stable_asset_price_samples[run - 1][timestep]]
+    )
+    &#34;&#34;&#34;
+    A process that returns the stable asset spot price at each timestep.
+
+    By default set to a Gaussian Noise stochastic process.
+
+    Used in `model.parts.price_processes`.
+    &#34;&#34;&#34;
+
+    volatile_asset_price_process: List[Callable[[Run, Timestep], USD]] = default(
+        [lambda run, timestep: volatile_asset_price_samples[run - 1][timestep]]
+    )
+    &#34;&#34;&#34;
+    A process that returns the volatile asset spot price at each timestep.
+
+    By default set to a Brownian meander stochastic process.
+
+    Used in `model.parts.price_processes`.
+    &#34;&#34;&#34;
+
+    # FEI Savings Deposit
+    fei_savings_rate_process: List[Callable[[Run, Timestep], APR]] = default(
+        [lambda _run, _timestep: 0.015]
+    )
+    &#34;&#34;&#34;
+    A process that returns the FEI Savings Rate at each timestep.
+
+    Used in `model.parts.fei_savings_deposit`.
+    &#34;&#34;&#34;
+
+    # Peg Stability Module
+    psm_mint_fee: List[Percentage] = default([0])
+    &#34;&#34;&#34;
+    The fee collected by the PSM on minting.
+
+    Used in `model.parts.peg_stability_module`.
+    &#34;&#34;&#34;
+
+    psm_redeem_fee: List[Percentage] = default([0.001])  # 10 basis points = 0.1%
+    &#34;&#34;&#34;
+    The fee collected by the PSM on redemption.
+
+    Used in `model.parts.peg_stability_module`.
+    &#34;&#34;&#34;
+
+    # Liquidity Pool
+    liquidity_pool_tvl: List[USD] = default([50_000_000])
+    &#34;&#34;&#34;
+    Volatile Asset Liquidity Pool TVL sourced from
+    https://dune.com/llama/Fei-Protocol
+    https://app.fei.money/
+    as of 22 June 2022.
+
+    This parameter is used to configure the Initial State of the Liquidity Pool PCV Deposit balances in `model/initialization.py`.
+
+    Used in `model.parts.liquidity_pools`.
+    &#34;&#34;&#34;
+
+    liquidity_pool_trading_fee: List[float] = default([0.003])
+    &#34;&#34;&#34;
+    The Uniswap style trading fee collected on incoming assets.
+
+    Used in `model.parts.liquidity_pools`.
+    &#34;&#34;&#34;
+
+    # Money Market
+    base_rate_per_block: List[float] = default([0])
+    # Compound lending market &#34;Compound Jump Rate Model&#34; on-chain parameters, see `model.parts.money_markets` module
+    multiplier_per_block: List[float] = default([23782343987 / wei])
+    jump_multiplier_per_block: List[float] = default([518455098934 / wei])
+    money_market_kink: List[float] = default([0.8])
+    money_market_reserve_factor: List[float] = default([0.25])
+    money_market_utilization_rate_process: List[Callable[[Run, Timestep], APR]] = default(
+        [lambda run, timestep: money_market_utilization_rate_samples[run - 1][timestep]]
+    )
+
+    # Asset Yield Rates
+    stable_asset_yield_rate: List[APR] = default([0.10])
+    &#34;&#34;&#34;
+    The annualized yield (APR) earned by the stable asset yield-bearing PCV Deposit.
+
+    Used in `model.parts.pcv_yield`.
+    &#34;&#34;&#34;
+
+    volatile_asset_yield_rate: List[APR] = default([0.10])
+    &#34;&#34;&#34;
+    The annualized yield (APR) earned by the volatile asset yield-bearing PCV Deposit.
+
+    Used in `model.parts.pcv_yield`.
+    &#34;&#34;&#34;
+
+    volatile_asset_risk_metric_time_window: List[Timestep] = default([30])
+    &#34;&#34;&#34;
+    The time window used for calculating the Volatile Asset Risk Metric.
+
+    Used in `model.parts.money_markets`.
+    &#34;&#34;&#34;
+
+    # PCV Management Strategy
+    rebalancing_period: List[Timestep] = default([int(365 / 4)])  # days
+    &#34;&#34;&#34;
+    The duration in days between applying rebalancing strategy.
+
+    Used in `model.parts.pcv_management`.
+    &#34;&#34;&#34;
+
+    yield_withdrawal_period: List[Timestep] = default([None])  # days
+    &#34;&#34;&#34;
+    The duration in days between withdrawing yield to an idle PCV Deposit.
+
+    Set to `None` to disable. Only enable one of `yield_withdrawal_period` and `yield_reinvest_period` at a time.
+
+    Used in `model.parts.pcv_yield`.
+    &#34;&#34;&#34;
+
+    yield_reinvest_period: List[Timestep] = default([None])  # days
+    &#34;&#34;&#34;
+    The duration in days between reinvesting yield into the PCV Deposit balance.
+
+    Set to `None` to disable. Only enable one of `yield_withdrawal_period` and `yield_reinvest_period` at a time.
+
+    Used in `model.parts.pcv_yield`.
+    &#34;&#34;&#34;
+
+    target_stable_backing_ratio: List[float] = default([0.8])
+    &#34;&#34;&#34;
+    The target % of user-circulating FEI that is backed by stable assets.
+
+    See https://tribe.fei.money/t/fip-104-fei-pcv-reinforcement-proposal
+
+    Set to `None` to disable. Only enable one of `target_stable_backing_ratio` and `target_stable_pcv_ratio` at a time.
+
+    Used in `model.parts.pcv_management`.
+    &#34;&#34;&#34;
+
+    target_stable_pcv_ratio: List[float] = default([None])
+    &#34;&#34;&#34;
+    The target % of PCV value that is backed by stable assets.
+
+    Set to `None` to disable. Only enable one of `target_stable_backing_ratio` and `target_stable_pcv_ratio` at a time.
+
+    Used in `model.parts.pcv_management`.
+    &#34;&#34;&#34;
+
+    target_rebalancing_condition: List[str] = default([lt])
+    &#34;&#34;&#34;
+    Rebalance towards target stable PCV or backing ratio if less than (lt, &lt;) or greater than (gt, &gt;) target,
+    if market conditions are good the strategy can increase volatile asset exposure (gt, &gt;),
+    and if market conditions are bad the strategy can reduce volatile asset exposure (lt, &lt;).
+
+    Used in `model.parts.pcv_management`.
+    &#34;&#34;&#34;
+
+    # User-circulating FEI Capital Allocation Model
+    capital_allocation_fei_deposit_variables: List[Deposit] = default(
+        [
+            [
+                &#34;fei_liquidity_pool_user_deposit&#34;,
+                &#34;fei_money_market_user_deposit&#34;,
+                &#34;fei_savings_user_deposit&#34;,
+                &#34;fei_idle_user_deposit&#34;,
+            ]
+        ]
+    )
+    &#34;&#34;&#34;
+    FEI Deposit class State Variables that will be rebalanced as part of Capital Allocation Model.
+
+    Used in `model.parts.fei_capital_allocation`.
+    &#34;&#34;&#34;
+
+    capital_allocation_rebalance_duration: Timestep = default([30])
+    &#34;&#34;&#34;
+    Rebalance over X number of timesteps towards target user-circulating FEI Capital Allocation.
+
+    Used in `model.parts.fei_capital_allocation`.
+    &#34;&#34;&#34;
+
+    capital_allocation_yield_rate_moving_average_window: Timestep = default([3])
+    &#34;&#34;&#34;
+    Calculate moving average of yield rate over window of X number of timesteps to smooth change in Capital Allocation weights.
+
+    Used in `model.parts.fei_capital_allocation`.
+    &#34;&#34;&#34;
+
+    capital_allocation_exogenous_concentration: List[np.ndarray] = default([np.array([1, 1, 1, 1])])
+    &#34;&#34;&#34;
+    Dirichlet distribution concentration parameter for use in Capital Allocation exogenous, stochastic policy.
+
+    Used in `model.parts.fei_capital_allocation`.
+    &#34;&#34;&#34;
+
+    # PCV Deposit configuration
+    pcv_deposits: List[Dict[str, PCVDeposit]] = default(pcv_deposit_distribution_sweep)
+    &#34;&#34;&#34;
+    The distribution of PCV Deposits used to initialize the PCV Deposit State Variables,
+    to enable performing a parameter sweep of the Initial State of PCV Deposits.
+    &#34;&#34;&#34;
+
+    # User Deposit configuration
+    user_deposits: List[Dict[str, PCVDeposit]] = default(user_deposit_distribution_sweep)
+    &#34;&#34;&#34;
+    The distribution of User Deposits used to initialize the User Deposit State Variables,
+    to enable performing a parameter sweep of the Initial State of User Deposits.
+    &#34;&#34;&#34;
+
+
+# Initialize Parameters instance with default values
+parameters = Parameters().__dict__</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-variables">Global variables</h2>
+<dl>
+<dt id="model.system_parameters.fei_money_market_user_deposit_balance"><code class="name">var <span class="ident">fei_money_market_user_deposit_balance</span></code></dt>
+<dd>
+<div class="desc"><p>Illustrative parameterisation of initial state sourced from
+<a href="https://dune.com/llama/Fei-Protocol">https://dune.com/llama/Fei-Protocol</a>
+<a href="https://app.fei.money/">https://app.fei.money/</a>
+as of 22 June 2022.</p></div>
+</dd>
+<dt id="model.system_parameters.money_market_utilization_rate_samples"><code class="name">var <span class="ident">money_market_utilization_rate_samples</span></code></dt>
+<dd>
+<div class="desc"><p>Illustrative parameterisation of initial state sourced from
+<a href="https://dune.com/llama/Fei-Protocol">https://dune.com/llama/Fei-Protocol</a>
+<a href="https://app.fei.money/">https://app.fei.money/</a>
+as of 22 June 2022.</p></div>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="model.system_parameters.Parameters"><code class="flex name class">
+<span>class <span class="ident">Parameters</span></span>
+<span>(</span><span>dt: List[int] = &lt;factory&gt;, date_start: List[datetime.datetime] = &lt;factory&gt;, fei_price_process: List[Callable[[int, int], Union[int, float]]] = &lt;factory&gt;, stable_asset_price_process: List[Callable[[int, int], Union[int, float]]] = &lt;factory&gt;, volatile_asset_price_process: List[Callable[[int, int], Union[int, float]]] = &lt;factory&gt;, fei_savings_rate_process: List[Callable[[int, int], float]] = &lt;factory&gt;, psm_mint_fee: List[float] = &lt;factory&gt;, psm_redeem_fee: List[float] = &lt;factory&gt;, liquidity_pool_tvl: List[Union[int, float]] = &lt;factory&gt;, liquidity_pool_trading_fee: List[float] = &lt;factory&gt;, base_rate_per_block: List[float] = &lt;factory&gt;, multiplier_per_block: List[float] = &lt;factory&gt;, jump_multiplier_per_block: List[float] = &lt;factory&gt;, money_market_kink: List[float] = &lt;factory&gt;, money_market_reserve_factor: List[float] = &lt;factory&gt;, money_market_utilization_rate_process: List[Callable[[int, int], float]] = &lt;factory&gt;, stable_asset_yield_rate: List[float] = &lt;factory&gt;, volatile_asset_yield_rate: List[float] = &lt;factory&gt;, volatile_asset_risk_metric_time_window: List[int] = &lt;factory&gt;, rebalancing_period: List[int] = &lt;factory&gt;, yield_withdrawal_period: List[int] = &lt;factory&gt;, yield_reinvest_period: List[int] = &lt;factory&gt;, target_stable_backing_ratio: List[float] = &lt;factory&gt;, target_stable_pcv_ratio: List[float] = &lt;factory&gt;, target_rebalancing_condition: List[str] = &lt;factory&gt;, capital_allocation_fei_deposit_variables: List[<a title="model.types.Deposit" href="types.html#model.types.Deposit">Deposit</a>] = &lt;factory&gt;, capital_allocation_rebalance_duration: int = &lt;factory&gt;, capital_allocation_yield_rate_moving_average_window: int = &lt;factory&gt;, capital_allocation_exogenous_concentration: List[numpy.ndarray] = &lt;factory&gt;, pcv_deposits: List[Dict[str, <a title="model.types.PCVDeposit" href="types.html#model.types.PCVDeposit">PCVDeposit</a>]] = &lt;factory&gt;, user_deposits: List[Dict[str, <a title="model.types.PCVDeposit" href="types.html#model.types.PCVDeposit">PCVDeposit</a>]] = &lt;factory&gt;)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="system-parameters">System Parameters</h2>
+<p>Each System Parameter is defined as:
+system parameter key: system parameter type = default system parameter value
+Because lists are mutable, we need to wrap each parameter list in the <code>default(&hellip;)</code> method.</p>
+<p>For default value assumptions, see the ASSUMPTIONS.md document.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class Parameters:
+    &#34;&#34;&#34;## System Parameters
+    Each System Parameter is defined as:
+    system parameter key: system parameter type = default system parameter value
+    Because lists are mutable, we need to wrap each parameter list in the `default(...)` method.
+
+    For default value assumptions, see the ASSUMPTIONS.md document.
+    &#34;&#34;&#34;
+
+    # Time parameters
+    dt: List[Timestep] = default([simulation.DELTA_TIME])
+    &#34;&#34;&#34;
+    Simulation timescale / timestep unit of time, in days.
+    Used to scale calculations that depend on the number of days that have passed.
+    For example, for dt = 100, each timestep equals 100 days.
+    By default set to 1 day.
+
+    NOTE Model has not been tested for `DELTA_TIME` != 1, further validation of calculations would be required.
+    &#34;&#34;&#34;
+
+    date_start: List[datetime] = default([datetime.now()])
+    &#34;&#34;&#34;
+    Start date for simulation as Python datetime
+
+    Used by `model.utils` `update_timestamp(...)` State Update Function.
+    &#34;&#34;&#34;
+
+    # Price Processes
+    fei_price_process: List[Callable[[Run, Timestep], USD]] = default([lambda _run, _timestep: 1.0])
+    &#34;&#34;&#34;
+    A process that returns the FEI spot price at each timestep.
+
+    By default set a static price of 1 USD.
+
+    Used in `model.parts.price_processes`.
+    &#34;&#34;&#34;
+
+    stable_asset_price_process: List[Callable[[Run, Timestep], USD]] = default(
+        [lambda run, timestep: stable_asset_price_samples[run - 1][timestep]]
+    )
+    &#34;&#34;&#34;
+    A process that returns the stable asset spot price at each timestep.
+
+    By default set to a Gaussian Noise stochastic process.
+
+    Used in `model.parts.price_processes`.
+    &#34;&#34;&#34;
+
+    volatile_asset_price_process: List[Callable[[Run, Timestep], USD]] = default(
+        [lambda run, timestep: volatile_asset_price_samples[run - 1][timestep]]
+    )
+    &#34;&#34;&#34;
+    A process that returns the volatile asset spot price at each timestep.
+
+    By default set to a Brownian meander stochastic process.
+
+    Used in `model.parts.price_processes`.
+    &#34;&#34;&#34;
+
+    # FEI Savings Deposit
+    fei_savings_rate_process: List[Callable[[Run, Timestep], APR]] = default(
+        [lambda _run, _timestep: 0.015]
+    )
+    &#34;&#34;&#34;
+    A process that returns the FEI Savings Rate at each timestep.
+
+    Used in `model.parts.fei_savings_deposit`.
+    &#34;&#34;&#34;
+
+    # Peg Stability Module
+    psm_mint_fee: List[Percentage] = default([0])
+    &#34;&#34;&#34;
+    The fee collected by the PSM on minting.
+
+    Used in `model.parts.peg_stability_module`.
+    &#34;&#34;&#34;
+
+    psm_redeem_fee: List[Percentage] = default([0.001])  # 10 basis points = 0.1%
+    &#34;&#34;&#34;
+    The fee collected by the PSM on redemption.
+
+    Used in `model.parts.peg_stability_module`.
+    &#34;&#34;&#34;
+
+    # Liquidity Pool
+    liquidity_pool_tvl: List[USD] = default([50_000_000])
+    &#34;&#34;&#34;
+    Volatile Asset Liquidity Pool TVL sourced from
+    https://dune.com/llama/Fei-Protocol
+    https://app.fei.money/
+    as of 22 June 2022.
+
+    This parameter is used to configure the Initial State of the Liquidity Pool PCV Deposit balances in `model/initialization.py`.
+
+    Used in `model.parts.liquidity_pools`.
+    &#34;&#34;&#34;
+
+    liquidity_pool_trading_fee: List[float] = default([0.003])
+    &#34;&#34;&#34;
+    The Uniswap style trading fee collected on incoming assets.
+
+    Used in `model.parts.liquidity_pools`.
+    &#34;&#34;&#34;
+
+    # Money Market
+    base_rate_per_block: List[float] = default([0])
+    # Compound lending market &#34;Compound Jump Rate Model&#34; on-chain parameters, see `model.parts.money_markets` module
+    multiplier_per_block: List[float] = default([23782343987 / wei])
+    jump_multiplier_per_block: List[float] = default([518455098934 / wei])
+    money_market_kink: List[float] = default([0.8])
+    money_market_reserve_factor: List[float] = default([0.25])
+    money_market_utilization_rate_process: List[Callable[[Run, Timestep], APR]] = default(
+        [lambda run, timestep: money_market_utilization_rate_samples[run - 1][timestep]]
+    )
+
+    # Asset Yield Rates
+    stable_asset_yield_rate: List[APR] = default([0.10])
+    &#34;&#34;&#34;
+    The annualized yield (APR) earned by the stable asset yield-bearing PCV Deposit.
+
+    Used in `model.parts.pcv_yield`.
+    &#34;&#34;&#34;
+
+    volatile_asset_yield_rate: List[APR] = default([0.10])
+    &#34;&#34;&#34;
+    The annualized yield (APR) earned by the volatile asset yield-bearing PCV Deposit.
+
+    Used in `model.parts.pcv_yield`.
+    &#34;&#34;&#34;
+
+    volatile_asset_risk_metric_time_window: List[Timestep] = default([30])
+    &#34;&#34;&#34;
+    The time window used for calculating the Volatile Asset Risk Metric.
+
+    Used in `model.parts.money_markets`.
+    &#34;&#34;&#34;
+
+    # PCV Management Strategy
+    rebalancing_period: List[Timestep] = default([int(365 / 4)])  # days
+    &#34;&#34;&#34;
+    The duration in days between applying rebalancing strategy.
+
+    Used in `model.parts.pcv_management`.
+    &#34;&#34;&#34;
+
+    yield_withdrawal_period: List[Timestep] = default([None])  # days
+    &#34;&#34;&#34;
+    The duration in days between withdrawing yield to an idle PCV Deposit.
+
+    Set to `None` to disable. Only enable one of `yield_withdrawal_period` and `yield_reinvest_period` at a time.
+
+    Used in `model.parts.pcv_yield`.
+    &#34;&#34;&#34;
+
+    yield_reinvest_period: List[Timestep] = default([None])  # days
+    &#34;&#34;&#34;
+    The duration in days between reinvesting yield into the PCV Deposit balance.
+
+    Set to `None` to disable. Only enable one of `yield_withdrawal_period` and `yield_reinvest_period` at a time.
+
+    Used in `model.parts.pcv_yield`.
+    &#34;&#34;&#34;
+
+    target_stable_backing_ratio: List[float] = default([0.8])
+    &#34;&#34;&#34;
+    The target % of user-circulating FEI that is backed by stable assets.
+
+    See https://tribe.fei.money/t/fip-104-fei-pcv-reinforcement-proposal
+
+    Set to `None` to disable. Only enable one of `target_stable_backing_ratio` and `target_stable_pcv_ratio` at a time.
+
+    Used in `model.parts.pcv_management`.
+    &#34;&#34;&#34;
+
+    target_stable_pcv_ratio: List[float] = default([None])
+    &#34;&#34;&#34;
+    The target % of PCV value that is backed by stable assets.
+
+    Set to `None` to disable. Only enable one of `target_stable_backing_ratio` and `target_stable_pcv_ratio` at a time.
+
+    Used in `model.parts.pcv_management`.
+    &#34;&#34;&#34;
+
+    target_rebalancing_condition: List[str] = default([lt])
+    &#34;&#34;&#34;
+    Rebalance towards target stable PCV or backing ratio if less than (lt, &lt;) or greater than (gt, &gt;) target,
+    if market conditions are good the strategy can increase volatile asset exposure (gt, &gt;),
+    and if market conditions are bad the strategy can reduce volatile asset exposure (lt, &lt;).
+
+    Used in `model.parts.pcv_management`.
+    &#34;&#34;&#34;
+
+    # User-circulating FEI Capital Allocation Model
+    capital_allocation_fei_deposit_variables: List[Deposit] = default(
+        [
+            [
+                &#34;fei_liquidity_pool_user_deposit&#34;,
+                &#34;fei_money_market_user_deposit&#34;,
+                &#34;fei_savings_user_deposit&#34;,
+                &#34;fei_idle_user_deposit&#34;,
+            ]
+        ]
+    )
+    &#34;&#34;&#34;
+    FEI Deposit class State Variables that will be rebalanced as part of Capital Allocation Model.
+
+    Used in `model.parts.fei_capital_allocation`.
+    &#34;&#34;&#34;
+
+    capital_allocation_rebalance_duration: Timestep = default([30])
+    &#34;&#34;&#34;
+    Rebalance over X number of timesteps towards target user-circulating FEI Capital Allocation.
+
+    Used in `model.parts.fei_capital_allocation`.
+    &#34;&#34;&#34;
+
+    capital_allocation_yield_rate_moving_average_window: Timestep = default([3])
+    &#34;&#34;&#34;
+    Calculate moving average of yield rate over window of X number of timesteps to smooth change in Capital Allocation weights.
+
+    Used in `model.parts.fei_capital_allocation`.
+    &#34;&#34;&#34;
+
+    capital_allocation_exogenous_concentration: List[np.ndarray] = default([np.array([1, 1, 1, 1])])
+    &#34;&#34;&#34;
+    Dirichlet distribution concentration parameter for use in Capital Allocation exogenous, stochastic policy.
+
+    Used in `model.parts.fei_capital_allocation`.
+    &#34;&#34;&#34;
+
+    # PCV Deposit configuration
+    pcv_deposits: List[Dict[str, PCVDeposit]] = default(pcv_deposit_distribution_sweep)
+    &#34;&#34;&#34;
+    The distribution of PCV Deposits used to initialize the PCV Deposit State Variables,
+    to enable performing a parameter sweep of the Initial State of PCV Deposits.
+    &#34;&#34;&#34;
+
+    # User Deposit configuration
+    user_deposits: List[Dict[str, PCVDeposit]] = default(user_deposit_distribution_sweep)
+    &#34;&#34;&#34;
+    The distribution of User Deposits used to initialize the User Deposit State Variables,
+    to enable performing a parameter sweep of the Initial State of User Deposits.
+    &#34;&#34;&#34;</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="model.system_parameters.Parameters.base_rate_per_block"><code class="name">var <span class="ident">base_rate_per_block</span> : List[float]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="model.system_parameters.Parameters.capital_allocation_exogenous_concentration"><code class="name">var <span class="ident">capital_allocation_exogenous_concentration</span> : List[numpy.ndarray]</code></dt>
+<dd>
+<div class="desc"><p>Dirichlet distribution concentration parameter for use in Capital Allocation exogenous, stochastic policy.</p>
+<p>Used in <code><a title="model.parts.fei_capital_allocation" href="parts/fei_capital_allocation.html">model.parts.fei_capital_allocation</a></code>.</p></div>
+</dd>
+<dt id="model.system_parameters.Parameters.capital_allocation_fei_deposit_variables"><code class="name">var <span class="ident">capital_allocation_fei_deposit_variables</span> : List[<a title="model.types.Deposit" href="types.html#model.types.Deposit">Deposit</a>]</code></dt>
+<dd>
+<div class="desc"><p>FEI Deposit class State Variables that will be rebalanced as part of Capital Allocation Model.</p>
+<p>Used in <code><a title="model.parts.fei_capital_allocation" href="parts/fei_capital_allocation.html">model.parts.fei_capital_allocation</a></code>.</p></div>
+</dd>
+<dt id="model.system_parameters.Parameters.capital_allocation_rebalance_duration"><code class="name">var <span class="ident">capital_allocation_rebalance_duration</span> : int</code></dt>
+<dd>
+<div class="desc"><p>Rebalance over X number of timesteps towards target user-circulating FEI Capital Allocation.</p>
+<p>Used in <code><a title="model.parts.fei_capital_allocation" href="parts/fei_capital_allocation.html">model.parts.fei_capital_allocation</a></code>.</p></div>
+</dd>
+<dt id="model.system_parameters.Parameters.capital_allocation_yield_rate_moving_average_window"><code class="name">var <span class="ident">capital_allocation_yield_rate_moving_average_window</span> : int</code></dt>
+<dd>
+<div class="desc"><p>Calculate moving average of yield rate over window of X number of timesteps to smooth change in Capital Allocation weights.</p>
+<p>Used in <code><a title="model.parts.fei_capital_allocation" href="parts/fei_capital_allocation.html">model.parts.fei_capital_allocation</a></code>.</p></div>
+</dd>
+<dt id="model.system_parameters.Parameters.date_start"><code class="name">var <span class="ident">date_start</span> : List[datetime.datetime]</code></dt>
+<dd>
+<div class="desc"><p>Start date for simulation as Python datetime</p>
+<p>Used by <code><a title="model.utils" href="utils.html">model.utils</a></code> <code>update_timestamp(&hellip;)</code> State Update Function.</p></div>
+</dd>
+<dt id="model.system_parameters.Parameters.dt"><code class="name">var <span class="ident">dt</span> : List[int]</code></dt>
+<dd>
+<div class="desc"><p>Simulation timescale / timestep unit of time, in days.
+Used to scale calculations that depend on the number of days that have passed.
+For example, for dt = 100, each timestep equals 100 days.
+By default set to 1 day.</p>
+<p>NOTE Model has not been tested for <code>DELTA_TIME</code> != 1, further validation of calculations would be required.</p></div>
+</dd>
+<dt id="model.system_parameters.Parameters.fei_price_process"><code class="name">var <span class="ident">fei_price_process</span> : List[Callable[[int, int], Union[int, float]]]</code></dt>
+<dd>
+<div class="desc"><p>A process that returns the FEI spot price at each timestep.</p>
+<p>By default set a static price of 1 USD.</p>
+<p>Used in <code><a title="model.parts.price_processes" href="parts/price_processes.html">model.parts.price_processes</a></code>.</p></div>
+</dd>
+<dt id="model.system_parameters.Parameters.fei_savings_rate_process"><code class="name">var <span class="ident">fei_savings_rate_process</span> : List[Callable[[int, int], float]]</code></dt>
+<dd>
+<div class="desc"><p>A process that returns the FEI Savings Rate at each timestep.</p>
+<p>Used in <code><a title="model.parts.fei_savings_deposit" href="parts/fei_savings_deposit.html">model.parts.fei_savings_deposit</a></code>.</p></div>
+</dd>
+<dt id="model.system_parameters.Parameters.jump_multiplier_per_block"><code class="name">var <span class="ident">jump_multiplier_per_block</span> : List[float]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="model.system_parameters.Parameters.liquidity_pool_trading_fee"><code class="name">var <span class="ident">liquidity_pool_trading_fee</span> : List[float]</code></dt>
+<dd>
+<div class="desc"><p>The Uniswap style trading fee collected on incoming assets.</p>
+<p>Used in <code><a title="model.parts.liquidity_pools" href="parts/liquidity_pools.html">model.parts.liquidity_pools</a></code>.</p></div>
+</dd>
+<dt id="model.system_parameters.Parameters.liquidity_pool_tvl"><code class="name">var <span class="ident">liquidity_pool_tvl</span> : List[Union[int, float]]</code></dt>
+<dd>
+<div class="desc"><p>Volatile Asset Liquidity Pool TVL sourced from
+<a href="https://dune.com/llama/Fei-Protocol">https://dune.com/llama/Fei-Protocol</a>
+<a href="https://app.fei.money/">https://app.fei.money/</a>
+as of 22 June 2022.</p>
+<p>This parameter is used to configure the Initial State of the Liquidity Pool PCV Deposit balances in <code>model/initialization.py</code>.</p>
+<p>Used in <code><a title="model.parts.liquidity_pools" href="parts/liquidity_pools.html">model.parts.liquidity_pools</a></code>.</p></div>
+</dd>
+<dt id="model.system_parameters.Parameters.money_market_kink"><code class="name">var <span class="ident">money_market_kink</span> : List[float]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="model.system_parameters.Parameters.money_market_reserve_factor"><code class="name">var <span class="ident">money_market_reserve_factor</span> : List[float]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="model.system_parameters.Parameters.money_market_utilization_rate_process"><code class="name">var <span class="ident">money_market_utilization_rate_process</span> : List[Callable[[int, int], float]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="model.system_parameters.Parameters.multiplier_per_block"><code class="name">var <span class="ident">multiplier_per_block</span> : List[float]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="model.system_parameters.Parameters.pcv_deposits"><code class="name">var <span class="ident">pcv_deposits</span> : List[Dict[str, <a title="model.types.PCVDeposit" href="types.html#model.types.PCVDeposit">PCVDeposit</a>]]</code></dt>
+<dd>
+<div class="desc"><p>The distribution of PCV Deposits used to initialize the PCV Deposit State Variables,
+to enable performing a parameter sweep of the Initial State of PCV Deposits.</p></div>
+</dd>
+<dt id="model.system_parameters.Parameters.psm_mint_fee"><code class="name">var <span class="ident">psm_mint_fee</span> : List[float]</code></dt>
+<dd>
+<div class="desc"><p>The fee collected by the PSM on minting.</p>
+<p>Used in <code><a title="model.parts.peg_stability_module" href="parts/peg_stability_module.html">model.parts.peg_stability_module</a></code>.</p></div>
+</dd>
+<dt id="model.system_parameters.Parameters.psm_redeem_fee"><code class="name">var <span class="ident">psm_redeem_fee</span> : List[float]</code></dt>
+<dd>
+<div class="desc"><p>The fee collected by the PSM on redemption.</p>
+<p>Used in <code><a title="model.parts.peg_stability_module" href="parts/peg_stability_module.html">model.parts.peg_stability_module</a></code>.</p></div>
+</dd>
+<dt id="model.system_parameters.Parameters.rebalancing_period"><code class="name">var <span class="ident">rebalancing_period</span> : List[int]</code></dt>
+<dd>
+<div class="desc"><p>The duration in days between applying rebalancing strategy.</p>
+<p>Used in <code><a title="model.parts.pcv_management" href="parts/pcv_management.html">model.parts.pcv_management</a></code>.</p></div>
+</dd>
+<dt id="model.system_parameters.Parameters.stable_asset_price_process"><code class="name">var <span class="ident">stable_asset_price_process</span> : List[Callable[[int, int], Union[int, float]]]</code></dt>
+<dd>
+<div class="desc"><p>A process that returns the stable asset spot price at each timestep.</p>
+<p>By default set to a Gaussian Noise stochastic process.</p>
+<p>Used in <code><a title="model.parts.price_processes" href="parts/price_processes.html">model.parts.price_processes</a></code>.</p></div>
+</dd>
+<dt id="model.system_parameters.Parameters.stable_asset_yield_rate"><code class="name">var <span class="ident">stable_asset_yield_rate</span> : List[float]</code></dt>
+<dd>
+<div class="desc"><p>The annualized yield (APR) earned by the stable asset yield-bearing PCV Deposit.</p>
+<p>Used in <code><a title="model.parts.pcv_yield" href="parts/pcv_yield.html">model.parts.pcv_yield</a></code>.</p></div>
+</dd>
+<dt id="model.system_parameters.Parameters.target_rebalancing_condition"><code class="name">var <span class="ident">target_rebalancing_condition</span> : List[str]</code></dt>
+<dd>
+<div class="desc"><p>Rebalance towards target stable PCV or backing ratio if less than (lt, &lt;) or greater than (gt, &gt;) target,
+if market conditions are good the strategy can increase volatile asset exposure (gt, &gt;),
+and if market conditions are bad the strategy can reduce volatile asset exposure (lt, &lt;).</p>
+<p>Used in <code><a title="model.parts.pcv_management" href="parts/pcv_management.html">model.parts.pcv_management</a></code>.</p></div>
+</dd>
+<dt id="model.system_parameters.Parameters.target_stable_backing_ratio"><code class="name">var <span class="ident">target_stable_backing_ratio</span> : List[float]</code></dt>
+<dd>
+<div class="desc"><p>The target % of user-circulating FEI that is backed by stable assets.</p>
+<p>See <a href="https://tribe.fei.money/t/fip-104-fei-pcv-reinforcement-proposal">https://tribe.fei.money/t/fip-104-fei-pcv-reinforcement-proposal</a></p>
+<p>Set to <code>None</code> to disable. Only enable one of <code>target_stable_backing_ratio</code> and <code>target_stable_pcv_ratio</code> at a time.</p>
+<p>Used in <code><a title="model.parts.pcv_management" href="parts/pcv_management.html">model.parts.pcv_management</a></code>.</p></div>
+</dd>
+<dt id="model.system_parameters.Parameters.target_stable_pcv_ratio"><code class="name">var <span class="ident">target_stable_pcv_ratio</span> : List[float]</code></dt>
+<dd>
+<div class="desc"><p>The target % of PCV value that is backed by stable assets.</p>
+<p>Set to <code>None</code> to disable. Only enable one of <code>target_stable_backing_ratio</code> and <code>target_stable_pcv_ratio</code> at a time.</p>
+<p>Used in <code><a title="model.parts.pcv_management" href="parts/pcv_management.html">model.parts.pcv_management</a></code>.</p></div>
+</dd>
+<dt id="model.system_parameters.Parameters.user_deposits"><code class="name">var <span class="ident">user_deposits</span> : List[Dict[str, <a title="model.types.PCVDeposit" href="types.html#model.types.PCVDeposit">PCVDeposit</a>]]</code></dt>
+<dd>
+<div class="desc"><p>The distribution of User Deposits used to initialize the User Deposit State Variables,
+to enable performing a parameter sweep of the Initial State of User Deposits.</p></div>
+</dd>
+<dt id="model.system_parameters.Parameters.volatile_asset_price_process"><code class="name">var <span class="ident">volatile_asset_price_process</span> : List[Callable[[int, int], Union[int, float]]]</code></dt>
+<dd>
+<div class="desc"><p>A process that returns the volatile asset spot price at each timestep.</p>
+<p>By default set to a Brownian meander stochastic process.</p>
+<p>Used in <code><a title="model.parts.price_processes" href="parts/price_processes.html">model.parts.price_processes</a></code>.</p></div>
+</dd>
+<dt id="model.system_parameters.Parameters.volatile_asset_risk_metric_time_window"><code class="name">var <span class="ident">volatile_asset_risk_metric_time_window</span> : List[int]</code></dt>
+<dd>
+<div class="desc"><p>The time window used for calculating the Volatile Asset Risk Metric.</p>
+<p>Used in <code><a title="model.parts.money_markets" href="parts/money_markets.html">model.parts.money_markets</a></code>.</p></div>
+</dd>
+<dt id="model.system_parameters.Parameters.volatile_asset_yield_rate"><code class="name">var <span class="ident">volatile_asset_yield_rate</span> : List[float]</code></dt>
+<dd>
+<div class="desc"><p>The annualized yield (APR) earned by the volatile asset yield-bearing PCV Deposit.</p>
+<p>Used in <code><a title="model.parts.pcv_yield" href="parts/pcv_yield.html">model.parts.pcv_yield</a></code>.</p></div>
+</dd>
+<dt id="model.system_parameters.Parameters.yield_reinvest_period"><code class="name">var <span class="ident">yield_reinvest_period</span> : List[int]</code></dt>
+<dd>
+<div class="desc"><p>The duration in days between reinvesting yield into the PCV Deposit balance.</p>
+<p>Set to <code>None</code> to disable. Only enable one of <code>yield_withdrawal_period</code> and <code>yield_reinvest_period</code> at a time.</p>
+<p>Used in <code><a title="model.parts.pcv_yield" href="parts/pcv_yield.html">model.parts.pcv_yield</a></code>.</p></div>
+</dd>
+<dt id="model.system_parameters.Parameters.yield_withdrawal_period"><code class="name">var <span class="ident">yield_withdrawal_period</span> : List[int]</code></dt>
+<dd>
+<div class="desc"><p>The duration in days between withdrawing yield to an idle PCV Deposit.</p>
+<p>Set to <code>None</code> to disable. Only enable one of <code>yield_withdrawal_period</code> and <code>yield_reinvest_period</code> at a time.</p>
+<p>Used in <code><a title="model.parts.pcv_yield" href="parts/pcv_yield.html">model.parts.pcv_yield</a></code>.</p></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul>
+<li><a href="#system-parameters">System Parameters</a></li>
+</ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="model" href="index.html">model</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-variables">Global variables</a></h3>
+<ul class="">
+<li><code><a title="model.system_parameters.fei_money_market_user_deposit_balance" href="#model.system_parameters.fei_money_market_user_deposit_balance">fei_money_market_user_deposit_balance</a></code></li>
+<li><code><a title="model.system_parameters.money_market_utilization_rate_samples" href="#model.system_parameters.money_market_utilization_rate_samples">money_market_utilization_rate_samples</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="model.system_parameters.Parameters" href="#model.system_parameters.Parameters">Parameters</a></code></h4>
+<ul class="">
+<li><code><a title="model.system_parameters.Parameters.base_rate_per_block" href="#model.system_parameters.Parameters.base_rate_per_block">base_rate_per_block</a></code></li>
+<li><code><a title="model.system_parameters.Parameters.capital_allocation_exogenous_concentration" href="#model.system_parameters.Parameters.capital_allocation_exogenous_concentration">capital_allocation_exogenous_concentration</a></code></li>
+<li><code><a title="model.system_parameters.Parameters.capital_allocation_fei_deposit_variables" href="#model.system_parameters.Parameters.capital_allocation_fei_deposit_variables">capital_allocation_fei_deposit_variables</a></code></li>
+<li><code><a title="model.system_parameters.Parameters.capital_allocation_rebalance_duration" href="#model.system_parameters.Parameters.capital_allocation_rebalance_duration">capital_allocation_rebalance_duration</a></code></li>
+<li><code><a title="model.system_parameters.Parameters.capital_allocation_yield_rate_moving_average_window" href="#model.system_parameters.Parameters.capital_allocation_yield_rate_moving_average_window">capital_allocation_yield_rate_moving_average_window</a></code></li>
+<li><code><a title="model.system_parameters.Parameters.date_start" href="#model.system_parameters.Parameters.date_start">date_start</a></code></li>
+<li><code><a title="model.system_parameters.Parameters.dt" href="#model.system_parameters.Parameters.dt">dt</a></code></li>
+<li><code><a title="model.system_parameters.Parameters.fei_price_process" href="#model.system_parameters.Parameters.fei_price_process">fei_price_process</a></code></li>
+<li><code><a title="model.system_parameters.Parameters.fei_savings_rate_process" href="#model.system_parameters.Parameters.fei_savings_rate_process">fei_savings_rate_process</a></code></li>
+<li><code><a title="model.system_parameters.Parameters.jump_multiplier_per_block" href="#model.system_parameters.Parameters.jump_multiplier_per_block">jump_multiplier_per_block</a></code></li>
+<li><code><a title="model.system_parameters.Parameters.liquidity_pool_trading_fee" href="#model.system_parameters.Parameters.liquidity_pool_trading_fee">liquidity_pool_trading_fee</a></code></li>
+<li><code><a title="model.system_parameters.Parameters.liquidity_pool_tvl" href="#model.system_parameters.Parameters.liquidity_pool_tvl">liquidity_pool_tvl</a></code></li>
+<li><code><a title="model.system_parameters.Parameters.money_market_kink" href="#model.system_parameters.Parameters.money_market_kink">money_market_kink</a></code></li>
+<li><code><a title="model.system_parameters.Parameters.money_market_reserve_factor" href="#model.system_parameters.Parameters.money_market_reserve_factor">money_market_reserve_factor</a></code></li>
+<li><code><a title="model.system_parameters.Parameters.money_market_utilization_rate_process" href="#model.system_parameters.Parameters.money_market_utilization_rate_process">money_market_utilization_rate_process</a></code></li>
+<li><code><a title="model.system_parameters.Parameters.multiplier_per_block" href="#model.system_parameters.Parameters.multiplier_per_block">multiplier_per_block</a></code></li>
+<li><code><a title="model.system_parameters.Parameters.pcv_deposits" href="#model.system_parameters.Parameters.pcv_deposits">pcv_deposits</a></code></li>
+<li><code><a title="model.system_parameters.Parameters.psm_mint_fee" href="#model.system_parameters.Parameters.psm_mint_fee">psm_mint_fee</a></code></li>
+<li><code><a title="model.system_parameters.Parameters.psm_redeem_fee" href="#model.system_parameters.Parameters.psm_redeem_fee">psm_redeem_fee</a></code></li>
+<li><code><a title="model.system_parameters.Parameters.rebalancing_period" href="#model.system_parameters.Parameters.rebalancing_period">rebalancing_period</a></code></li>
+<li><code><a title="model.system_parameters.Parameters.stable_asset_price_process" href="#model.system_parameters.Parameters.stable_asset_price_process">stable_asset_price_process</a></code></li>
+<li><code><a title="model.system_parameters.Parameters.stable_asset_yield_rate" href="#model.system_parameters.Parameters.stable_asset_yield_rate">stable_asset_yield_rate</a></code></li>
+<li><code><a title="model.system_parameters.Parameters.target_rebalancing_condition" href="#model.system_parameters.Parameters.target_rebalancing_condition">target_rebalancing_condition</a></code></li>
+<li><code><a title="model.system_parameters.Parameters.target_stable_backing_ratio" href="#model.system_parameters.Parameters.target_stable_backing_ratio">target_stable_backing_ratio</a></code></li>
+<li><code><a title="model.system_parameters.Parameters.target_stable_pcv_ratio" href="#model.system_parameters.Parameters.target_stable_pcv_ratio">target_stable_pcv_ratio</a></code></li>
+<li><code><a title="model.system_parameters.Parameters.user_deposits" href="#model.system_parameters.Parameters.user_deposits">user_deposits</a></code></li>
+<li><code><a title="model.system_parameters.Parameters.volatile_asset_price_process" href="#model.system_parameters.Parameters.volatile_asset_price_process">volatile_asset_price_process</a></code></li>
+<li><code><a title="model.system_parameters.Parameters.volatile_asset_risk_metric_time_window" href="#model.system_parameters.Parameters.volatile_asset_risk_metric_time_window">volatile_asset_risk_metric_time_window</a></code></li>
+<li><code><a title="model.system_parameters.Parameters.volatile_asset_yield_rate" href="#model.system_parameters.Parameters.volatile_asset_yield_rate">volatile_asset_yield_rate</a></code></li>
+<li><code><a title="model.system_parameters.Parameters.yield_reinvest_period" href="#model.system_parameters.Parameters.yield_reinvest_period">yield_reinvest_period</a></code></li>
+<li><code><a title="model.system_parameters.Parameters.yield_withdrawal_period" href="#model.system_parameters.Parameters.yield_withdrawal_period">yield_withdrawal_period</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>

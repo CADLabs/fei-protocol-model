@@ -1,16 +1,18 @@
-"""Money Markets
+"""# Money Markets Module
+A module with a single Policy that implements a generic Compound style Money Market
+to model the FEI Savings Rate competing yield opportunity that exists for the FEI token.
 """
 
 import numpy as np
 import pandas as pd
 
-from model.types import FEI, PCVDeposit, Timestep, UserDeposit
+from model.types import PCVDeposit, Timestep, UserDeposit
 from model.constants import blocks_per_year
 from model.system_parameters import Parameters
 
 
 def policy_money_market(params: Parameters, substep, state_history, previous_state):
-    """Money Market Policy
+    """## Money Market Policy
     The Compound lending market "Compound Jump Rate Model", shared by a number of lending markets including Aave,
     is used as a proxy for all lending markets in this model.
 
@@ -55,9 +57,6 @@ def policy_money_market(params: Parameters, substep, state_history, previous_sta
         + previous_state["volatile_asset_price"]
     ) / timestep
     time_window: Timestep = params["volatile_asset_risk_metric_time_window"]
-    # y1 = va_price_series.get(timestep-time_window, va_price_series.iloc[0])
-    # y2 = va_price_series.iloc[-1]
-    # va_price_slope = ((y1 - y2) / -time_window)
     va_price_slope = (
         np.polyfit(
             range(len(va_price_series[-min(timestep, time_window) : -1])),

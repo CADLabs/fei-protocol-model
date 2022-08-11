@@ -232,7 +232,7 @@ The purpose of this analysis is to illustrate and validate the effect of a step 
 
 See [experiments/notebooks/2_fei_savings_rate.ipynb](experiments/notebooks/fei_savings_rate.ipynb)
 
-TODO Update summary here and in notebooks
+The purpose of this notebook is to showcase how the radCAD Fei Protocol Model can leverage large-scale simulations to provide data-driven insights into monetary policy setting. Specifically, we’ll consider the development of a FEI Savings Rate according to existing FIPs, with relevant qualitative and probabilistic conclusions.
 
 ### 3. Protocol Controlled Value
 

@@ -4,7 +4,6 @@ Various Python types used in the model
 
 import numpy as np
 import sys
-import copy
 
 # See https://docs.python.org/3/library/dataclasses.html
 from dataclasses import dataclass

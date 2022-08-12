@@ -5,7 +5,7 @@ Implementation of Peg Stability Module related Policies.
 from typing import List
 import logging
 from model.system_parameters import Parameters
-from model.types import FEI, USD, PCVDeposit, StateVariableKey, UserDeposit
+from model.types import FEI, USD, PCVDeposit, StateVariableKey
 
 
 def policy_peg_stability_module(params: Parameters, substep, state_history, previous_state):

@@ -73,7 +73,7 @@ money_market_utilization_rate_samples = create_stochastic_process_realizations(
 # Configure distribution of PCV Deposits
 # Each distribution must contain the same set of PCV Deposits
 """
-Illustrative parameterisation of initial state sourced from
+Illustrative parameterisation of initial state sourced from data sources such as
 https://dune.com/llama/Fei-Protocol
 https://app.fei.money/
 as of 22 June 2022.
@@ -149,7 +149,7 @@ fei_money_market_user_deposit_balance = 30_000_000
 # Configure distribution of User Deposits
 # Each distribution must contain the same set of User Deposits
 """
-Illustrative parameterisation of initial state sourced from
+Illustrative parameterisation of initial state sourced from data sources such as
 https://dune.com/llama/Fei-Protocol
 https://app.fei.money/
 as of 22 June 2022.
@@ -190,7 +190,7 @@ user_deposit_distribution_sweep = [
             _balance=fei_money_market_user_deposit_balance,
             _asset_value=fei_money_market_user_deposit_balance,
         ),
-    ]
+    ],
 ]
 
 # Generate User Deposit keys
@@ -222,7 +222,11 @@ class Parameters:
     NOTE Model has not been tested for `DELTA_TIME` != 1, further validation of calculations would be required.
     """
 
-    date_start: List[datetime] = default([datetime.now()])
+    date_start: List[datetime] = default(
+        [
+            datetime.now(),
+        ]
+    )
     """
     Start date for simulation as Python datetime
 

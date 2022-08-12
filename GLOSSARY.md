@@ -1,6 +1,6 @@
 # Model Glossary
 
-A set of technical terminology and common abbreviations used in the model. Wherever possible we avoid the use of jargon, except where those terms are widely used by Fei Protocol.
+A set of technical terminology and common abbreviations used in the model. Wherever possible we avoid the use of jargon, except where those terms are widely used by Fei Protocol. For any other terminology not included here, please see relevant State Variable, System Parameter, Policy, and State Update Function docstrings.
 
 ## Assorted
 | Term | Common Abbreviation | Description |

@@ -11,8 +11,8 @@ As an extension, trades could execute over a period of 1 to 2 weeks accounting f
 One System Goal was to sustainably increase demand for FEI, evaluating FEI demand under different FEI Savings Rates and market conditions.
 
 To properly model FEI Demand, a few updates to the model need to be made:
-* Develop a KPI for FEI Demand as a function of State Variables that affect user preferences to mint or redeem FEI e.g. Collateralization Ratio, Stable Backing Ratio, Volatile Asset market conditions, etc. could all affect a user's decision to mint or redeem FEI.
-* Develop a process to model the FEI Demand driven or Capital Allocation Model yield and risk weighted exogenous flow of FEI from the PSM into user-circulating FEI.
+* Develop a KPI for FEI Demand as a function of State Variables that affect user preferences to mint or redeem FEI e.g. Collateralization Ratio, Stable Backing Ratio, Volatile Asset market conditions, etc. could all affect a user's decision to mint or redeem FEI
+* Develop a process to model the FEI Demand driven or Capital Allocation Model yield and risk weighted exogenous flow of FEI from the PSM into user-circulating FEI
 
 ## Extend PCV Deposit Types
 

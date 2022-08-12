@@ -80,6 +80,8 @@ state_update_blocks = [
                 "stable_backing_ratio",
                 "stable_pcv_ratio",
                 "collateralization_ratio",
+                # NOTE: Uncomment Below as part of working exercise in Quiz Notebook 1
+                #"reserve_ratio", 
                 "pcv_yield_rate",
                 # Protocol System Metrics
                 "protocol_equity",
@@ -87,6 +89,16 @@ state_update_blocks = [
             ]
         },
     },
+    # NOTE: Uncomment Below as part of working exercise in Quiz Notebook 1
+    # {
+    #     description: """
+    #         Update Reserve Ratio Toy PSUB
+    #     """,
+    #     policies: {},
+    #     variables: {
+    #         "reserve_ratio": reserve_ratio.update_reserve_ratio,
+    #     },
+    # },
     {
         description: """
             Price Processes

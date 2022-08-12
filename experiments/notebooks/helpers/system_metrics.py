@@ -144,10 +144,10 @@ def get_weight_evolution(df, subset):
     df_.index = df.query('subset==@subset')['timestamp']
     return df_
 
-def get_weight_evolution_average(df, subset, use_cols):
+def get_weight_evolution_average(df, subset, use_deposits):
     
     balances = pd.DataFrame(df.query('subset==@subset')["capital_allocation_target_weights"].to_list(),
-             columns=use_cols)
+             columns=use_deposits)
     
     df_ = df.query('subset==@subset')[['timestep']].reset_index()
     
@@ -192,12 +192,12 @@ def compute_mdd(x):
     mdd = dd.rolling(window).min()
     return mdd.min()
 
-def get_fn_dict():
+def get_metric_computation_functions():
     fn_list = [compute_vol, compute_max, compute_min, compute_final_val, compute_mdd]
     fn_names = ['volatility', 'max', 'min', 'final value', 'max dd']
-    fn_dict = dict(zip(fn_names, fn_list))
+    metric_functions = dict(zip(fn_names, fn_list))
 
-    return fn_dict
+    return metric_functions
 
 def generate_emp_distribution_kpi(fn, df, variable, start=None, end=None):
     L = dict()
@@ -212,27 +212,27 @@ def generate_emp_distribution_kpi(fn, df, variable, start=None, end=None):
         
     return pd.DataFrame(L)
 
-def compute_metric_set_for_variable(df, fn_dict, variable, start=None, end=None):
+def compute_metric_set_for_variable(df, metric_functions, variable, start=None, end=None):
     L = dict()
-    for fn_name, fn in fn_dict.items():
+    for fn_name, fn in metric_functions.items():
         metric_avg = generate_emp_distribution_kpi(fn, df, variable, start=start, end=end).mean(axis=0)
         L[fn_name] = metric_avg
         
     return pd.DataFrame(L)
 
-def gen_norm_rv(n, mu, sigma):
+def generate_normal_rv(n, mu, sigma):
     return norm.rvs(loc=mu, scale=sigma, size=1, random_state=n)[0]
 
 
-def get_average_CAM_deposits(df, subset, use_cols):
-    df_ = df.query('subset==@subset')[['timestep'] +use_cols].groupby('timestep').mean()
+def get_average_CAM_deposits(df, subset, use_deposits):
+    df_ = df.query('subset==@subset')[['timestep'] +use_deposits].groupby('timestep').mean()
     df_.index = df.query('subset==@subset and run==1').index
     df_['timestamp'] = df_.index
     
     return df_
 
-def get_final_deposit_avgs(df, use_cols, subset):
-    final_ts_avgs = get_averages_by_subset(df, use_cols).query('subset==@subset').iloc[-1]
+def get_final_deposit_avgs(df, use_deposits, subset):
+    final_ts_avgs = get_averages_by_subset(df, use_deposits).query('subset==@subset').iloc[-1]
     final_ts_avgs = final_ts_avgs[2:]
     final_ts_avgs = pd.DataFrame(final_ts_avgs).reset_index()
     final_ts_avgs.columns = ['deposit', 'value']

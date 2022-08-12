@@ -84,7 +84,7 @@ def policy_fei_capital_allocation_endogenous_weight_update(
     }
     yield_history: List[List] = yield_history_map.values()
     yield_map = {
-        key: sum(yield_history) / moving_average_window or previous_state[key].yield_rate
+        key: max(sum(yield_history) / moving_average_window, 1e-18) or previous_state[key].yield_rate
         for key, yield_history in yield_history_map.items()
     }
     yield_vector = np.array(list(yield_map.values()))
@@ -114,8 +114,14 @@ def policy_fei_capital_allocation_endogenous_weight_update(
     # Calculate risk vector
     risk_vector = 1 + volatile_asset_risk + yield_risk
 
+    assert yield_vector.sum() > 0, "zero or negative yield vector sum"
+    assert risk_vector.sum() > 0, "zero or negative risk vector sum"
+
     # Calculate target weights: weight = yield / (1 + risk)
     target_weights = yield_vector / risk_vector
+
+    assert target_weights.sum() >= 0, "zero or negative weights sum"
+
     normalised_target_weights = target_weights / target_weights.sum()
 
     return {

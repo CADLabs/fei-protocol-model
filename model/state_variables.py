@@ -171,6 +171,9 @@ class StateVariables:
     stable_pcv_ratio: Percentage = Uninitialized
     """The percentage of PCV backed by stable assets"""
     collateralization_ratio: Percentage = Uninitialized
+    # NOTE: Uncomment Below as part of working exercise in Quiz Notebook 1
+    #"""The reserve ratio of the Fei Protocol"""
+    #reserve_ratio: Percentage = Uninitialized
     """The percentage collateralization of the total FEI supply"""
     pcv_yield: USD = Uninitialized
     """The per-timestep PCV yield accrued"""

@@ -19,6 +19,20 @@
         "review",
         "tutorial"
       ]
+    },
+    {
+      "login": "BenSchZA",
+      "name": "Benjamin Scholtz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/13078998?v=4",
+      "profile": "http://cadlabs.org",
+      "contributions": [
+        "projectManagement",
+        "code",
+        "doc",
+        "ideas",
+        "research",
+        "review"
+      ]
     }
   ],
   "contributorsPerLine": 7,

@@ -45,6 +45,17 @@
         "research",
         "review"
       ]
+    },
+    {
+      "login": "danlessa",
+      "name": "Danilo Lessa Bernardineli",
+      "avatar_url": "https://avatars.githubusercontent.com/u/15021144?v=4",
+      "profile": "http://japu.xyz",
+      "contributions": [
+        "code",
+        "ideas",
+        "research"
+      ]
     }
   ],
   "contributorsPerLine": 7,

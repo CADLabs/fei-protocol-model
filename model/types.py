@@ -145,7 +145,8 @@ class Deposit(metaclass=ABCMeta):
 
         self.withdraw(amount, from_asset_price)
         to.deposit(
-            amount * from_asset_price / to_asset_price if to_asset_price else amount, to_asset_price
+            amount * from_asset_price / to_asset_price if to_asset_price else amount,
+            to_asset_price,
         )
 
         return self, to

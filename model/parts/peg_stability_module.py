@@ -69,7 +69,8 @@ def policy_peg_stability_module(params: Parameters, substep, state_history, prev
                     abs(mint_redeem_pcv_asset_balance) < active_psm_pcv_deposit.balance
                 ), "Insufficient PCV for redemption"
                 active_psm_pcv_deposit.withdraw(
-                    amount=abs(mint_redeem_pcv_asset_balance), asset_price=pcv_asset_price
+                    amount=abs(mint_redeem_pcv_asset_balance),
+                    asset_price=pcv_asset_price,
                 )
                 # Collect PSM redeem fees
                 psm_mint_redeem_fees = psm_redeem_fee * abs(fei_minted_redeemed)

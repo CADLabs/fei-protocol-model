@@ -84,7 +84,8 @@ def policy_fei_capital_allocation_endogenous_weight_update(
     }
     yield_history: List[List] = yield_history_map.values()
     yield_map = {
-        key: max(sum(yield_history) / moving_average_window, 1e-18) or previous_state[key].yield_rate
+        key: max(sum(yield_history) / moving_average_window, 1e-18)
+        or previous_state[key].yield_rate
         for key, yield_history in yield_history_map.items()
     }
     yield_vector = np.array(list(yield_map.values()))

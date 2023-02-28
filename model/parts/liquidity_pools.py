@@ -99,7 +99,8 @@ def policy_constant_function_market_maker(
 
     # Update User Deposit LP balance
     volatile_liquidity_pool_user_deposit.set_balance(
-        updated_volatile_asset_balance * (1 - protocol_liquidity_share), volatile_asset_price
+        updated_volatile_asset_balance * (1 - protocol_liquidity_share),
+        volatile_asset_price,
     )
     fei_liquidity_pool_user_deposit.set_balance(
         updated_fei_balance * (1 - protocol_liquidity_share), fei_price

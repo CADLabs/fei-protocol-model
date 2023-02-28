@@ -31,12 +31,12 @@ def policy_system_metrics(params, substep, state_history, previous_state):
 
     # NOTE: QUIZ 1
     # reserve_ratio = (total_pcv + total_protocol_owned_fei) / total_fei_supply
-    
+
     return {
         "stable_backing_ratio": stable_backing_ratio,
         "stable_pcv_ratio": stable_pcv_ratio,
         "collateralization_ratio": collateralization_ratio,
-        #"reserve_ratio": reserve_ratio, # NOTE: QUIZ 1
+        # "reserve_ratio": reserve_ratio, # NOTE: QUIZ 1
         "pcv_yield_rate": pcv_yield_rate,
         "protocol_equity": protocol_equity,
         "protocol_revenue": protocol_revenue,

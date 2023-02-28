@@ -81,7 +81,7 @@ state_update_blocks = [
                 "stable_pcv_ratio",
                 "collateralization_ratio",
                 # NOTE: Uncomment Below as part of working exercise in Quiz Notebook 1
-                #"reserve_ratio", 
+                # "reserve_ratio",
                 "pcv_yield_rate",
                 # Protocol System Metrics
                 "protocol_equity",

@@ -1,4 +1,7 @@
 # [Fei Protocol Model](https://fei.money)
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![Python package](https://github.com/CADLabs/fei-protocol-model/actions/workflows/python.yml/badge.svg)](https://github.com/CADLabs/fei-protocol-model/actions/workflows/python.yml)
 
@@ -319,6 +322,21 @@ Storm and the rest of the Fei Protocol team for their close collaboration and gu
 ## Contributors ✨
 
 Thanks goes to these wonderful contributors (see [emoji key](https://allcontributors.org/docs/en/emoji-key)):
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/cadlabsgt"><img src="https://avatars.githubusercontent.com/u/100153187?v=4?s=100" width="100px;" alt="cadlabsgt"/><br /><sub><b>cadlabsgt</b></sub></a><br /><a href="https://github.com/CADLabs/fei-protocol-model/commits?author=cadlabsgt" title="Code">💻</a> <a href="https://github.com/CADLabs/fei-protocol-model/commits?author=cadlabsgt" title="Documentation">📖</a> <a href="#ideas-cadlabsgt" title="Ideas, Planning, & Feedback">🤔</a> <a href="#research-cadlabsgt" title="Research">🔬</a> <a href="https://github.com/CADLabs/fei-protocol-model/pulls?q=is%3Apr+reviewed-by%3Acadlabsgt" title="Reviewed Pull Requests">👀</a> <a href="#tutorial-cadlabsgt" title="Tutorials">✅</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->

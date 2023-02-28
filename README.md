@@ -314,7 +314,7 @@ See [CHANGELOG.md](CHANGELOG.md) for notable changes and versions.
 
 ## Acknowledgements
 
-Storm and the rest of the Fei Protocol team for their close collaboration in creating this model.
+Storm and the rest of the Fei Protocol team for their close collaboration and guidance in creating this model.
 
 ## Contributors ✨
 

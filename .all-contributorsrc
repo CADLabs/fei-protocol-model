@@ -1,0 +1,28 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "commitConvention": "angular",
+  "contributors": [
+    {
+      "login": "vmeylan",
+      "name": "vmeylan",
+      "avatar_url": "https://avatars.githubusercontent.com/u/47746194?v=4",
+      "profile": "https://github.com/vmeylan",
+      "contributions": [
+        "code",
+        "ideas",
+        "research",
+        "review"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "skipCi": true,
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "projectName": "fei-protocol-model",
+  "projectOwner": "CADLabs"
+}

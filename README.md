@@ -1,4 +1,7 @@
 # [Fei Protocol Model](https://fei.money)
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![Python package](https://github.com/CADLabs/fei-protocol-model/actions/workflows/python.yml/badge.svg)](https://github.com/CADLabs/fei-protocol-model/actions/workflows/python.yml)
 
@@ -314,12 +317,60 @@ See [CHANGELOG.md](CHANGELOG.md) for notable changes and versions.
 
 ## Acknowledgements
 
-...
+Storm and the rest of the Fei Protocol team for their close collaboration and guidance in creating this model.
 
 ## Contributors ✨
 
-...
+Thanks goes to these wonderful contributors (see [emoji key](https://allcontributors.org/docs/en/emoji-key)):
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/cadlabsgt"><img src="https://avatars.githubusercontent.com/u/100153187?v=4?s=100" width="100px;" alt="cadlabsgt"/><br /><sub><b>cadlabsgt</b></sub></a><br /><a href="https://github.com/CADLabs/fei-protocol-model/commits?author=cadlabsgt" title="Code">💻</a> <a href="https://github.com/CADLabs/fei-protocol-model/commits?author=cadlabsgt" title="Documentation">📖</a> <a href="#ideas-cadlabsgt" title="Ideas, Planning, & Feedback">🤔</a> <a href="#research-cadlabsgt" title="Research">🔬</a> <a href="https://github.com/CADLabs/fei-protocol-model/pulls?q=is%3Apr+reviewed-by%3Acadlabsgt" title="Reviewed Pull Requests">👀</a> <a href="#tutorial-cadlabsgt" title="Tutorials">✅</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://cadlabs.org"><img src="https://avatars.githubusercontent.com/u/13078998?v=4?s=100" width="100px;" alt="Benjamin Scholtz"/><br /><sub><b>Benjamin Scholtz</b></sub></a><br /><a href="#projectManagement-BenSchZA" title="Project Management">📆</a> <a href="https://github.com/CADLabs/fei-protocol-model/commits?author=BenSchZA" title="Code">💻</a> <a href="https://github.com/CADLabs/fei-protocol-model/commits?author=BenSchZA" title="Documentation">📖</a> <a href="#ideas-BenSchZA" title="Ideas, Planning, & Feedback">🤔</a> <a href="#research-BenSchZA" title="Research">🔬</a> <a href="https://github.com/CADLabs/fei-protocol-model/pulls?q=is%3Apr+reviewed-by%3ABenSchZA" title="Reviewed Pull Requests">👀</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/vmeylan"><img src="https://avatars.githubusercontent.com/u/47746194?v=4?s=100" width="100px;" alt="vmeylan"/><br /><sub><b>vmeylan</b></sub></a><br /><a href="https://github.com/CADLabs/fei-protocol-model/commits?author=vmeylan" title="Code">💻</a> <a href="#ideas-vmeylan" title="Ideas, Planning, & Feedback">🤔</a> <a href="#research-vmeylan" title="Research">🔬</a> <a href="https://github.com/CADLabs/fei-protocol-model/pulls?q=is%3Apr+reviewed-by%3Avmeylan" title="Reviewed Pull Requests">👀</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://japu.xyz"><img src="https://avatars.githubusercontent.com/u/15021144?v=4?s=100" width="100px;" alt="Danilo Lessa Bernardineli"/><br /><sub><b>Danilo Lessa Bernardineli</b></sub></a><br /><a href="https://github.com/CADLabs/fei-protocol-model/commits?author=danlessa" title="Code">💻</a> <a href="#ideas-danlessa" title="Ideas, Planning, & Feedback">🤔</a> <a href="#research-danlessa" title="Research">🔬</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/sslivkoff"><img src="https://avatars.githubusercontent.com/u/7907648?v=4?s=100" width="100px;" alt="sslivkoff"/><br /><sub><b>sslivkoff</b></sub></a><br /><a href="#ideas-sslivkoff" title="Ideas, Planning, & Feedback">🤔</a> <a href="#research-sslivkoff" title="Research">🔬</a> <a href="https://github.com/CADLabs/fei-protocol-model/pulls?q=is%3Apr+reviewed-by%3Asslivkoff" title="Reviewed Pull Requests">👀</a> <a href="#mentoring-sslivkoff" title="Mentoring">🧑‍🏫</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
 
 ## License
 
-...
+The code repository `CADLabs/fei-protocol-model` is licensed under the GNU General Public License v3.0.
+
+Permissions of this strong copyleft license are conditioned on making available complete source code of licensed works and modifications, which include larger works using a licensed work under the same license. Copyright and license notices must be preserved. Contributors provide an express grant of patent rights.
+
+If you'd like to cite this code and/or research, we suggest the following format:
+
+> CADLabs, Fei Protocol Model, (2023), GitHub repository, https://github.com/CADLabs/fei-protocol-model
+
+```latex
+@misc{CADLabs2023,
+  author = {CADLabs},
+  title = {Fei Protocol Model},
+  year = {2023},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  howpublished = {\url{https://github.com/CADLabs/fei-protocol-model}},
+  version = {v0.1.1}
+}
+```

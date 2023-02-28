@@ -322,4 +322,22 @@ See [CHANGELOG.md](CHANGELOG.md) for notable changes and versions.
 
 ## License
 
-...
+The code repository `CADLabs/fei-protocol-model` is licensed under the GNU General Public License v3.0.
+
+Permissions of this strong copyleft license are conditioned on making available complete source code of licensed works and modifications, which include larger works using a licensed work under the same license. Copyright and license notices must be preserved. Contributors provide an express grant of patent rights.
+
+If you'd like to cite this code and/or research, we suggest the following format:
+
+> CADLabs, Fei Protocol Model, (2023), GitHub repository, https://github.com/CADLabs/fei-protocol-model
+
+```latex
+@misc{CADLabs2023,
+  author = {CADLabs},
+  title = {Fei Protocol Model},
+  year = {2023},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  howpublished = {\url{https://github.com/CADLabs/fei-protocol-model}},
+  version = {v0.1.1}
+}
+```
